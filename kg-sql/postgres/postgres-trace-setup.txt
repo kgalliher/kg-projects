@@ -1,0 +1,11 @@
+TO ENABLE POSTGRESQL TRACES,
+MAKE A BACKUP OF YOUR POSTGRESQL.CONF FILE
+AND ALTER THE FOLLOWING PARAMETERS:
+
+log_min_duration_statement = 25
+log_duration = on
+log_line_prefix = '%t [%m]: [%l-1] ' 
+log_statement = 'all'
+;stats_start_collector = on #8.3 and earlier only
+
+http://www.postgresql.org/docs/9.1/static/runtime-config-logging.html
