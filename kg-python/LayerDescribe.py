@@ -1,6 +1,6 @@
 '''
 Ken Galliher - 08/12/15
-This script mimics the old sdelayer -o describe_long SDE command.
+This class mimics the old sdelayer -o describe_long SDE command.
 
 @params:
     workspc = SDE connection file.
