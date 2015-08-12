@@ -1,7 +1,8 @@
+
 /*
-  Ken Galliher - 08/12/15
-  This CTE can identify how many edits are made in a version.
-  Use the lineage_id to identify edits an a specific A or D table of a feature class.
+Ken Galliher - 08/12/15
+This CTE can identify how many edits are made in a version.
+Use the lineage_id to identify edits an a specific A or D table of a feature class.
 */
 DECLARE @owner varchar(100), @version_name VARCHAR(100)
 SET @version_name = 'DEFAULT'
@@ -22,3 +23,4 @@ SET @lineage_name = (SELECT lineage_name FROM sde.SDE_states WHERE state_id = @s
 
 -- Just get the count
 SELECT COUNT(*) FROM sde.a14 WHERE sde_state_id IN (SELECT lineage_id FROM stateCount)
+
