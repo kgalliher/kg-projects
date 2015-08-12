@@ -1,3 +1,4 @@
+
 /*
 Ken Galliher - 08/12/15
 Compare the SDE layers table min/max x/y to a feature class' bounding box.
@@ -16,3 +17,4 @@ SELECT
   geometry::EnvelopeAggregate(shape).STPointN(3).STX AS MaxX,
   geometry::EnvelopeAggregate(shape).STPointN(3).STY AS MaxX
 FROM SDE_LOAD.parcel
+
