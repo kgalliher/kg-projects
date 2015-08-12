@@ -1,5 +1,5 @@
 # kg-geodata
-My scripts collected during my time as a Geodata Analyst.  Contains SDE Geodatabase and database specific queries and functionality.
+Scripts and  classes written during my time as a Geodata Analyst.  Contains SDE Geodatabase and database specific queries and functionality.
 
 ###Python: 
 Using Arcpy, Pyodbc and Cx_Oracle packages.
