@@ -13,7 +13,7 @@ import arcpy
 from arcpy import env
 import datetime
 
-workspc = r"C:\Users\ken6574\AppData\Roaming\ESRI\Desktop10.3\ArcCatalog\KENG_BBOXTEST_sde.sde"
+workspc = r"C:\path\to\SDEGDB_CONN.sde"
 env.workspace = workspc
 
 class LayerDesc:
