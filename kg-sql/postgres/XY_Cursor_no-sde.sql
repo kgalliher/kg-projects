@@ -1,7 +1,7 @@
 ﻿/*
-	Ken Galliher - 08/12/15
-	Create a table in a non-SDE database.
-	Calculate points from an existing table's X and Y (or lat/long) columns.
+Ken Galliher - 08/12/15
+Create a table in a non-SDE database.
+Calculate points from an existing table's X and Y (or lat/long) columns.
 */
 DROP TABLE myxytable;
 
@@ -24,6 +24,8 @@ $$DECLARE
 	pt_curse CURSOR FOR SELECT x, y FROM myxytable FOR UPDATE; 
 	x_coord myxytable.X%TYPE; 
 	y_coord myxytable.Y%TYPE;
+	
+	
 BEGIN
 	OPEN pt_curse;
 LOOP
