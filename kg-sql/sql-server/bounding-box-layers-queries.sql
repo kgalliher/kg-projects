@@ -1,7 +1,7 @@
 /*
-	Ken Galliher - 08/12/15
-	Compare the SDE layers table min/max x/y to a feature class' bounding box.
-	Good for understanding extent display issues.
+Ken Galliher - 08/12/15
+Compare the SDE layers table min/max x/y to a feature class' bounding box.
+Good for understanding extent display issues.
 */
 SELECT min(((SHAPE.STEnvelope()).STPointN(1)).STX) AS MINX,
 min(((SHAPE.STEnvelope()).STPointN(1)).STY) AS MINY,
