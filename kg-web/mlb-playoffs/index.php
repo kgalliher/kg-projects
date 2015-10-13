@@ -4,10 +4,7 @@
 			<title>
 				MLB Playoffs
 			</title>
-			<script src="https://code.jquery.com/jquery-1.11.3.js"></script>
-			<script src="http://keng:82/gdbcloud2/js/tablesorter/jquery.tablesorter.js"></script>
-			<link rel="stylesheet" href="http://keng:82/gdbcloud2/css/your.css" />
-			
+			<script src="https://code.jquery.com/jquery-1.11.3.js"></script>			
 			<style>
 				body {
 					background-color: #004080;
