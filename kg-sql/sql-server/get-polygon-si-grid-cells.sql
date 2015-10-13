@@ -59,7 +59,6 @@ DECLARE @res int = 64;
 
 INSERT INTO @hist_results
 EXEC
--- Built in stored procedure http://msdn.microsoft.com/en-us/library/gg509094.aspx
 sp_help_spatial_geometry_histogram
 	@tabname = 'SDE_LOAD.PARCEL', -- use single quotes if this should be qualified with a schema name
 	@colname = shape,
@@ -75,4 +74,5 @@ SELECT CellID, CELL, /*.STBoundary().STBuffer(0.05) AS cellbound,*/ Intersection
 FROM @hist_results
 GO
 
+-- Select all the rows.
 SELECT * FROM sde_load.parcel_cellbounds_hist
