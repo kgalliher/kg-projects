@@ -22,12 +22,7 @@
 					color: white;
 					padding: 5px;
 				}
-				
-				.gameinfo {
-					height: 100px;
-					width: 400px;
-					background-color: #a1a1a1;
-				}
+
 			</style>
 			<script src="games.js"></script>
 		</head>
