@@ -4,6 +4,7 @@ var day = time.getDate();
 
 var url = "games.php";
 
+// Need to not do this.  How to fix?
 setInterval(function(){
 	location.reload();
 	}, 10000);
