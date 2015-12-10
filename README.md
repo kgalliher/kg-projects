@@ -8,3 +8,11 @@ Native DBMS spatial queries and Geodatabase Admin functionality.
 ### Java:   
 Using SDE SDK and Java.SQL utilities to affect geodatabases and databases.
 
+###Mike:
+function getFormData()
+{
+	var email = document.getElementById("email").value;
+	var comments = document.getElementById("comments").value;
+	alert("To: Mruggs@hello.com\n" + email + "\n" + comments);
+}
+
