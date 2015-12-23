@@ -5,7 +5,7 @@ List domains of all feature classes by coded value or range.
 
 import arcpy
 
-domains = arcpy.da.ListDomains(r"C:\Users\ken6574\AppData\Roaming\ESRI\Desktop10.3\ArcCatalog\KENG_BBOXTEST_sde.sde")
+domains = arcpy.da.ListDomains(r"C:\Users\ken\AppData\Roaming\ESRI\Desktop10.3\ArcCatalog\KENG_BBOXTEST_sde.sde")
 
 for domain in domains:
     print('Domain name: {0}'.format(domain.name))
