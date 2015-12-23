@@ -8,7 +8,7 @@ import java.util.Properties;
 public class InsertSTGeometrySQL { 
 
 	private static final String DB_DRIVER = "oracle.jdbc.driver.OracleDriver";
-	private static final String DB_CONNECTION = "jdbc:oracle:thin:@dei-linux:1521:SDE102";
+	private static final String DB_CONNECTION = "jdbc:oracle:thin:@server:1521:SDE102";
 	private static final String DB_USER = "sde";
 	private static final String DB_PASSWORD = "sde";
 	
