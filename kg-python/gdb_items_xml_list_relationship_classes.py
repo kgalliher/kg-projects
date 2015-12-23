@@ -24,7 +24,7 @@ pp = pprint.PrettyPrinter(indent=4)
 cnxn = pyodbc.connect('DRIVER={SQL Server};SERVER=KENG;DATABASE=SDE103')
 cursor = cnxn.cursor()
 
-wkspc = r"C:\Users\ken6574\AppData\Roaming\ESRI\Desktop10.3\ArcCatalog\KENG_SDE103_sde.sde"
+wkspc = r"C:\Users\ken\AppData\Roaming\ESRI\Desktop10.3\ArcCatalog\KENG_SDE103_sde.sde"
 env.workspace = wkspc
 
 fc_list = []
