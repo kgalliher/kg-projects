@@ -66,7 +66,7 @@ class PGDatabase {
 		}
 		return $value;
 	}
-    public static function find_all($table_name){
+    	public static function find_all($table_name){
 		global $database;
 		$result_set = self::find_by_sql("SELECT * FROM cacounties");
 		return $result_set;
