@@ -43,7 +43,7 @@ require(["esri/map",
 	  }
 	  
 	/**TODO:
-	 * Need to check to see if the point features are in the map before adding function results.
+	 * Need to check to see if the underlying features are in the map before adding function results.
 	 *  If not, add the underlying data as well.
 	 */
 	function bufferSelectedLayer(e) {
@@ -74,13 +74,12 @@ require(["esri/map",
 		  var input2_geom = input2_vals[1];
 			
 		  if (input1_table == undefined || input2_table == undefined) {
-			alert("Please make a selections for the missing intersecting table(s).");
+			alert("Please make a selection for the missing intersecting table(s).");
 		  }
 		  else {
 			url = "geoprocessing/postgis.php?geotable=" + input1_table + "&geomfield=" + input1_geom + "&intersect_table=" + input2_table + "&intersect_geomfield=" + input2_geom;
 			console.log(url);
 		  }
-		  console.log("shouldn't be here");
 		  dojo.place("<option value='" + url + "'>" + input1_table + "-" + input2_table + "-intersect</option>", "selGeoJson");
 		  addGeoJsonLayer(url);
 	  }
