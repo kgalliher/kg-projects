@@ -152,3 +152,6 @@ a:hover {
         width: 250px;
     }
 }
+.panel-fixed .panel-body {
+    max-height: 800px;
+}
