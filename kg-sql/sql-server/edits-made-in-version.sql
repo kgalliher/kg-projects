@@ -18,7 +18,7 @@ SET @lineage_name = (SELECT lineage_name FROM sde.SDE_states WHERE state_id = @s
 ;WITH stateCount AS
 (
 	SELECT lineage_id FROM sde.SDE_state_lineages
-	WHERE lineage_name = @lineage_name AND lineage_id <= @parent_state_id
+	WHERE lineage_name = @lineage_name AND lineage_id >= @parent_state_id
 )
 
 -- Just get the count
