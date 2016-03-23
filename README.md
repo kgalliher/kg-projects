@@ -7,5 +7,5 @@ Using Arcpy, Pyodbc and Cx_Oracle packages.
 Native DBMS spatial queries and Geodatabase Admin functionality.
 ### Java:   
 Using SDE SDK and Java.SQL utilities to affect geodatabases and databases.
-### >NET
+### .NET
 Using ArcObjects in .NET and various othe C# projects.
