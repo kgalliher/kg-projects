@@ -8,10 +8,7 @@ FETCH NEXT FROM pt_curse INTO @latVar, @lonVar, @id
 
 WHILE @@FETCH_STATUS = 0
 BEGIN
-	--PRINT CAST(@latVar as VARCHAR) + ' == ' + CAST(@lonVar as VARCHAR);
 	UPDATE TableWithLatLong SET shape = geography::Point(@latVar, @lonVar, 4326) WHERE id = @id;
-	PRINT 'DONE';
-	
 	FETCH NEXT FROM pt_curse INTO @latVar, @lonVar, @id
 END;
 
