@@ -1,3 +1,4 @@
+''' Creates a sqlite database, installs the stgeometry_sqlite.dll and finally loads the OGC tables '''
 import sqlite3
 
 def createSqliteGdb(path_to_gdb):
