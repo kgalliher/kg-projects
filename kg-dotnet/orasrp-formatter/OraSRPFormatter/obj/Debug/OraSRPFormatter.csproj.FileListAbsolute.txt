@@ -1,0 +1,15 @@
+C:\Users\ken6574\Documents\Visual Studio 2013\Projects\OraSRPFormatter\OraSRPFormatter\bin\Debug\OraSRPFormatter.exe.config
+C:\Users\ken6574\Documents\Visual Studio 2013\Projects\OraSRPFormatter\OraSRPFormatter\bin\Debug\OraSRPFormatter.exe
+C:\Users\ken6574\Documents\Visual Studio 2013\Projects\OraSRPFormatter\OraSRPFormatter\bin\Debug\OraSRPFormatter.pdb
+C:\Users\ken6574\Documents\Visual Studio 2013\Projects\OraSRPFormatter\OraSRPFormatter\obj\Debug\OraSRPFormatter.csprojResolveAssemblyReference.cache
+C:\Users\ken6574\Documents\Visual Studio 2013\Projects\OraSRPFormatter\OraSRPFormatter\obj\Debug\MainWindow.baml
+C:\Users\ken6574\Documents\Visual Studio 2013\Projects\OraSRPFormatter\OraSRPFormatter\obj\Debug\MainWindow.g.cs
+C:\Users\ken6574\Documents\Visual Studio 2013\Projects\OraSRPFormatter\OraSRPFormatter\obj\Debug\App.g.cs
+C:\Users\ken6574\Documents\Visual Studio 2013\Projects\OraSRPFormatter\OraSRPFormatter\obj\Debug\OraSRPFormatter_MarkupCompile.cache
+C:\Users\ken6574\Documents\Visual Studio 2013\Projects\OraSRPFormatter\OraSRPFormatter\obj\Debug\OraSRPFormatter.g.resources
+C:\Users\ken6574\Documents\Visual Studio 2013\Projects\OraSRPFormatter\OraSRPFormatter\obj\Debug\OraSRPFormatter.Properties.Resources.resources
+C:\Users\ken6574\Documents\Visual Studio 2013\Projects\OraSRPFormatter\OraSRPFormatter\obj\Debug\OraSRPFormatter.csproj.GenerateResource.Cache
+C:\Users\ken6574\Documents\Visual Studio 2013\Projects\OraSRPFormatter\OraSRPFormatter\obj\Debug\OraSRPFormatter.exe
+C:\Users\ken6574\Documents\Visual Studio 2013\Projects\OraSRPFormatter\OraSRPFormatter\obj\Debug\OraSRPFormatter.pdb
+C:\Users\ken6574\Documents\Visual Studio 2013\Projects\OraSRPFormatter\OraSRPFormatter\bin\Debug\orasrp\orasrp.exe
+C:\Users\ken6574\Documents\Visual Studio 2013\Projects\OraSRPFormatter\OraSRPFormatter\obj\Debug\OraSRPFormatter_Content.g.cs
