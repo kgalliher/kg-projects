@@ -19,7 +19,7 @@ CREATE TABLE billybob.trace_storage
     incno character varying(12) COLLATE pg_catalog."default",
     trcno character varying(5) COLLATE pg_catalog."default",
     trace_name character varying(50) COLLATE pg_catalog."default",
-    "timestamp" "time(2) without time zone"(2),
+    stamp "time(2) without time zone"(2),
     file_name character varying(255) COLLATE pg_catalog."default",
     description character varying(140) COLLATE pg_catalog."default"
 )
