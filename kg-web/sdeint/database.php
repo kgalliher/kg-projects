@@ -17,7 +17,7 @@ class Database{
 
     public function createTopTable($top_table){
         $sql = "create table {$top_table} (id serial, descriptor varchar(30), line text);";
-        echo "Top table: " . $sql . "<br />";
+        //echo "Top table: " . $sql . "<br />";
         try {
             $this->conn->exec($sql);
             return 1;
@@ -51,6 +51,23 @@ class Database{
             echo $ex->getMessage();
             return -1;
         }
+    }
+
+    public function deleteTraces($trace_name, $id){
+        $table_names = array("top_" . $trace_name, "com_" . $trace_name, "inf_" . $trace_name);
+        $delete_from_storage_sql = "delete from trace_storage where trace_name = '{$trace_name}' and id = {$id}";
+        try {
+            $this->conn->exec($delete_from_storage_sql);
+            foreach($table_names as $table){
+                self::dropTable($table);
+            }
+            return 1;
+        }
+        catch (PDOException $ex){
+            echo $ex->getMessage();
+            return -1;
+        }
+
     }
         
     public function checkTableExists($table_name){
@@ -160,7 +177,7 @@ class Database{
     }
 
     public function retrieveTraceInfo(){
-        $sql = "SELECT trace_name,empno, incno, trcno, stamp, file_name, description, stamp FROM trace_storage order by stamp desc";
+        $sql = "SELECT id, trace_name, empno, incno, trcno, stamp, file_name, description, stamp FROM trace_storage order by stamp desc";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);

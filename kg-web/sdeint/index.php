@@ -33,7 +33,7 @@
 			</ul>
 			<hr />
 			<h4>Upload New Trace</h4>
-			<form style="margin: 0;" class="form-horizontal" id="uploadTrace" action="#" method="post" enctype="multipart/form-data">
+			<form style="margin: 0;" class="form-horizontal center-block" id="uploadTrace" action="#" method="post" enctype="multipart/form-data">
 				<div class="form-group">
 					<!--<label for="empno" class="col-sm-2 control-label">Employee #:</label>-->
 					<div class="col-sm-10">
@@ -64,13 +64,13 @@
 					</div>
 				</div>
                 <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
+                    <div class="col-sm-10">
                         <input type="submit" class="btn btn-default" value="Upload" />
                     </div>
                 </div>
-
-
-</form>
+		</form>
+		<div id="loadingDiv"><img src="img/loading.gif" alt="processing..." class="img-responsive center-block" /></div>
+		<div id="messageDiv"></div>
 		</nav>
 		<main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
 			<div class="table-responsive">
@@ -83,6 +83,7 @@
 							<th>Trace name</th>
 							<th>File Name</th>
 							<th>Description</th>
+							<th></th>
 							<th></th>
 						</tr>
 					</thead>
@@ -98,6 +99,7 @@
 						  . "</td><td>" . $trace['file_name']
 						  . "</td><td>" . $trace['description']
 						  . "</td><td>" . "<a href='interceptor_dashboard.php?trace_name=" . $trace['trace_name'] . "' target='_blank'>Open</a>"
+						  . "</td><td>" . "<a href='#' id='delete_trace' data-trace_name='" . $trace['trace_name'] . "' data-id='" .  $trace['id'] . "'>Delete</a>"
 						  . "</td></tr>";
 					  }
 						?>

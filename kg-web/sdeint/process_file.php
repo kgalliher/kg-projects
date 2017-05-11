@@ -1,11 +1,32 @@
 <?php
+error_reporting(0);
 ini_set('memory_limit', '1024M');
+ini_set("max_execution_time", 10);
+register_shutdown_function("shutdown");
+function shutdown() 
+ { 
+     $a=error_get_last(); 
+     if($a==null){   
+         echo "No errors"; 
+     }
+     else {
+        $filename = basename($a['file']);
+        echo "oops...<br />";
+        $body =  "Error: " . $a['message'];
+        $body .=  "in file " . $filename . " on line " . $a['line'];
+        $body = urlencode($body);
+        echo "An error occurred causing the upload to fail.<br />";
+        echo "Error: " . $a['message'] . "<br />";
+        echo "In file " . $filename . " on line " . $a['line']  . "<br />";
+        echo "Please <a href='mailto:natas333x2@gmail.com?Subject=SDE%20Fatal%20error&Body={$body}'>send this error message here</a>";
+     }
+ } 
 require("Database.php");
 $database = new Database();
 $date = new DateTime(null, new DateTimeZone('America/Los_Angeles'));
 
 $timestamp = $date->format("Y-m-d h:i:s");
-echo "timestamp: " . $timestamp;
+//echo "timestamp: " . $timestamp;
 
 $empno = htmlentities($_POST['empno']);
 $incno = htmlentities($_POST['incno']);
@@ -21,7 +42,7 @@ if(isset($empno)){
     $table_name = "intercept_" . $empno . "_" . $incno . "_" . $trcno;
 }
 else {
-    echo "Nothing set";
+    $table_name = "intercept_STOP_BEING_LAZY" . $_SERVER['REMOTE_ADDR'];
 }
 
 $params = array();
@@ -49,29 +70,29 @@ $inf_sql = array();
 
 $cmd_time = "";
 $line_id = 1;
-echo "Start processing...";
+//echo "Start processing...";
 foreach ($lines as $line_num => $line) {
     
 	if($line_num < 15) {
 		if(strpos($line, "File:") !== false){
 			prepareTop($top_table_name, "File", $line, "-", 1);
-			echo "INSERTED:  File, " . substr($line, strrpos($line, ":")-1) . "<br />";
+			// echo "INSERTED:  File, " . substr($line, strrpos($line, ":")-1) . "<br />";
 		}
 		if(strpos($line, "Mode:") !== false){
 			prepareTop($top_table_name, "Mode", $line, "+", 2);
-			echo "Mode, " . substr($line, strrpos($line, ":")+2) . "<br />";
+			// echo "Mode, " . substr($line, strrpos($line, ":")+2) . "<br />";
 		}
 		if(strpos($line, "Time:") !== false){
 			prepareTop($top_table_name, "Time", $line, "", 5);
-			echo "Time, " . substr($line, 5) . "<br />";
+			// echo "Time, " . substr($line, 5) . "<br />";
 		}
 		if(strpos($line, "\tRelease_Ver:  1") !== false){
 			prepareTop($top_table_name, "GDB Version", $line, "+", 2);
-			echo "Geodatabase Version:, " . substr($line, strrpos($line, ":")+1) . "<br />";
+			// echo "Geodatabase Version:, " . substr($line, strrpos($line, ":")+1) . "<br />";
 		}
 		if(strpos($line, "\tDescription:  \"1") !== false){
 			prepareTop($top_table_name, "Description", $line, "+", 2);
-			echo "Description:, " . substr($line, strrpos($line, ":")+2) . "<br />";
+			// echo "Description:, " . substr($line, strrpos($line, ":")+2) . "<br />";
 		}
     }
 	
