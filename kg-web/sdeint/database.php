@@ -132,6 +132,13 @@ class Database{
         }
     }
     
+    public function retrieveLineCount($table_name){
+        $sql = "select max(line_num) as max_line_count from inf_{$table_name}";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetch();
+        return $result;
+    }
     public function retrieveCommands($table_name){
         $sql = "SELECT DISTINCT(command), stamp, line_num, line_id FROM com_{$table_name} order by line_num";
         $commands = array();
@@ -183,6 +190,7 @@ class Database{
         $sql .= "where b.line_id = a.line_id ";
         $sql .= "and b.command like 'Long:         -%' ";
         $sql .= "and b.command not like 'Long:         -1'";
+        
         //echo $sql . "<br />";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
