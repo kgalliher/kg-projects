@@ -5,6 +5,8 @@ The application opens an SDE Intercept trace and parses each SDE command and its
 
 The tables are then queried to extract relevant performance and error information making trace analysis much easier.
 
+![SDE Interceptor Car](img/sdeinterceptorcar.gif)
+
 ---
 ### Requires a web server and database (Postgres used here).
 The database must contain a single table called trace_storage to track exiting traces and file names.
