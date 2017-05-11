@@ -29,6 +29,11 @@ $title = $database->retrieveTopTableFileName($trace_name);
 				<div class="form-group"><button id="full-intercept">Get Full Intercept (!)</button></div>
 			  </table>
 			</form>
+			<?php 
+				$line_count = $database->retrieveLineCount($trace_name);
+				echo "<p>{$trace_name} contains " . number_format($line_count['max_line_count']) . " rows</p>"; 
+			?>
+			
 	</div>
 	<h3>View Return Codes (errors)</h3>
 		<div class="info-table">
