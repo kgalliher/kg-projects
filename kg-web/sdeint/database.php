@@ -13,6 +13,7 @@ class Database{
         $this->conn = new PDO("pgsql:dbname=$this->db;host=$this->host;port=5433", $this->username, $this->password);
         $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
+    
     public function createTopTable($top_table){
         $sql = "create table {$top_table} (id serial, descriptor varchar(30), line text);";
         //echo "Top table: " . $sql . "<br />";
@@ -25,6 +26,7 @@ class Database{
             return -1;
         }
     }
+    
     public function createComTable($com_table){
         $sql = "create table {$com_table} (line_num bigint, line_id bigint, stamp time, command_time varchar(25), command text);";
         
@@ -37,6 +39,7 @@ class Database{
             return -1;
         }
     }
+    
     public function createInfTable($inf_table){
         //line_num, line_id, stamp, command_time, command
         $sql = "create table {$inf_table} (line_num bigint, line_id bigint, stamp time, command_time varchar(25), command text);";
@@ -50,6 +53,7 @@ class Database{
             return -1;
         }
     }
+    
     public function deleteTraces($trace_name, $id){
         $table_names = array("top_" . $trace_name, "com_" . $trace_name, "inf_" . $trace_name);
         $delete_from_storage_sql = "delete from trace_storage where trace_name = '{$trace_name}' and id = {$id}";
@@ -116,7 +120,6 @@ class Database{
         }
         catch (PDOException $ex){
             echo $ex->getMessage();
-            
         }
     }
     
@@ -139,6 +142,7 @@ class Database{
         $result = $stmt->fetch();
         return $result;
     }
+    
     public function retrieveCommands($table_name){
         $sql = "SELECT DISTINCT(command), stamp, line_num, line_id FROM com_{$table_name} order by line_num";
         $commands = array();
@@ -158,6 +162,7 @@ class Database{
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
+    
     public function retrieveCommandsByFilter($table_name, $start, $end){
         $sql = "SELECT DISTINCT(command), stamp, line_num, line_id FROM com_{$table_name}";
         $sql .= " WHERE line_num BETWEEN  {$start} AND {$end} order by line_num";
@@ -177,6 +182,7 @@ class Database{
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
+    
     public function retrieveTraceInfo(){
         $sql = "SELECT id, trace_name, empno, incno, trcno, stamp, file_name, description, stamp FROM trace_storage order by stamp desc";
         $stmt = $this->conn->prepare($sql);
@@ -196,8 +202,8 @@ class Database{
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $result;
-        
     }
+    
     public function insertTraceProperties($params){
         $sql = "INSERT INTO trace_storage (empno, incno, trcno, trace_name, file_name, stamp, description) ";
         $sql .= "VALUES (?, ?, ?, ?, ?, ?, ?)";
