@@ -42,7 +42,7 @@ $title = $database->retrieveTopTableFileName($trace_name);
 					<?php
 					$rows = $database->retrieveLongValueErrors($trace_name);
 					foreach($rows as $row){
-						echo "<tr class='danger'><td><a class='get-return-duration' href='#' data-code='return_code' data-trace_name={$trace_name} data-linenum={$row['linenum']}>" . $row['linenum'] . "</td><td>" . $row['theerror'] . "</td><td>" . $row['thecommand'] . "</td></tr>";
+						echo "<tr class='danger'><td><a style='text-decoration:underline' class='get-return-duration' href='#' data-code='return_code' data-trace_name={$trace_name} data-linenum={$row['linenum']}>" . $row['linenum'] . "</td><td>" . $row['theerror'] . "</td><td>" . $row['thecommand'] . "</td></tr>";
 					}
                     ?>
 				</tbody>
@@ -59,8 +59,25 @@ $title = $database->retrieveTopTableFileName($trace_name);
 			<tbody>
 				<?php
 				$rows = $database->retrieveLongCommands($trace_name);
+				if(empty($rows)){
+					echo "<p>No long durations found.</p>";
+					echo "<p>It is possible that there were no commands that took longer<br/>";
+					echo "than 0.05 seconds to complete.</p><br />";
+					echo "<p>This tool detects missing timestamps and replaces them with '00:00:00.000'</p>";
+					echo "<p>Check the trace file for valid time infomation<br />";
+					echo "If no time info was found, the line will contain only [R] or [W]<br />";
+					echo "with no time information.</p><br />";
+					echo "You can set the SDEINTERCEPT variable with the following flags to intercept network broadcasts:<br/>";
+					echo "<pre>c-Intercept the API command name<br/>";
+					echo "r-Intercept the Channel broadcasts read-only<br/>";
+					echo "w-Intercept the Channel broadcasts write-only<br/>";
+					echo "<strong>t-Intercept log time (minute:second)</strong><br/>";
+					echo "<strong>T-Intercept log time (hour:minute:second)</strong><br/>";
+					echo "f-Intercept flush immediate</pre>";
+					
+				}
 				foreach($rows as $row){
-					echo "<tr class='warning'><td><a class='get-return-duration' href='#' data-code='long_query' data-trace_name={$trace_name} data-linenum={$row['cl']}>" . $row['cl'] . "</td><td>" . $row['cc'] . "</td><td>" . $row['delta'] . "</td></tr>";
+					echo "<tr class='warning'><td><a style='text-decoration:underline' id='long-duration-commands' href='#' data-code='long_query' data-trace-name='" . $trace_name . "'data-start='" .$row['inf_num'] . "' data-end='" . $row['line_num'] . "'>" . $row['line_num'] . "</td><td>" . $row['command'] . "</td><td>" . $row['delta'] . "</td></tr>";
 				}
                 ?>
 			</tbody>

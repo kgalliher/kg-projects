@@ -1,11 +1,10 @@
 <?php
-
 class Database{
     const USERNAME="billybob";
     const PASSWORD="billybob";
     const HOST="localhost";
     const DB="sdeinterceptor";
-
+    
     public function __construct(){
         $this->username = self::USERNAME;
         $this->password = self::PASSWORD;
@@ -14,7 +13,6 @@ class Database{
         $this->conn = new PDO("pgsql:dbname=$this->db;host=$this->host;port=5433", $this->username, $this->password);
         $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
-
     public function createTopTable($top_table){
         $sql = "create table {$top_table} (id serial, descriptor varchar(30), line text);";
         //echo "Top table: " . $sql . "<br />";
@@ -52,7 +50,6 @@ class Database{
             return -1;
         }
     }
-
     public function deleteTraces($trace_name, $id){
         $table_names = array("top_" . $trace_name, "com_" . $trace_name, "inf_" . $trace_name);
         $delete_from_storage_sql = "delete from trace_storage where trace_name = '{$trace_name}' and id = {$id}";
@@ -67,7 +64,6 @@ class Database{
             echo $ex->getMessage();
             return -1;
         }
-
     }
         
     public function checkTableExists($table_name){
@@ -155,7 +151,6 @@ class Database{
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
-
     public function retrieveCommandsByFilter($table_name, $start, $end){
         $sql = "SELECT DISTINCT(command), stamp, line_num, line_id FROM com_{$table_name}";
         $sql .= " WHERE line_num BETWEEN  {$start} AND {$end} order by line_num";
@@ -175,7 +170,6 @@ class Database{
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
-
     public function retrieveTraceInfo(){
         $sql = "SELECT id, trace_name, empno, incno, trcno, stamp, file_name, description, stamp FROM trace_storage order by stamp desc";
         $stmt = $this->conn->prepare($sql);
@@ -199,7 +193,6 @@ class Database{
     public function insertTraceProperties($params){
         $sql = "INSERT INTO trace_storage (empno, incno, trcno, trace_name, file_name, stamp, description) ";
         $sql .= "VALUES (?, ?, ?, ?, ?, ?, ?)";
-
         try {
             $stmt = $this->conn->prepare($sql);
             $stmt->execute($params);
@@ -212,20 +205,20 @@ class Database{
     }
     
     public function retrieveLongCommands($com_table_name){
-        $sql = "WITH AllComm as (
-                SELECT row_number() OVER(order by a.line_id) as id,
-                    a.line_num as cl,
-                    b.line_num as il,
-                    a.command as cc,
-                    b.command as ic,
-                    b.stamp
-                FROM com_{$com_table_name} a,
-                    inf_{$com_table_name} b
-                WHERE
-                    a.line_id = b.line_id
-                ),
-                Deltas as (SELECT id, cl,cc, stamp - lag(stamp, 1) OVER (ORDER BY id) delta FROM AllComm)
-                SELECT cl, cc, delta from Deltas where delta > '00:00:05.000' order by cl;";
+        $sql = "WITH Deltas as (
+                    SELECT
+                    line_id,
+                    line_num,
+                    command, 
+                    coalesce(
+                        lead(line_num) over(order by stamp desc),
+                        first_value(line_num) over(order by stamp asc)
+                    ) as inf_num,
+                    stamp - lag(stamp, 1) OVER (ORDER BY line_id) delta
+                    FROM com_{$com_table_name}
+                    ) 
+                SELECT inf_num, line_num, command, delta from Deltas 
+                where delta > '00:00:05.000' order by deltas desc;";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -264,7 +257,4 @@ class Database{
         return $result;
     }
 }
-
-
-
 ?>

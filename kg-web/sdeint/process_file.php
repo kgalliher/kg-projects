@@ -1,10 +1,15 @@
 <?php
-error_reporting(0);
+//error_reporting(0);
+require("Database.php");
+date_default_timezone_set("America/Los_Angeles");
 ini_set('memory_limit', '1024M');
-
 register_shutdown_function("shutdown");
-function shutdown() 
+function shutdown($message = "") 
  { 
+     if($message != ""){
+         echo "An error occurred causing the upload to fail.<br />";
+         echo "Check the intercept file for formatting.";
+     }
      $a=error_get_last(); 
      if($a==null){   
          echo "No errors"; 
@@ -21,53 +26,43 @@ function shutdown()
         echo "Please <a href='mailto:natas333x2@gmail.com?Subject=SDE%20Fatal%20error&Body={$body}'>send this error message here</a>";
      }
  } 
-require("Database.php");
+
 $database = new Database();
 $date = new DateTime(null, new DateTimeZone('America/Los_Angeles'));
-
 $timestamp = $date->format("Y-m-d h:i:s");
 //echo "timestamp: " . $timestamp;
-
 $empno = htmlentities($_POST['empno']);
 $incno = htmlentities($_POST['incno']);
 $trcno = htmlentities($_POST['trcno']);
 $file = htmlentities($_FILES['filename']['name']);
-
 $tmpname = $_FILES['filename']['tmp_name'];
 $desctiption = htmlentities($_POST['description']);
 
-//echo $empno . " " . $incno . " " . $trcno . " " . $file . " " . $description;
-
-if(isset($empno)){
-    $table_name = "intercept_" . $empno . "_" . $incno . "_" . $trcno;
+if(!isset($empno) || !isset($trcno) || !isset($trcno)){
+    
+    shutdown();
 }
 else {
-    $table_name = "intercept_STOP_BEING_LAZY" . $_SERVER['REMOTE_ADDR'];
+    $table_name = "intercept_" . $empno . "_" . $incno . "_" . $trcno;
 }
-
 $params = array();
 array_push($params, $empno, $incno, $trcno, $table_name, $file, $timestamp, $desctiption);
 //$file = "C:\Temp\ci_25.001";
 //$file = "C:/Temp/client_intercept.045";
-
 $lines = file($tmpname);
-
+echo "created file";
 //create the file info table but drop if it exists.
 $top_table_name = "top_" . $table_name;
 $com_table_name = "com_" . $table_name;
 $inf_table_name = "inf_" . $table_name;
-
 $database->dropTable($top_table_name);
 $database->dropTable($com_table_name);
 $database->dropTable($inf_table_name);
-
 $database->createTopTable($top_table_name);
 $database->createComTable($com_table_name);
 $database->createInfTable($inf_table_name);
-
 $com_sql = array();
 $inf_sql = array();
-
 $cmd_time = "";
 $line_id = 1;
 //echo "Start processing...";
@@ -76,7 +71,7 @@ foreach ($lines as $line_num => $line) {
 	if($line_num < 15) {
 		if(strpos($line, "File:") !== false){
 			prepareTop($top_table_name, "File", $line, "-", 1);
-			// echo "INSERTED:  File, " . substr($line, strrpos($line, ":")-1) . "<br />";
+			echo "INSERTED:  File, " . substr($line, strrpos($line, ":")-1) . "<br />";
 		}
 		if(strpos($line, "Mode:") !== false){
 			prepareTop($top_table_name, "Mode", $line, "+", 2);
@@ -98,6 +93,9 @@ foreach ($lines as $line_num => $line) {
 	
     if(strncmp($line, "[", strlen("]")) == 0){
         $cmd_timestamp = between($line, "[", "]");
+        if($cmd_timestamp == "R" || $cmd_timestamp == "W"){
+            $cmd_timestamp = "00:00:00.000";
+        }
 		$cmd_time = "[" . $cmd_timestamp . "]";
         $stamp = substr($cmd_timestamp,2);
 		
@@ -124,7 +122,6 @@ foreach ($lines as $line_num => $line) {
     }
         
 }
-
 $database->createComInfIndex("com_" . $table_name);
 $database->createComInfIndex("inf_" . $table_name);
 $database->insertTraceProperties($params);
@@ -137,7 +134,6 @@ $database->insertTraceProperties($params);
 //	prepareComInf($inf_table_name, $inf_sql[$i][0], $inf_sql[$i][1], $inf_sql[$i][2], $inf_sql[$i][3], $com_sql[$i][4]);
 //	//echo "inserting: " . $inf_sql[$i][0] . "," . $inf_sql[$i][1] . "," . $inf_sql[$i][2] . "," . $inf_sql[$i][3] . ", " . $com_sql[$i][4]  . "<br />";
 //}
-
 function prepareTop($table_name, $desctiptor, $line, $line_adustment_operator, $line_adjustment_qty){
     global $database;
     if($line_adustment_operator == "-"){
@@ -154,7 +150,6 @@ function prepareTop($table_name, $desctiptor, $line, $line_adustment_operator, $
     $database->insertTop($table_name, $params);
     unset($params);
 }
-
 function prepareComInf($table_name, $line_num, $line_id, $stamp, $cmd_time, $line){
     global $database;
     $params = array();
@@ -162,7 +157,6 @@ function prepareComInf($table_name, $line_num, $line_id, $stamp, $cmd_time, $lin
     $database->insertComInf($table_name, $params);
     unset($params);
 }
-
 function between($string, $start, $end){
     $string = ' ' . $string;
     $ini = strpos($string, $start);

@@ -33,44 +33,47 @@
 			</ul>
 			<hr />
 			<h4>Upload New Trace</h4>
-			<form style="margin: 0;" class="form-horizontal center-block" id="uploadTrace" action="#" method="post" enctype="multipart/form-data">
+			<form  class="nav-item" id="uploadTrace" action="#" method="post" enctype="multipart/form-data">
 				<div class="form-group">
 					<!--<label for="empno" class="col-sm-2 control-label">Employee #:</label>-->
 					<div class="col-sm-10">
-						<input class="form-control" type="text" name="empno" placeholder="i.e. 1234" />
+						Employee number: <input class="form-control" type="text" name="empno" placeholder="i.e. 1234" required />
 					</div>
 				</div>
 				<div class="form-group">
 					<!--<label for="incno" class="col-sm-2 control-label">Incident #</label>-->
 					<div class="col-sm-10">
-						<input class="form-control" type="text" name="incno" placeholder="i.e. 01923456" />
+						Incident number:<input class="form-control" type="text" name="incno" placeholder="i.e. 01923456" required/>
 					</div>
 				</div>
 				<div class="form-group">
 					<!--<label for="trcno" class="col-sm-2 control-label">Trace ID</label>-->
 					<div class="col-sm-10">
-						<input class="form-control" type="text" name="trcno" placeholder="i.e. 001" />
+						Trace ID number:<input class="form-control" type="text" name="trcno" placeholder="i.e. 001" required/>
 					</div>
 				</div>
 				<div class="form-group">
 					<!--<label for="description" class="col-sm-2 control-label">Description</label>-->
 					<div class="col-sm-10">
-						<textarea class="form-control" rows="2" cols="25" name="description" placeholder="Quick note about the trace"></textarea>
+						Description:<textarea class="form-control" rows="2" cols="25" name="description" placeholder="Quick note about the trace"></textarea>
 					</div>
 				</div>
                 <div class="form-group">
                     <div class="col-sm-10">
-                        <input type="file" name="filename" id="file" />
+                        <p></p><input type="file" name="filename" id="file" required />
 					</div>
 				</div>
+				
                 <div class="form-group">
                     <div class="col-sm-10">
+					<br />
                         <input type="submit" class="btn btn-default" value="Upload" />
                     </div>
                 </div>
 		</form>
-		<div id="loadingDiv"><img src="img/loading.gif" alt="processing..." class="img-responsive center-block" /></div>
-		<div id="messageDiv"></div>
+
+		<div id="loadingDiv"><img src="img/loading.gif" alt="processing..." class="center-block" /></div>
+		<div class="center-block" id="messageDiv"></div>
 		</nav>
 		<main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
 			<div class="table-responsive">

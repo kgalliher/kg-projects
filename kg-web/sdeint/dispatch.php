@@ -1,15 +1,23 @@
 <?php
 require("Database.php");
 $database = new Database();
-
 $table_name = $_GET['trace_name'];
-
-
-if(isset($_GET['start']) && isset($_GET['end'])){
+if(isset($_GET['start']) && isset($_GET['end']) && !isset($_GET['long_query'])){
     $start = $_GET['start'];
 	$end = $_GET['end'];
+	//echo $start . " " . $end . "<br />";
+	if($start <= 16){
+		$start += 16;
+		$end += $start;
+	}
     $commands = $database->retrieveCommandsByFilter($table_name, $start, $end);
 	$title = "Commands ~ From Line {$start} To {$end}";
+}
+elseif(isset($_GET['long_query'])){
+	$start = $_GET['start'];
+	$end = $_GET['end'];
+	$commands = $database->retrieveCommandsByFilter($table_name, $start, $end);
+	$title = "Long duration Found at line {$linenum}";
 }
 elseif(isset($_GET['line_num'])){
 	$linenum = htmlentities($_GET['line_num']);
@@ -27,12 +35,6 @@ else {
 	$title = "Full SDE Intercept";
 }
 
-if(isset($_GET['delete'])){
-	$trace_name = htmlentities($_GET['trace_name']);
-	$id = htmlentities($_GET['id']);
-	$database->deleteTraces($trace_name, $id);
-}
-
 function returnTraceTable($table_name, $database, $commands){
 	global $title;
 	$html = "<h3>$title</h3>";
@@ -42,7 +44,6 @@ function returnTraceTable($table_name, $database, $commands){
     for($i = 0; $i < count($commands); $i++){
 		$info = $database->retrieveInfo($table_name, $commands[$i]['line_id']);
         $html .=  "<tr class='active'><td>" . $commands[$i]['line_num'] . "</td><td>" . $commands[$i]['stamp'] . "</td><td> " . trim($commands[$i]['command']) . "</td></tr>";
-
         for($j = 0; $j < count($info); $j++){
            if($info[$j]['stamp'] != "00:00:00.00"){
                $inf_stamp = $info[$j]['stamp'];
@@ -64,5 +65,4 @@ function returnTraceTable($table_name, $database, $commands){
 	$html .=  "</tbody></table>";
     return $html;
 }
-
 echo returnTraceTable($table_name, $database, $commands);
