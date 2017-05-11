@@ -10,6 +10,7 @@ function shutdown($message = "")
          echo "An error occurred causing the upload to fail.<br />";
          echo "Check the intercept file for formatting.";
      }
+	
      $a=error_get_last(); 
      if($a==null){   
          echo "No errors"; 
@@ -45,6 +46,7 @@ if(!isset($empno) || !isset($trcno) || !isset($trcno)){
 else {
     $table_name = "intercept_" . $empno . "_" . $incno . "_" . $trcno;
 }
+
 $params = array();
 array_push($params, $empno, $incno, $trcno, $table_name, $file, $timestamp, $desctiption);
 //$file = "C:\Temp\ci_25.001";
@@ -65,13 +67,13 @@ $com_sql = array();
 $inf_sql = array();
 $cmd_time = "";
 $line_id = 1;
-//echo "Start processing...";
+
+//Start processing...;
 foreach ($lines as $line_num => $line) {
-    
 	if($line_num < 15) {
 		if(strpos($line, "File:") !== false){
 			prepareTop($top_table_name, "File", $line, "-", 1);
-			echo "INSERTED:  File, " . substr($line, strrpos($line, ":")-1) . "<br />";
+			//echo "INSERTED:  File, " . substr($line, strrpos($line, ":")-1) . "<br />";
 		}
 		if(strpos($line, "Mode:") !== false){
 			prepareTop($top_table_name, "Mode", $line, "+", 2);
@@ -96,8 +98,9 @@ foreach ($lines as $line_num => $line) {
         if($cmd_timestamp == "R" || $cmd_timestamp == "W"){
             $cmd_timestamp = "00:00:00.000";
         }
-		$cmd_time = "[" . $cmd_timestamp . "]";
-        $stamp = substr($cmd_timestamp,2);
+	    
+	$cmd_time = "[" . $cmd_timestamp . "]";
+	$stamp = substr($cmd_timestamp,2);
 		
         //Add 1 to each line number to acconut for removing the ========================='s;
         if(strpos($line, "Command:") !== false){
@@ -120,20 +123,13 @@ foreach ($lines as $line_num => $line) {
             }
         }
     }
-        
 }
+
+//Create indexes on the com and inf tables
 $database->createComInfIndex("com_" . $table_name);
 $database->createComInfIndex("inf_" . $table_name);
 $database->insertTraceProperties($params);
-//for($i = 0; $i < count($com_sql); $i++){
-//	prepareComInf($com_table_name, $com_sql[$i][0], $com_sql[$i][1], $com_sql[$i][2], $com_sql[$i][3], $com_sql[$i][4]);
-//	//echo "inserting: " . $com_sql[$i][0] . "," . $com_sql[$i][1] . "," . $com_sql[$i][2] . "," . $com_sql[$i][3] . $com_sql[$i][4] . "<br />";
-//}
-//
-//for($i = 0; $i < count($inf_sql); $i++){
-//	prepareComInf($inf_table_name, $inf_sql[$i][0], $inf_sql[$i][1], $inf_sql[$i][2], $inf_sql[$i][3], $com_sql[$i][4]);
-//	//echo "inserting: " . $inf_sql[$i][0] . "," . $inf_sql[$i][1] . "," . $inf_sql[$i][2] . "," . $inf_sql[$i][3] . ", " . $com_sql[$i][4]  . "<br />";
-//}
+
 function prepareTop($table_name, $desctiptor, $line, $line_adustment_operator, $line_adjustment_qty){
     global $database;
     if($line_adustment_operator == "-"){
@@ -145,11 +141,13 @@ function prepareTop($table_name, $desctiptor, $line, $line_adustment_operator, $
     else {
         $line_desc = substr($line, $line_adjustment_qty);
     }
+	
     $params = array();
     array_push($params, $desctiptor, $line_desc);
     $database->insertTop($table_name, $params);
     unset($params);
 }
+
 function prepareComInf($table_name, $line_num, $line_id, $stamp, $cmd_time, $line){
     global $database;
     $params = array();
@@ -157,6 +155,8 @@ function prepareComInf($table_name, $line_num, $line_id, $stamp, $cmd_time, $lin
     $database->insertComInf($table_name, $params);
     unset($params);
 }
+
+// Helper function for finding strings between strings.  Stolen from SO
 function between($string, $start, $end){
     $string = ' ' . $string;
     $ini = strpos($string, $start);
