@@ -32,8 +32,7 @@ $title = $database->retrieveTopTableFileName($trace_name);
 			<?php 
 				$line_count = $database->retrieveLineCount($trace_name);
 				echo "<p>{$trace_name} contains " . number_format($line_count['max_line_count']) . " rows</p>"; 
-			?>
-			
+			?>	
 	</div>
 	<h3>View Return Codes (errors)</h3>
 		<div class="info-table">
@@ -104,8 +103,8 @@ $title = $database->retrieveTopTableFileName($trace_name);
                     ?>
 				</tbody>
 			</table>
+			</div>
 	</div>
-
 </section>
   </nav>
 
