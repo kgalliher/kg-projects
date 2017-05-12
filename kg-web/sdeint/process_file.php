@@ -6,11 +6,6 @@ ini_set('memory_limit', '1024M');
 register_shutdown_function("shutdown");
 function shutdown($message = "") 
  { 
-     if($message != ""){
-         echo "An error occurred causing the upload to fail.<br />";
-         echo "Check the intercept file for formatting.";
-     }
-	
      $a=error_get_last(); 
      if($a==null){   
          echo "No errors"; 
@@ -19,12 +14,13 @@ function shutdown($message = "")
         $filename = basename($a['file']);
         echo "oops...<br />";
         $body =  "Error: " . $a['message'];
-        $body .=  "in file " . $filename . " on line " . $a['line'];
-        $body = urlencode($body);
+        $body .=  " in file " . $filename . " on line " . $a['line'];
+        $body = htmlentities($body);
         echo "An error occurred causing the upload to fail.<br />";
         echo "Error: " . $a['message'] . "<br />";
-        echo "In file " . $filename . " on line " . $a['line']  . "<br />";
-        echo "Please <a href='mailto:natas333x2@gmail.com?Subject=SDE%20Fatal%20error&Body={$body}'>send this error message here</a>";
+        echo " in file " . $filename . " on line " . $a['line']  . "<br />";
+        echo "Please <a href='mailto:natas333x2@gmail.com?Subject=SDE%20Fatal%20error&Body={$body}'>
+            send this error message here</a>";
      }
  } 
 
@@ -52,7 +48,7 @@ array_push($params, $empno, $incno, $trcno, $table_name, $file, $timestamp, $des
 //$file = "C:\Temp\ci_25.001";
 //$file = "C:/Temp/client_intercept.045";
 $lines = file($tmpname);
-echo "created file";
+//echo "created file";
 //create the file info table but drop if it exists.
 $top_table_name = "top_" . $table_name;
 $com_table_name = "com_" . $table_name;
