@@ -102,15 +102,6 @@ $("a.get-return-duration").click(function(event){
 	  });
   });
 
-  $(function() {
-    $('tr.parent')
-        .css("cursor","pointer")
-        .click(function(){
-            $(this).siblings('.child-'+this.id).toggle('slow');
-        });
-    $('tr.parent').siblings('[class^=child]').hide();
-});
-  
   var $loading = $('#loadingDiv').hide();
   $(document)
     .ajaxStart(function () {
