@@ -71,9 +71,8 @@
                     </div>
                 </div>
 		</form>
-
-		<div id="loadingDiv"><img src="img/loading.gif" alt="processing..." class="center-block" /></div>
-		<div class="center-block" id="messageDiv"></div>
+		<div style="margin-left:8px;float:left;" class="center-block" id="loadingDiv"><img src="img/loading.gif" alt="processing..."  /></div>
+		<div style="margin-left:8px;float:left;" class="center-block" id="messageDiv"></div>
 		</nav>
 		<main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
 			<div class="table-responsive">
