@@ -89,6 +89,7 @@ foreach ($lines as $line_num => $line) {
 		}
     }
 	
+    //check for missing timestamps
     if(strncmp($line, "[", strlen("]")) == 0){
         $cmd_timestamp = between($line, "[", "]");
         if($cmd_timestamp == "R" || $cmd_timestamp == "W"){
@@ -106,7 +107,7 @@ foreach ($lines as $line_num => $line) {
             //echo "Line: " . $line_num . "  Command: " . substr($line, strrpos($line, ":")+2) . "<br />";
         }
         else {
-            array_push($inf_sql, array($line_num +1, $line_id, $stamp, $cmd_time, substr($line, strrpos($line, ":")+2)));
+            //array_push($inf_sql, array($line_num +1, $line_id, $stamp, $cmd_time, trim(substr($line, strrpos($line, ":")+2))));
             prepareComInf($inf_table_name, $line_num +1, $line_id, $stamp, $cmd_time, substr($line, strrpos($line, "]")+2));
             //echo "Line: " . $line_num . "  Info: " . substr($line, strrpos($line, "]")+2) . "<br />";
         }
@@ -114,8 +115,9 @@ foreach ($lines as $line_num => $line) {
     if(strncmp($line, "=", strlen("=")) != 0){
         if($line_num > 15){
             if(!strncmp($line, "[", strlen("]")) == 0){
-				array_push($inf_sql, array($line_num +1, $line_id, $stamp, $cmd_time, substr($line, strrpos($line, ":")+2)));
-                //prepareComInf($inf_table_name, $line_num, $line_id, "", $line);
+				//array_push($inf_sql, array($line_num +1, $line_id, $stamp, $cmd_time, trim(substr($line, strrpos($line, ":")+2))));
+                echo "Line: " . $line;
+                prepareComInf($inf_table_name, $line_num + 1, $line_id, "00:00:00.000", "", $line);
             }
         }
     }

@@ -1,6 +1,17 @@
-.upload-form {width: 450px;}
-.info-table {width: 450px; margin:0 10px 0 20px;}
-.process-form {width: 350px;}
-#accordion {width:450px;}
+.upload-form {width: 250px;}
+.info-table {width: 400px; margin:0 10px 0 20px;}
+.process-form {width: 250px;}
+#intercept-table {max-width: 600px;}
 form { margin-left: 10px; }
-body { font-size: large;}
+body { font-size: larger;}
+
+td.command {
+    border: none;
+    white-space: pre;
+    font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
+	/*font-size: 14px;*/
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 400;
+	line-height: 20px;
+}

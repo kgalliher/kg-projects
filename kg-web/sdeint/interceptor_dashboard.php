@@ -64,11 +64,11 @@ $title = $database->retrieveTopTableFileName($trace_name);
 				<?php
 				$rows = $database->retrieveLongCommands($trace_name);
 				if(empty($rows)){
-					echo "<p>No long durations found.</p>";
-					echo "<p>It is possible that there were no commands that took longer<br/>";
-					echo "than 0.05 seconds to complete.</p><br />";
+					echo "<p><strong>No long durations found.</strong></p>";
+					echo "<p>It is possible that there were no commands that took longer";
+					echo "than 0.05 seconds to complete.</p>";
 					echo "<p>This tool detects missing timestamps and replaces them with '00:00:00.000'</p>";
-					echo "<p>Check the trace file for valid time infomation<br />";
+					echo "<p><strong>Check the trace file for valid time infomation.</strong><br />";
 					echo "If no time info was found, the line will contain only [R] or [W]<br />";
 					echo "with no time information.</p><br />";
 					echo "You can set the SDEINTERCEPT variable with the following flags to intercept network broadcasts:<br/>";
@@ -112,7 +112,7 @@ $title = $database->retrieveTopTableFileName($trace_name);
       <h1 style="padding-top:8px;"><?php echo basename($title[0]['line']); ?></h1>
 
       <section class="row text-center placeholders">
-		  <table class="table table-striped" style="width:400px;">
+		  <table class="table table-striped table-bordered info-table" style="width:400px;">
 			<tbody>
 				<?php
 				$rows = $database->retrieveTopTable($trace_name);

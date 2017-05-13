@@ -69,3 +69,8 @@ h1 {
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
 }
+
+.table-borderless td,
+.table-borderless th {
+    border: 0;
+}
