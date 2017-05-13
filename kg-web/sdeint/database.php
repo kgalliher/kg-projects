@@ -125,12 +125,12 @@ class Database{
         return self::fetchOneRow($sql);
     }
     
-    public function rretrieveConfInf($table_name){
+    public function retrieveConfInf($table_name){
         $sql = "select a.line_num as cnum, b.line_num as inum, a.command as ccmd, b.command as icmd, a.command_time as ctime, b.command_time as itime
                 from com_{$table_name} a
                 left outer join inf_{$table_name} b
                 on a.line_id = b.line_id;";
-                
+
                 return self::fetchAllRows($sql);
     }
     public function retrieveCommands($table_name){
