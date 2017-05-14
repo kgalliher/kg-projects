@@ -2,12 +2,17 @@
 require("database.php");
 $database = new Database();
 $table_name = $_GET['trace_name'];
+$rowvals = array();
 
 if(isset($_GET['trace_name'])){
+	//select all the commands that contain ExecuteSpatialQuery (ESQ) and CloseStream
+	// ordered by line_num. 
 	$result = $database->retrieveNextBufferRowQty($table_name);
 }
 
-$rowvals = array();
+//Go through the command results and find commands that start with
+// ESQ and end with CloseStream.  Pull out the line numbers
+// that surround each NextBuffer command.
 foreach($result as $key => $row){
 	if($result[$key]['command'] == "ExecuteSpatialQuery"){
 		$buff_start = $row['line_num'];
@@ -25,6 +30,7 @@ $nb_row_qty = 0;
 $nb_command_count = count($rowvals);
 $nb_row_total = 0;
 
+// Use each pair of line numbers as a filter to fetch each set of NextBuffers. 
 foreach($rowvals as $key => $row){
 	$result = $database->retrieveInfoByFilter($table_name, $row[0], $row[1]);
 	$nb_row_qty = trim(substr($result[5]['command'], strpos($row['command'], ":") +6));
