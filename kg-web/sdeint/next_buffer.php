@@ -40,7 +40,7 @@ foreach($rowvals as $key => $row){
 
 $html = "<table class='table table-hover' id='intercept-table' style='width:450px;'><thead><tr><th>Total NextBuffer Commands</th><th>Total Rows Processed</th></tr></thead><tbody>";
 $html .= "<tr><td>" . number_format($nb_command_count) . "</td><td>" . number_format($nb_row_total) . "</td></tr></tbody></table>";
-$html .= "<table class='table table-hover' id='intercept-table' style='width:450px;'>";
+$html .= "<table class='table table-hover table-striped' id='intercept-table' style='width:450px;'>";
 $html .= "<thead><tr><th>Line Number</th><th>Time</th><th>Row Qty.</th></tr></thead><tbody>";
 	foreach($buff_rows as $key => $row){
 		$html .= "<tr><td>{$row[0]}</td><td>{$row[1]}</td><td>{$row[2]}</td></tr>";
