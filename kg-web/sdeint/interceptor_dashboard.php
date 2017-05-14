@@ -32,7 +32,8 @@ $title = $database->retrieveTopTableFileName($trace_name);
 			</form>
 			<?php 
 				$line_count = $database->retrieveLineCount($trace_name);
-				echo "<p>{$trace_name} contains " . number_format($line_count['max_line_count']) . " rows</p>"; 
+				echo "<p>{$trace_name} contains " . number_format($line_count['max_line_count']) . " rows.</p>";
+				echo "<p>Getting the full trace or running NextBuffer Analysis can take a while.</p>" 
 			?>	
 	</div>
 	<h3>View Return Codes (errors)</h3>
