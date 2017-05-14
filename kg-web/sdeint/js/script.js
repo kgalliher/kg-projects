@@ -88,6 +88,19 @@ $("button#full-intercept").click(function(event){
 	  });
   });
 
+$("button#next-buffer").click(function(event){
+      event.preventDefault();
+      
+      var fields = $(".get-intercept").serializeArray();
+      console.log(fields);
+      var url = "next_buffer.php?trace_name=" + fields[2]['value'];
+      console.log(url);
+      $.get(url, function(data){
+        $("#intercept-out").empty();
+        $("#intercept-out").html(data); 
+      });
+  });
+
 $("a.get-return-duration").click(function(event){
       event.preventDefault();
       var check = $(this).attr("data-code");

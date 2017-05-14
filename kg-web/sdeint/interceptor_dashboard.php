@@ -27,6 +27,7 @@ $title = $database->retrieveTopTableFileName($trace_name);
 				<div class="form-group"><input type="hidden" class="get-intercept" name="trace_name" value="<?php echo $trace_name; ?>" /></div>
 				<div class="form-group"><button id="filtered-intercept">Get Filtered Intercept</button></div>
 				<div class="form-group"><button id="full-intercept">Get Full Intercept (!)</button></div>
+				<div class="form-group"><button id="next-buffer">NextBuffer Analysis</button></div>
 			  </table>
 			</form>
 			<?php 

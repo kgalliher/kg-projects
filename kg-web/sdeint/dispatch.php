@@ -52,7 +52,6 @@ function returnTraceTable($table_name, $database, $commands){
            else {
                $inf_stamp = "";
 			}
-			//if(strstr($info[$j]['command'], "Long:         -") &&  !strstr($info[$j]['command'], "Long:         -1")){
 			if(strstr($info[$j]['command'], "Long:         -") &&  strlen($info[$j]['command']) > 16){
 				$html .=  "<tr class='danger'><td>" . $info[$j]['line_num'] . "</td><td>" . trim($info[$j]['command_time']) . "</td><td> " . trim($info[$j]['command']) . "</td></tr>";
 			}

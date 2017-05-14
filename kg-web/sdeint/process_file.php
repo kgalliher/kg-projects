@@ -102,13 +102,13 @@ foreach ($lines as $line_num => $line) {
         //Add 1 to each line number to acconut for removing the ========================='s;
         if(strpos($line, "Command:") !== false){
             $line_id += 1;
-            array_push($com_sql, array($line_num +1, $line_id, $stamp, $cmd_time, substr($line, strrpos($line, ":")+2)));
-            prepareComInf($com_table_name, $line_num +1, $line_id, $stamp, $cmd_time, substr($line, strrpos($line, ":")+2));
+            //array_push($com_sql, array($line_num +1, $line_id, $stamp, $cmd_time, substr($line, strrpos($line, ":")+2)));
+            prepareComInf($com_table_name, $line_num +1, $line_id, $stamp, $cmd_time, trim(substr($line, strrpos($line, ":")+2)));
             //echo "Line: " . $line_num . "  Command: " . substr($line, strrpos($line, ":")+2) . "<br />";
         }
         else {
             //array_push($inf_sql, array($line_num +1, $line_id, $stamp, $cmd_time, trim(substr($line, strrpos($line, ":")+2))));
-            prepareComInf($inf_table_name, $line_num +1, $line_id, $stamp, $cmd_time, substr($line, strrpos($line, "]")+2));
+            prepareComInf($inf_table_name, $line_num +1, $line_id, $stamp, $cmd_time, trim(substr($line, strrpos($line, "]")+2)));
             //echo "Line: " . $line_num . "  Info: " . substr($line, strrpos($line, "]")+2) . "<br />";
         }
     }

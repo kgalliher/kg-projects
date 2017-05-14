@@ -134,7 +134,7 @@ class Database{
                 return self::fetchAllRows($sql);
     }
     public function retrieveCommands($table_name){
-        $sql = "SELECT DISTINCT(command), command_time, line_num, line_id FROM com_{$table_name} order by line_num";
+        $sql = "SELECT DISTINCT(command) as command, command_time, line_num, line_id FROM com_{$table_name} order by line_num";
         return self::fetchAllRows($sql);
     }
     
@@ -149,7 +149,18 @@ class Database{
         $sql .= " WHERE line_num BETWEEN  {$start} AND {$end} order by line_num";
         return self::fetchAllRows($sql);
     }
+
+    public function retrieveInfoByFilter($table_name, $start, $end){
+        $sql = "SELECT DISTINCT(command), stamp, command_time, line_num, line_id FROM inf_{$table_name}";
+        $sql .= " WHERE line_num BETWEEN  {$start} AND {$end} order by line_num";
+        return self::fetchAllRows($sql);
+    }
     
+    public function retrieveNextBufferRowQty($table_name){
+        $sql = "SELECT line_num, command FROM com_{$table_name}";
+        $sql .= " where command IN ('ExecuteSpatialQuery', 'CloseStream') order by line_num";
+        return self::fetchAllRows($sql);
+    }
     public function retrieveSingleCommand($table_name, $linenum){
         $sql = "SELECT DISTINCT(command), stamp, line_num, line_id FROM com_{$table_name}";
         $sql .= " WHERE line_num = {$linenum}";
