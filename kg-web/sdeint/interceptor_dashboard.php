@@ -28,6 +28,7 @@ $title = $database->retrieveTopTableFileName($trace_name);
 				<div class="form-group"><button id="filtered-intercept">Get Filtered Intercept</button></div>
 				<div class="form-group"><button id="full-intercept">Get Full Intercept (!)</button></div>
 				<div class="form-group"><button id="next-buffer">NextBuffer Analysis</button></div>
+				
 			  </table>
 			</form>
 			<?php 
@@ -35,6 +36,7 @@ $title = $database->retrieveTopTableFileName($trace_name);
 				echo "<p>{$trace_name} contains " . number_format($line_count['max_line_count']) . " rows.</p>";
 				echo "<p style='color:red;'>Getting the full trace or running <br />NextBuffer Analysis can take a while.</p>" 
 			?>	
+			<div style="margin-left:8px;float:left;" class="center-block" id="loadingDiv"><img src="img/loading.gif" alt="processing..."  /></div>
 	</div>
 	<h3>View Return Codes (errors)</h3>
 		<div class="info-table">

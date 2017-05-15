@@ -158,7 +158,7 @@ class Database{
     
     public function retrieveNextBufferRowQty($table_name){
         $sql = "SELECT line_num, command FROM com_{$table_name}";
-        $sql .= " where command IN ('ExecuteSpatialQuery', 'CloseStream') order by line_num";
+        $sql .= " where command IN ('ExecuteSpatialQuery', 'NextBuffer', 'CloseStream') order by line_num";
         return self::fetchAllRows($sql);
     }
     public function retrieveSingleCommand($table_name, $linenum){
