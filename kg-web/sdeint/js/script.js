@@ -114,7 +114,21 @@ $("button#next-buffer-full").click(function(event){
       });
   });
 
-$("a.get-return-duration").click(function(event){
+$("a.get-esq").click(function(event){
+      event.preventDefault();
+      var check = $(this).attr("data-code");
+      var line = $(this).attr("data-linenum");
+	    var trace_name = $(this).attr("data-trace_name");
+      var linenum = line;
+      var url = "dispatch.php?trace_name=" + trace_name + "&line_num=" + linenum;
+      console.log(url);
+      $.get(url, function(data){
+          $("#intercept-out").empty();
+          $("#intercept-out").html(data); 
+	  });
+  });
+
+  $("a.get-return-duration").click(function(event){
       event.preventDefault();
       var check = $(this).attr("data-code");
       var line = $(this).attr("data-linenum");
@@ -137,15 +151,17 @@ $("a.get-return-duration").click(function(event){
       $loading.hide();
     });
 
+var msgDialog = $("#dialog-message").hide();
 
 $("button#next-buffer-help").click(function(){
       $("#dialog-message").dialog('open');
+      return false;
   });
   
 $( function() {
     $( "#dialog-message" ).dialog({
-      autoOpen: false,
       modal: true,
+      autoOpen: false,
       buttons: {
         Ok: function() {
           $( this ).dialog( "close" );
@@ -154,5 +170,9 @@ $( function() {
     });
   } );
 
+$('tbody > tr:not(".collapse")').hide();
+$('thead.show-me').click(function(){
+    $(this).nextUntil('tr.collapse').show();
+});
   
 });
