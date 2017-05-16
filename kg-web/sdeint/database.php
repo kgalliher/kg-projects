@@ -161,6 +161,16 @@ class Database{
         $sql .= " where command IN ('ExecuteSpatialQuery', 'CloseStream') order by line_num";
         return self::fetchAllRows($sql);
     }
+
+    public function retrieveNextBufferRowQtyAlt($table_name){
+        $sql = "select distinct c.line_num, i.line_num as inum, c.command, i.command as icmd from com_{$table_name} c
+		right join inf_{$table_name} i
+		ON c.line_id = i.line_id
+		where c.command IN ('ExecuteSpatialQuery', 'NextBuffer', 'CloseStream')
+		order by i.line_num";
+        echo $sql . "<br />";
+        return self::fetchAllRows($sql);
+    }
     public function retrieveSingleCommand($table_name, $linenum){
         $sql = "SELECT DISTINCT(command), stamp, line_num, line_id FROM com_{$table_name}";
         $sql .= " WHERE line_num = {$linenum}";
