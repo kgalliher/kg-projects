@@ -168,7 +168,6 @@ class Database{
 		ON c.line_id = i.line_id
 		where c.command IN ('ExecuteSpatialQuery', 'NextBuffer', 'CloseStream')
 		order by i.line_num";
-        echo $sql . "<br />";
         return self::fetchAllRows($sql);
     }
     public function retrieveSingleCommand($table_name, $linenum){
