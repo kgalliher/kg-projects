@@ -101,6 +101,19 @@ $("button#next-buffer").click(function(event){
       });
   });
 
+$("button#next-buffer-full").click(function(event){
+      event.preventDefault();
+      
+      var fields = $(".get-intercept").serializeArray();
+      console.log(fields);
+      var url = "next_buffer.php?trace_name=" + fields[2]['value'] + "&full=y";
+      console.log(url);
+      $.get(url, function(data){
+        $("#intercept-out").empty();
+        $("#intercept-out").html(data); 
+      });
+  });
+
 $("a.get-return-duration").click(function(event){
       event.preventDefault();
       var check = $(this).attr("data-code");
@@ -123,6 +136,23 @@ $("a.get-return-duration").click(function(event){
     .ajaxStop(function () {
       $loading.hide();
     });
-	
-	
+
+
+$("button#next-buffer-help").click(function(){
+      $("#dialog-message").dialog('open');
+  });
+  
+$( function() {
+    $( "#dialog-message" ).dialog({
+      autoOpen: false,
+      modal: true,
+      buttons: {
+        Ok: function() {
+          $( this ).dialog( "close" );
+        }
+      }
+    });
+  } );
+
+  
 });

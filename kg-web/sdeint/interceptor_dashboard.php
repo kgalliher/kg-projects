@@ -27,16 +27,42 @@ $title = $database->retrieveTopTableFileName($trace_name);
 				<div class="form-group"><input type="hidden" class="get-intercept" name="trace_name" value="<?php echo $trace_name; ?>" /></div>
 				<div class="form-group"><button id="filtered-intercept">Get Filtered Intercept</button></div>
 				<div class="form-group"><button id="full-intercept">Get Full Intercept (!)</button></div>
+<<<<<<< HEAD
 				<div class="form-group"><button id="next-buffer">NextBuffer Analysis</button></div>
 				
+=======
+				<hr /><br />
+				<p><strong>NextBuffer Analysis</strong></p>
+				<div class="form-group"><button id="next-buffer">NextBuffer Summary</button></div>
+				<div class="form-group"><button id="next-buffer-full">All NextBuffer Commands</button></div>
+				<div class="form-group"><button id="next-buffer-help">Help</button></div>
+				<div id="dialog-message" title="Download complete">
+					<p>
+						<span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span>
+						Your files have downloaded successfully into the My Downloads folder.
+					</p>
+					<p>
+						Currently using <b>36% of your storage space</b>.
+					</p>
+					</div>
+				<br />
+>>>>>>> origin/master
 			  </table>
-			</form>
-			<?php 
+			  <?php 
 				$line_count = $database->retrieveLineCount($trace_name);
+<<<<<<< HEAD
 				echo "<p>{$trace_name} contains " . number_format($line_count['max_line_count']) . " rows.</p>";
 				echo "<p style='color:red;'>Getting the full trace or running <br />NextBuffer Analysis can take a while.</p>" 
 			?>	
 			<div style="margin-left:8px;float:left;" class="center-block" id="loadingDiv"><img src="img/loading.gif" alt="processing..."  /></div>
+=======
+				echo "<p>This trace contains " . number_format($line_count['max_line_count']) . " rows.</p>";
+				echo "<p style='color:red;'><i>Getting the full trace or running <br />NextBuffer Analysis can take a while.</i></p>" 
+			  ?>
+			</form>
+			<div style="margin-left:8px;float:left;" class="center-block" id="loadingDiv"><img src="img/loading.gif" alt="processing..."  /></div>
+			<div style="margin-left:8px;float:left;" class="center-block" id="messageDiv"></div>	
+>>>>>>> origin/master
 	</div>
 	<h3>View Return Codes (errors)</h3>
 		<div class="info-table">
