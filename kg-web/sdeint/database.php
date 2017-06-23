@@ -21,7 +21,6 @@ class Database{
         $result = $stmt->fetch();
         return $result;
     }
-
     public function executeStmt($sql){
         try {
             $this->conn->exec($sql);
@@ -32,7 +31,6 @@ class Database{
             return -1;
         }
     }
-
     public function fetchAllRows($sql){
         try {
             $stmt = $this->conn->prepare($sql);
@@ -44,7 +42,6 @@ class Database{
             echo $ex->getMessage();
         }
     }
-
     public function executePreparedStmt($sql, $params){
         try {
             $stmt = $this->conn->prepare($sql);
@@ -61,12 +58,10 @@ class Database{
         $sql = "DROP TABLE {$table_name}";
         self::executeStmt($sql);
     }
-
     public function createTopTable($top_table){
         $sql = "create table {$top_table} (id serial, descriptor varchar(30), line text);";
         self::executeStmt($sql);
     }
-
     public function createComTable($com_table){
         $sql = "create table {$com_table} (line_num bigint, line_id bigint, stamp time, command_time varchar(25), command text);";
         self::fetchAllRows($sql);
@@ -114,7 +109,6 @@ class Database{
         $sql .= "VALUES (?, ?, ?, ?, ?, ?, ?)";
         self::executePreparedStmt($sql, $params);
     }
-
     public function createComInfIndex($table_name){
         $index = "CREATE INDEX {$table_name}_idx ON {$table_name} (line_id)";
         self::executeStmt($index);
@@ -130,7 +124,6 @@ class Database{
                 from com_{$table_name} a
                 left outer join inf_{$table_name} b
                 on a.line_id = b.line_id;";
-
                 return self::fetchAllRows($sql);
     }
     public function retrieveCommands($table_name){
@@ -149,7 +142,6 @@ class Database{
         $sql .= " WHERE line_num BETWEEN  {$start} AND {$end} order by line_num";
         return self::fetchAllRows($sql);
     }
-
     public function retrieveInfoByFilter($table_name, $start, $end){
         $sql = "SELECT DISTINCT(command), stamp, command_time, line_num, line_id FROM inf_{$table_name}";
         $sql .= " WHERE line_num BETWEEN  {$start} AND {$end} order by line_num";
@@ -161,7 +153,6 @@ class Database{
         $sql .= " where command IN ('ExecuteSpatialQuery', 'NextBuffer', 'CloseStream') order by line_num";
         return self::fetchAllRows($sql);
     }
-
     public function retrieveNextBufferRowQtyAlt($table_name){
         $sql = "select distinct c.line_num, i.line_num as inum, c.command, i.command as icmd from com_{$table_name} c
 		right join inf_{$table_name} i
@@ -223,5 +214,4 @@ class Database{
         return self::fetchAllRows($sql);
     }
 }
-
 ?>

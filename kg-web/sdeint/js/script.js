@@ -10,6 +10,7 @@ $(document).ready(function(){
       $("#messageDiv").empty();
 
       var formData = new FormData($(this)[0]);
+      console.log(formData);
       $.ajax({
         url: "process_file.php",
         type: "POST",
@@ -17,11 +18,12 @@ $(document).ready(function(){
         async: true,
         success: function (data) {
           if(data.includes("oops...")){
+            console.log(data);
             $("#messageDiv").html("<span>" + data + "</span>").css({"color":"red"});
           }
           else {
             console.log(data);
-            window.location.reload();
+            //window.location.reload();
           }
         },
         cache: false,
@@ -170,9 +172,9 @@ $( function() {
     });
   } );
 
-$('tbody > tr:not(".collapse")').hide();
-$('thead.show-me').click(function(){
-    $(this).nextUntil('tr.collapse').show();
-});
+// $('tbody > tr:not(".collapse")').hide();
+// $('thead.show-me').click(function(){
+//     $(this).nextUntil('tr.collapse').show();
+// });
   
 });

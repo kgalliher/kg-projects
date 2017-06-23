@@ -3,6 +3,9 @@
 require("Database.php");
 date_default_timezone_set("America/Los_Angeles");
 ini_set('memory_limit', '1024M');
+if($_FILES['filename']['size'] > 5000){
+    ini_set('max_execution_time', '600');
+}
 register_shutdown_function("shutdown");
 function shutdown($message = "") 
  { 
@@ -102,26 +105,28 @@ foreach ($lines as $line_num => $line) {
         //Add 1 to each line number to acconut for removing the ========================='s;
         if(strpos($line, "Command:") !== false){
             $line_id += 1;
-            //array_push($com_sql, array($line_num +1, $line_id, $stamp, $cmd_time, substr($line, strrpos($line, ":")+2)));
-            prepareComInf($com_table_name, $line_num +1, $line_id, $stamp, $cmd_time, trim(substr($line, strrpos($line, ":")+2)));
+            array_push($com_sql, array($line_num +1, $line_id, $stamp, $cmd_time, substr($line, strrpos($line, ":")+2)));
+            //prepareComInf($com_table_name, $line_num +1, $line_id, $stamp, $cmd_time, trim(substr($line, strrpos($line, ":")+2)));
             //echo "Line: " . $line_num . "  Command: " . substr($line, strrpos($line, ":")+2) . "<br />";
         }
         else {
-            //array_push($inf_sql, array($line_num +1, $line_id, $stamp, $cmd_time, trim(substr($line, strrpos($line, ":")+2))));
-            prepareComInf($inf_table_name, $line_num +1, $line_id, $stamp, $cmd_time, trim(substr($line, strrpos($line, "]")+2)));
+            array_push($inf_sql, array($line_num +1, $line_id, $stamp, $cmd_time, trim(substr($line, strrpos($line, ":")+2))));
+            //prepareComInf($inf_table_name, $line_num +1, $line_id, $stamp, $cmd_time, trim(substr($line, strrpos($line, "]")+2)));
             //echo "Line: " . $line_num . "  Info: " . substr($line, strrpos($line, "]")+2) . "<br />";
         }
     }
     if(strncmp($line, "=", strlen("=")) != 0){
         if($line_num > 15){
             if(!strncmp($line, "[", strlen("]")) == 0){
-				//array_push($inf_sql, array($line_num +1, $line_id, $stamp, $cmd_time, trim(substr($line, strrpos($line, ":")+2))));
-                echo "Line: " . $line;
-                prepareComInf($inf_table_name, $line_num + 1, $line_id, "00:00:00.000", "", $line);
+				array_push($inf_sql, array($line_num +1, $line_id, $stamp, $cmd_time, trim(substr($line, strrpos($line, ":")+2))));
+                //prepareComInf($inf_table_name, $line_num + 1, $line_id, "00:00:00.000", "", $line);
             }
         }
     }
 }
+
+$database->insertComInf($table_name, $com_sql);
+$database->insertComInf($table_name, $inf_sql);
 
 //Create indexes on the com and inf tables
 $database->createComInfIndex("com_" . $table_name);
