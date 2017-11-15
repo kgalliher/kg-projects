@@ -1,3 +1,3 @@
-### Extract Google Chrome browsing history.
+### Extract Google Chrome browsing history from local and remote machines.
 
-[]- Step 1
+https://rink.hockeyapp.net/manage/apps/655090
