@@ -89,11 +89,10 @@ namespace BrowserHistory
 
         }
 
-        public DataTable GetHistoryDataSet(SQLiteConnection conn)
+        private DataTable GetHistoryDataSet(SQLiteConnection conn)
         {
             DataSet dataset = new DataSet();
             if (conn != null)
-            {
                 try
                 {
                     conn.Open();
@@ -117,11 +116,7 @@ namespace BrowserHistory
                     conn.Close();
                 }
 
-            }
-            else
-            {
-                return null;
-            }
+            return null;
         }
 
         private void LabelMessenger(string msg)
