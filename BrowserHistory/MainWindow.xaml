@@ -1,0 +1,21 @@
+﻿<Window x:Class="BrowserHistory.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BrowserHistory"
+        mc:Ignorable="d"
+        Title="Chrome Spy" Height="492.469" Width="937.415">
+    <Grid>
+        <Button x:Name="button" Content="Get Browsing History" HorizontalAlignment="Left" Margin="10,113,0,0" VerticalAlignment="Top" Width="188" Click="button_Click" TabIndex="2"/>
+        <DataGrid x:Name="dataGrid" Margin="10,166,0,0" />
+        <Label x:Name="label" Content="" HorizontalAlignment="Left" Margin="10,138,0,0" VerticalAlignment="Top" Width="716"/>
+        <TextBox x:Name="userNameTextBox" HorizontalAlignment="Left" Height="23" Margin="10,85,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="188" TabIndex="1"/>
+        <Label x:Name="userNameLabel" Content="User Name" HorizontalAlignment="Left" Margin="10,59,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.38,1.287"/>
+        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="424,10,0,0" TextWrapping="Wrap" Text="Enter a computer name and profile name to reveal its Google Chrome browsing history." VerticalAlignment="Top" FontWeight="Bold" Width="495" />
+        <TextBox x:Name="computerNameTextBox" HorizontalAlignment="Left" Height="23" Margin="10,36,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="188" TabIndex="0"/>
+        <Label x:Name="computerNameLabel" Content="Computer Name" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.38,1.287"/>
+        <TextBlock x:Name="messageTextBlock" Foreground="Brown" HorizontalAlignment="Left" Margin="440,40,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" RenderTransformOrigin="0.49,-0.385" Height="121" Width="479"/>
+
+    </Grid>
+</Window>
