@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Chrome Spy" Height="492.469" Width="937.415">
     <Grid>
-        <Button x:Name="button" Content="Get Browsing History" HorizontalAlignment="Left" Margin="10,113,0,0" VerticalAlignment="Top" Width="188" Click="button_Click" TabIndex="2"/>
+        <Button x:Name="button" Content="Get Browsing History" HorizontalAlignment="Left" Margin="10,113,0,0" VerticalAlignment="Top" Width="188" Click="button_Click" TabIndex="2" IsDefault="True"/>
         <DataGrid x:Name="dataGrid" Margin="10,166,0,0" />
         <Label x:Name="label" Content="" HorizontalAlignment="Left" Margin="10,138,0,0" VerticalAlignment="Top" Width="716"/>
         <TextBox x:Name="userNameTextBox" HorizontalAlignment="Left" Height="23" Margin="10,85,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="188" TabIndex="1"/>
