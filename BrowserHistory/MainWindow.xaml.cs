@@ -38,7 +38,7 @@ namespace BrowserHistory
             if (historyDataSet != null)
                 dataGrid.ItemsSource = historyDataSet.AsDataView();
             else
-                LabelMessenger(@"Cound not open the history database");
+                LabelMessenger(@"Could not open the history database");
         }
         private SQLiteConnection GetBrowsingHistoryDatabase(string path)
         {
@@ -51,7 +51,7 @@ namespace BrowserHistory
             string tmpPath = System.IO.Path.GetTempPath();
             string copyname = @"History.db";
             string historyCopyPath = System.IO.Path.Combine(tmpPath, copyname);
-            LabelMessenger(historyCopyPath);
+            //LabelMessenger(historyCopyPath);
             if (File.Exists(filename))
             {
                 try
