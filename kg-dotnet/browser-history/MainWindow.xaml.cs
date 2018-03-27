@@ -18,7 +18,6 @@ namespace BrowserHistory
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            
             string userName = userNameTextBox.Text;
             string computerName = computerNameTextBox.Text;
             GenerateHistoryTable(computerName, userName);
@@ -44,8 +43,7 @@ namespace BrowserHistory
         {
             if (!Directory.Exists(path))
             {
-                LabelMessenger($@"Unable to open Google directory");
-                
+                LabelMessenger($@"Unable to open Google directory");                
             }
             string filename = path + @"\History";
             string tmpPath = System.IO.Path.GetTempPath();
@@ -65,7 +63,6 @@ namespace BrowserHistory
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
-
                 }
             }
             else
@@ -75,7 +72,6 @@ namespace BrowserHistory
             }
 
             return null;
-
         }
 
         private DataTable GetHistoryDataSet(SQLiteConnection conn)
