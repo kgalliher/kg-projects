@@ -1,0 +1,15 @@
+D:\Support\SDK_Docs\DOTNET\FabricAccuracyQuery\FabricAccuracyQuery\bin\Release\FabricAccuracyQuery.dll
+D:\Support\SDK_Docs\DOTNET\FabricAccuracyQuery\FabricAccuracyQuery\bin\Release\FabricAccuracyQuery.pdb
+D:\Support\SDK_Docs\DOTNET\FabricAccuracyQuery\FabricAccuracyQuery\bin\Release\ESRI.ArcGIS.Catalog.dll
+D:\Support\SDK_Docs\DOTNET\FabricAccuracyQuery\FabricAccuracyQuery\bin\Release\ESRI.ArcGIS.Framework.dll
+D:\Support\SDK_Docs\DOTNET\FabricAccuracyQuery\FabricAccuracyQuery\bin\Release\ESRI.ArcGIS.Geodatabase.dll
+D:\Support\SDK_Docs\DOTNET\FabricAccuracyQuery\FabricAccuracyQuery\bin\Release\ESRI.ArcGIS.System.dll
+D:\Support\SDK_Docs\DOTNET\FabricAccuracyQuery\FabricAccuracyQuery\bin\Release\ESRI.ArcGIS.Catalog.xml
+D:\Support\SDK_Docs\DOTNET\FabricAccuracyQuery\FabricAccuracyQuery\bin\Release\ESRI.ArcGIS.Framework.xml
+D:\Support\SDK_Docs\DOTNET\FabricAccuracyQuery\FabricAccuracyQuery\bin\Release\ESRI.ArcGIS.Geodatabase.xml
+D:\Support\SDK_Docs\DOTNET\FabricAccuracyQuery\FabricAccuracyQuery\bin\Release\ESRI.ArcGIS.System.xml
+D:\Support\SDK_Docs\DOTNET\FabricAccuracyQuery\FabricAccuracyQuery\obj\Release\FabricAccuracyQuery.TheDialog.resources
+D:\Support\SDK_Docs\DOTNET\FabricAccuracyQuery\FabricAccuracyQuery\obj\Release\FabricAccuracyQuery.csproj.GenerateResource.Cache
+D:\Support\SDK_Docs\DOTNET\FabricAccuracyQuery\FabricAccuracyQuery\obj\Release\FabricAccuracyQuery.dll
+D:\Support\SDK_Docs\DOTNET\FabricAccuracyQuery\FabricAccuracyQuery\obj\Release\FabricAccuracyQuery.pdb
+D:\Support\SDK_Docs\DOTNET\FabricAccuracyQuery\FabricAccuracyQuery\bin\Release\FabricAccuracyQuery.esriAddIn
