@@ -1,0 +1,20 @@
+﻿<ESRI.Configuration xmlns="http://schemas.esri.com/Desktop/AddIns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>FabricAccuracyQuery</Name>
+  <AddInID>{226a48e7-074f-4ffe-a053-afdea974c0c0}</AddInID>
+  <Description>Check for the existence of rows in a Parcel Fabric's accuracy table.</Description>
+  <Version>1.0</Version>
+  <Image>Images\FabricAccuracyQuery.png</Image>
+  <Author>Ken Galliher</Author>
+  <Company></Company>
+  <Date>11/2/2017</Date>
+  <Targets>
+    <Target name="Desktop" version="10.5" />
+  </Targets>
+  <AddIn language="CLR" library="FabricAccuracyQuery.dll" namespace="FabricAccuracyQuery">
+    <ArcCatalog>
+      <Commands>
+        <Button id="FabricAccuracyQuery_Button" class="Button" message="Checks for and reports on rows in a Parcel Fabric's Accuracy table." caption="Query Parcel Fabric Accuracy" tip="Query a Parcel Fabric's Accuracy table" category="Add-In Controls" image="Images\Button.png" />
+      </Commands>
+    </ArcCatalog>
+  </AddIn>
+</ESRI.Configuration>
