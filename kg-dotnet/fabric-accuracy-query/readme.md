@@ -11,4 +11,3 @@ I put this simple AddIn together to query the system table to view what was happ
 
 ### Empty Accuracy Table:
 ![Alt text](images/empty_accuracy.png?raw=true "Optional Title")
-
