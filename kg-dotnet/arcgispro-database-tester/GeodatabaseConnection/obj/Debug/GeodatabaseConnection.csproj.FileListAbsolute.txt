@@ -1,0 +1,10 @@
+C:\Users\ken6574\source\repos\GeodatabaseConnection\GeodatabaseConnection\bin\Debug\GeodatabaseConnection.dll
+C:\Users\ken6574\source\repos\GeodatabaseConnection\GeodatabaseConnection\bin\Debug\GeodatabaseConnection.pdb
+C:\Users\ken6574\source\repos\GeodatabaseConnection\GeodatabaseConnection\obj\Debug\Dockpane1.g.cs
+C:\Users\ken6574\source\repos\GeodatabaseConnection\GeodatabaseConnection\obj\Debug\GeodatabaseConnection_MarkupCompile.cache
+C:\Users\ken6574\source\repos\GeodatabaseConnection\GeodatabaseConnection\obj\Debug\GeodatabaseConnection_MarkupCompile.lref
+C:\Users\ken6574\source\repos\GeodatabaseConnection\GeodatabaseConnection\obj\Debug\Dockpane1.baml
+C:\Users\ken6574\source\repos\GeodatabaseConnection\GeodatabaseConnection\obj\Debug\GeodatabaseConnection.g.resources
+C:\Users\ken6574\source\repos\GeodatabaseConnection\GeodatabaseConnection\obj\Debug\GeodatabaseConnection.csproj.CoreCompileInputs.cache
+C:\Users\ken6574\source\repos\GeodatabaseConnection\GeodatabaseConnection\obj\Debug\GeodatabaseConnection.dll
+C:\Users\ken6574\source\repos\GeodatabaseConnection\GeodatabaseConnection\obj\Debug\GeodatabaseConnection.pdb
