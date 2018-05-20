@@ -1,7 +1,7 @@
 import arcpy
 from arcpy import env
 
-workspace = r"C:\Users\ken6574\AppData\Roaming\ESRI\Desktop10.5\ArcCatalog\DHOBBS4_ORA12C_SDE104_sde.sde"
+workspace = r"C:\path\to\gdbconnection.sde"
 env.workspace = workspace
 feature_class = "SDO_Points"
 
