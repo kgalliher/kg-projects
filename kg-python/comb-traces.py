@@ -1,7 +1,7 @@
 import glob
 import os
 
-path = r"D:\IncidentFiles\10856588_Sandeep_No_Inserts\OracleTraces\SLPH\DBTrace"
+path = r"C:\Path\To\Trace\Folder"
 search_string = "INSERT INTO telco.GPS_POINT_TRANSIT"
 num = 0
 os.chdir(path)
