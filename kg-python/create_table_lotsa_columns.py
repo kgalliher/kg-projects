@@ -71,6 +71,6 @@ def lotsa_sde_cols(path_to_fgdb, table_name, num_cols):
 if __name__== "__main__":
     #lotsa_fgdb_cols(r"D:\fgdb_499_cols.gdb", "table_499", 499)
     lotsa_fgdb_cols(r"D:\fgdb_501_cols.gdb", "table_501", 501)
-    #lotsa_cols_sde_fc(r"C:\Users\ken\AppData\Roaming\ESRI\Desktop10.2\ArcCatalog\SDE102.sde", "fc_600_2", 600)
-    #lotsa_sde_cols(r"C:\Users\ken\AppData\Roaming\ESRI\Desktop10.2\ArcCatalog\SDE102.sde", "lotsa_sde2", 600)
-    #create_lotsa_sql_cols(r"C:\Users\ken\AppData\Roaming\ESRI\Desktop10.2\ArcCatalog\KENG_ADDRESS.sde", "myLotsaCols", 500)
+    #lotsa_cols_sde_fc(r"C:\path\to\gebconnection.sde", "fc_600_2", 600)
+    #lotsa_sde_cols(r"C:\path\to\gebconnection.sde", "lotsa_sde2", 600)
+    #create_lotsa_sql_cols(r"C:\path\to\gebconnection.sde", "myLotsaCols", 500)
