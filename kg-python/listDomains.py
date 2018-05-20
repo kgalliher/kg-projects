@@ -17,3 +17,4 @@ for domain in domains:
     elif domain.domainType == 'Range':
         print('Min: {0}'.format(domain.range[0]))
         print('Max: {0}'.format(domain.range[1]))
+        
