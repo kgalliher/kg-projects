@@ -1,7 +1,7 @@
 import arcpy, sys
 from arcpy import env
 
-wkspc = r"C:\Users\ken6574\AppData\Roaming\ESRI\Desktop10.3\ArcCatalog\KENG-SQL2014_KENG2014.sde"
+wkspc = r"C:\path\to\gdbconnection.sde"
 env.workspace = wkspc
 
 exe = arcpy.ArcSDESQLExecute(wkspc)
