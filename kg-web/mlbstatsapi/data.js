@@ -5,12 +5,12 @@ $(document).ready(function(){
     var base_url = "http://statsapi.mlb.com/api/v1/schedule/games/?sportId=1&teamId=111&season=2019&startDate=2018-06-03&endDate=2018-06-03";
     var game_id = 0;
     var liveGameData;
-
+    
     //TODO: Use schedule (base_url) to get the game ID for live game.
     //TODO: Set home and away teams on the scoreboard.
-    $.get(base_url, function( data ) { 
+    $.getJSON(base_url, function( data ) { 
         game_id = data["dates"][0]["games"][0]["gamePk"];   
-    }).done(function(){ console.log(game_id); });
+    }).done(function(){ poo = game_id; });
 
     //TODO:  If no game, display current date and time
     // on the scoreboard.
