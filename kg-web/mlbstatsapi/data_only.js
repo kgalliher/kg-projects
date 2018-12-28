@@ -11,7 +11,7 @@ $(document).ready(function(){
         var dateParts = {
             "year" : date.getFullYear().toString(),
             "monthString" : monthNames[date.getMonth()],
-            "monthNum" : date.getMonth() + 1,
+            "monthNum" : date.getMonth(),
             "hour" : date.getHours(),
             "minutes" : date.getMinutes(),
             "day" : date.getDate(),
@@ -22,12 +22,10 @@ $(document).ready(function(){
 
     // Get the game schedule url
     function fetchTodaysGameSchedule(){
-        var currentTime = fetchDateParts(now);
-        var tomorrowTime = fetchDateParts(tomorrow);
+        currentTime = fetchDateParts(now);
         currentTime.year = 2018;
         currentTime.monthNum = 5;
-        currentTime.day = 5;
-        tomorrowTime.day = 6;
+        currentTime.day = 4;
         var monthIdx = currentTime.monthNum + 1;
         var base_url = "http://statsapi.mlb.com/api/v1/schedule/games/?sportId=1&teamId=111&season=2018&";
 
@@ -35,10 +33,11 @@ $(document).ready(function(){
         base_url += "startDate=";
         base_url += currentTime.year + "-" + monthIdx + "-" + currentTime.day;
         base_url += "&endDate=";
-        base_url += currentTime.year + "-" + monthIdx + "-" + tomorrowTime.day;
+        base_url += currentTime.year + "-" + monthIdx + "-" + currentTime.day;
         console.log(base_url);
         return base_url;
     }
+
     // Function that checks schedule for game data.
     // Displays the time if no game, starts game action when it's game time.
     (function gameData(){
@@ -211,5 +210,4 @@ $(document).ready(function(){
             $("#home-inn-7").html(minute_parts[1]);
         } 
     }
-
 });
