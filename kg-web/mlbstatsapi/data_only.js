@@ -20,9 +20,9 @@ $(document).ready(function(){
         return dateParts;
     }
 
-    function fetchTodaysGame(){
+    // Get the game schedule url
+    function fetchTodaysGameSchedule(){
         currentTime = fetchDateParts();
-
         currentTime.year = 2018;
         currentTime.monthNum = 5;
         currentTime.day = 4;
@@ -31,7 +31,7 @@ $(document).ready(function(){
         var monthIdx = currentTime.monthNum + 1;
         var base_url = "http://statsapi.mlb.com/api/v1/schedule/games/?sportId=1&teamId=111&season=2018&";
 
-        //Build up scheduled game ID.  If no game, return -999
+        //Build up date for url.  Pad days and months if necessary.
         base_url += "startDate=";
         if(currentTime.day < 10)
             padDay = "0" + currentTime.day.toString();
@@ -41,7 +41,6 @@ $(document).ready(function(){
             padMonth = "0" + monthIdx.toString();
         else
             padMonth = monthIdx.toString();
-
         base_url += currentTime.year + "-" + padMonth + "-" + padDay;
         base_url += "&endDate=";
         base_url += currentTime.year + "-" + padMonth + "-" + padDay;
@@ -49,12 +48,12 @@ $(document).ready(function(){
         return base_url;
     }
 
+    // Function that checks schedule for game data.
+    // Displays the time if no game, starts game action when it's game time.
     (function gameData(){
-        var base_url = fetchTodaysGame();
+        var base_url = fetchTodaysGameSchedule();
         $.getJSON(base_url, function() {
-            //call a function that should run when we get data
         }).done(function(schedule){
-            
             if(schedule.totalItems == 0 || schedule.dates.length == 0){
                 setTimeOnScoreboard();
                 $(".count").hide();
@@ -68,12 +67,13 @@ $(document).ready(function(){
                 setTeamCssId(awayTeamId, "away");
                 game_id = schedule["dates"][0]["games"][0]["gamePk"];
                 live_url = "http://statsapi.mlb.com/api/v1/game/" + game_id + "/feed/live"; 
+                getGameAction(live_url, status);
             }
-            getGameAction(live_url, status);
+            
         }).fail(function(){
             setTimeOnScoreboard();
         }).always(function(){
-            setTimeout(gameData,5000);
+            setTimeout(gameData,20000);
         });
     }());
 
@@ -109,6 +109,8 @@ $(document).ready(function(){
                 var hs = $(home_inning).html(val["home"]);
                 var as = $(away_inning).html(val["away"]);
             });
+
+            //Check to see if the game is over.  Set the time if that's the case.
             if(status == "Final"){
                 console.log(status);
                 setFinalInfo(linescore);
