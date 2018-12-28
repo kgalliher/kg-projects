@@ -1,53 +1,44 @@
 $(document).ready(function(){
     //Always need the current time.
-    
-    
+    var now = new Date(Date.now());
+    var tomorrow = new Date(now.getFullYear(), now.getMonth(), (now.getDate() + 1))
+    console.log(tomorrow);
     //Just get the pertinent data:
     //Date stuff
-    function fetchDateParts(){
-        var now = new Date(Date.now());
+    function fetchDateParts(date){
         var monthNames = [ "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC" ];
         var standardHours = [12,11,10,9,8,7,6,5,4,3,2,1];
         var dateParts = {
-            "year" : now.getFullYear().toString(),
-            "monthString" : monthNames[now.getMonth()],
-            "monthNum" : now.getMonth(),
-            "hour" : now.getHours(),
-            "minutes" : now.getMinutes(),
-            "day" : now.getDate(),
-            "seconds" : now.getSeconds()
+            "year" : date.getFullYear().toString(),
+            "monthString" : monthNames[date.getMonth()],
+            "monthNum" : date.getMonth() + 1,
+            "hour" : date.getHours(),
+            "minutes" : date.getMinutes(),
+            "day" : date.getDate(),
+            "seconds" : date.getSeconds()
         };
         return dateParts;
     }
 
     // Get the game schedule url
     function fetchTodaysGameSchedule(){
-        currentTime = fetchDateParts();
+        var currentTime = fetchDateParts(now);
+        var tomorrowTime = fetchDateParts(tomorrow);
         currentTime.year = 2018;
         currentTime.monthNum = 5;
-        currentTime.day = 4;
-        
-        var padDay, padMonth = "";
+        currentTime.day = 5;
+        tomorrowTime.day = 6;
         var monthIdx = currentTime.monthNum + 1;
         var base_url = "http://statsapi.mlb.com/api/v1/schedule/games/?sportId=1&teamId=111&season=2018&";
 
         //Build up date for url.  Pad days and months if necessary.
         base_url += "startDate=";
-        if(currentTime.day < 10)
-            padDay = "0" + currentTime.day.toString();
-        else
-            padDay = currentTime.day.toString();
-        if(currentTime.month < 10)
-            padMonth = "0" + monthIdx.toString();
-        else
-            padMonth = monthIdx.toString();
-        base_url += currentTime.year + "-" + padMonth + "-" + padDay;
+        base_url += currentTime.year + "-" + monthIdx + "-" + currentTime.day;
         base_url += "&endDate=";
-        base_url += currentTime.year + "-" + padMonth + "-" + padDay;
+        base_url += currentTime.year + "-" + monthIdx + "-" + tomorrowTime.day;
         console.log(base_url);
         return base_url;
     }
-
     // Function that checks schedule for game data.
     // Displays the time if no game, starts game action when it's game time.
     (function gameData(){
@@ -56,7 +47,8 @@ $(document).ready(function(){
         }).done(function(schedule){
             if(schedule.totalItems == 0 || schedule.dates.length == 0){
                 setTimeOnScoreboard();
-                $(".count").hide();
+                $(".count").empty();
+                $(".count").html("<p>No game today</p>");
             } 
             else{
                 var status = schedule["dates"][0]["games"][0].status.detailedState;
@@ -66,7 +58,7 @@ $(document).ready(function(){
                 setTeamCssId(homeTeamId, "home");
                 setTeamCssId(awayTeamId, "away");
                 game_id = schedule["dates"][0]["games"][0]["gamePk"];
-                live_url = "http://statsapi.mlb.com/api/v1/game/" + game_id + "/feed/live"; 
+                live_url = "http://statsapi.mlb.com/api/v1/game/" + game_id + "/feed/live";
                 getGameAction(live_url, status);
             }
             
@@ -106,20 +98,17 @@ $(document).ready(function(){
                 var home_inning = "#home-inn-" + (key + 1);
                 var away_inning = "#away-inn-" + (key + 1);
                 $("#" + up + "-inn-" + current_inning).addClass("current");
-                var hs = $(home_inning).html(val["home"]);
-                var as = $(away_inning).html(val["away"]);
+                $(home_inning).html(val["home"]);
+                $(away_inning).html(val["away"]);
             });
 
             //Check to see if the game is over.  Set the time if that's the case.
             if(status == "Final"){
-                console.log(status);
                 setFinalInfo(linescore);
                 setTimeOnScoreboard();
             }
             var plays = game_data.plays.allPlays;
             var last_play = plays[plays.length - 1];
-            console.log(last_play);
-            console.log(game_data);
             var current_pitcher = last_play.matchup.pitcher;
             cp_info = game_data.players.allPlayers["ID" + current_pitcher];
             $("#current_pitcher").html(cp_info.name.last);
@@ -157,7 +146,7 @@ $(document).ready(function(){
     }
 
     function setFinalInfo(linescore){
-        var time = fetchDateParts();
+        var time = fetchDateParts(now);
         var formattedDate = time.monthNum + "/" + time.day + "/" + time.year
         var wp = linescore.pitchers.win;
         var wp_info = game_data.players.allPlayers["ID" + wp];
@@ -177,14 +166,9 @@ $(document).ready(function(){
         $(".count").html("<table><tr></tr><td colspan='2'>Final:  "+ formattedDate  +"</td><tr><td>W:</td><td>" + wp_name + "</td><tr><td>L:</td><td>" + lp_name + "</td></tr><tr><td>S:</td><td>" + sv_name + "</td></tr></table>");
     }
 
-    function showTime(){
-        var time = fetchDateParts();
-        console.log(time.monthString);
-    }
-
     function setTimeOnScoreboard(){
         $(".inning").empty();
-        time = fetchDateParts();
+        time = fetchDateParts(now);
         console.log(time);
         var month = time.monthString;
         var day = time.day;
@@ -227,4 +211,5 @@ $(document).ready(function(){
             $("#home-inn-7").html(minute_parts[1]);
         } 
     }
+
 });
