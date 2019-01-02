@@ -1,0 +1,393 @@
+@font-face{
+    font-family: Bosox;
+    src: url(soxfont/BosoxFull.ttf);
+}
+body {
+    background-color: #497b6f;
+    font-family: sans-serif;
+    color: white;
+    margin: 0px;
+}
+a {
+ color: white;
+ text-decoration: none;
+}
+h2 {
+    text-transform: capitalize;
+}
+#wall {
+    height: 100vh;
+    width: 100%;
+    position: relative;
+    background-color: #497b6f;
+    background-size: 60px;
+    background-image: -webkit-linear-gradient(0, transparent 59px, #2f4f47 50%);
+    background-image: -moz-linear-gradient(0px 50%, transparent 59px, #2f4f47 50%);
+    background-image: -ms-linear-gradient(0, transparent 59px, #2f4f47 50%);
+    background-image: -o-linear-gradient(0, transparent 59px, #2f4f47 50%);
+    overflow-y: hidden;
+}
+
+#versus {
+      font-family: Bosox;
+      font-size: 500%;
+}
+
+#wall-home {
+      font-family: sans-serif;
+      font-size: 300%;
+}
+#wall-home img {
+      margin-top: 50px;
+      height: 200px;
+      width: 200px;
+}
+#wall-away {
+      
+      font-family: sans-serif;
+      font-size: 300%;
+}
+#wall-away img {
+      margin-top: 50px;
+      height: 200px;
+      width: 200px;
+}
+
+#wall-text{ margin-left: 10px; text-align: center; font-weight: bold;}
+
+#versus {padding: 0 10px 0 10px;}
+#big-sox-score{
+    font-family: sans-serif;
+      font-size: 100%;
+      margin-left: 85px;
+
+}
+
+#away-team {
+    font-family: Bosox;
+    font-size: 400%;
+    margin-left: 20%;
+    margin-top: 1%;
+}
+#away-team svg {
+    margin-left: 50px;
+    height: 100%;
+    width: 9%;
+}
+
+#big-away-team-score{
+  font-family: sans-serif;
+    font-size: 100%;
+    margin-left: 85px;
+
+}
+/*
+* -----------------------
+* Scoreboard Basic Styles
+* -----------------------
+*/
+
+#scoreboard {
+      width: 99%;
+      background-color: #6a6c69;
+      position: absolute;
+      height: 45%;
+      bottom: 0px;
+      border-top: 10px solid rgba(49, 50, 48, 0.5);
+      border-left: 10px solid #313230;
+      border-right: 10px solid #313230;
+}
+#scoreboard div {
+      float: left;
+      border: 5px solid white;
+      border-right: none;
+      height: 92%;
+      padding: 10px;
+      padding-bottom: 0px;
+}
+
+/*
+* ------------------
+* Standings Section
+* ------------------
+*/
+#standings{
+      width: 240px;
+      border-right: 5px solid orange;
+}
+#standings td {
+      padding: 5px;
+}
+#standings h2 {
+      letter-spacing: 6px;
+      font-weight: 500;
+}
+/*
+* ------------------
+* WB Mason Section
+* ------------------
+*/
+#wbmason {
+      width: 230px;
+}
+#whobut {
+      top: 10px;
+      left: -15px;
+}
+#wbtext {
+      top: 40px;
+      left: -20px;
+}
+#sincetext {
+      top: 140px;
+      left: 90px;
+}
+/*
+* ------------------
+* Box Score Section
+* ------------------
+*/
+#boxscore table {
+      border-bottom: 5px solid white;
+}
+#boxscore table td {
+      width: 30px;
+      height: 30px;
+      text-align: center;
+      font-weight: bold;
+}
+#boxscore h2 {
+      letter-spacing: 15px;
+      font-weight: 500;
+      padding-left: 50px;
+}
+.inset {
+      -webkit-box-shadow: inset 4px 4px 5px 0px rgba(50, 50, 50, 0.75);
+      -moz-box-shadow:    inset4px 4px 5px 0px rgba(50, 50, 50, 0.75);
+      box-shadow:         inset 4px 4px 5px 0px rgba(50, 50, 50, 0.75);
+
+}
+.runs {
+      border-left: 5px solid white;
+}
+
+div.scorecol {
+      border: none !important;
+      border-right: 5px solid white !important;
+}
+
+#balls-strikes {
+      border: none !important;
+      height: 70px !important;
+}
+#balls-strikes div {
+      border: none !important;
+      width: 95px;
+      padding: 0px;
+      padding-top: 10px;
+}
+#balls-strikes li {
+      float: left;
+      list-style-type: disc;
+      padding-left: 15%;
+      font-size: 300%;
+      margin-top: -20px;
+      width: 10px;
+}
+#ball li,
+.HandE li {
+      color: darkgrey;
+}
+#strike li, #out li {
+      color: darkgrey;
+}
+#atbat {
+      height: 45px;
+      width: 55px;
+      margin-top: 8px;
+}
+.HandE {
+      width: 50px !important;
+      padding-top: 0px !important;
+}
+.circled,
+.circleInner {
+      font-size: 17px;
+      color: #fff;
+      text-align: center;
+      display: inline-block;
+      padding: 0px !important;
+      border: none !important;
+      float: none !important;
+}
+.circled {
+      width: 34px !important;
+      height: 34px !important;
+      border-radius: 18px;
+      line-height: 34px;
+      background: white;
+
+}
+.circleInner {
+      width: 30px !important;
+      height: 30px !important;
+      border-radius: 15px;
+      line-height: 30px;
+      background: #6a6c69;
+}
+.green {
+      padding-left: 53px;
+}
+/*
+* --------------------
+* Other Scores Section
+* --------------------
+*/
+.other-scores {
+      width: 90px;
+      padding-bottom: 30px;
+}
+.oscore {
+      width: 20px;
+      height: 20px;
+}
+#last {
+      border-right: none !important;
+}
+.oinning {
+      position: relative;
+      display: block;
+      top: -63px;
+      left: 45px;
+      width: 15px;
+      height: 20px;
+}
+/*
+* --------------------
+* Game action
+* --------------------
+*/
+#action {
+      width: 426px;
+      
+}
+
+/*
+* ------------------
+* WB Mason style
+* ------------------
+*/
+#whobut, #wbtext, #sincetext {position: relative; display: block; border: none !important;}
+#wbtext span {
+      font-family: 'Times New';
+      font-size:38px;
+      font-weight:regular;
+      font-style:normal;
+      line-height:0.85;
+      white-space:pre;
+      overflow:visible;
+      padding:0px;
+}
+#whobut span {
+      font-family: 'Times New';
+      font-size:18px;
+      font-weight:regular;
+      font-style:normal;
+      line-height:0.85;
+      white-space:pre;
+      overflow:visible;
+      padding:0px;
+}
+
+#whobut>span[class^=w]:nth-of-type(n+0){display:block; position:absolute;
+-moz-transform-origin:50% 100%; -webkit-transform-origin:50% 100%; -o-transform-origin:50%
+100%; -ms-transform-origin:50% 100%; transform-origin:50% 100%; }
+
+#whobut .w0 {-moz-transform: rotate(-6.51rad);-webkit-transform: rotate(-6.51rad);-o-transform:
+rotate(-6.51rad);-ms-transform: rotate(-6.51rad); transform: rotate(-6.51rad);
+width: 17px; height: 11px; left: 26.9px; top: 78.91px;}
+
+#whobut .w1 {-moz-transform: rotate(-6.45rad);-webkit-transform: rotate(-6.45rad);-o-transform:
+rotate(-6.45rad);-ms-transform: rotate(-6.45rad); transform: rotate(-6.45rad);
+width: 13px; height: 11px; left: 41.53px; top: 76.43px;}
+
+#whobut .w2 {-moz-transform: rotate(-6.39rad);-webkit-transform: rotate(-6.39rad);-o-transform:
+rotate(-6.39rad);-ms-transform: rotate(-6.39rad); transform: rotate(-6.39rad);
+width: 13px; height: 11px; left: 52.38px; top: 74.95px;}
+
+#whobut .w3 {-moz-transform: rotate(-6.34rad);-webkit-transform: rotate(-6.34rad);-o-transform:
+rotate(-6.34rad);-ms-transform: rotate(-6.34rad); transform: rotate(-6.34rad);
+width: 5px; height: 11px; left: 63.35px; top: 74.38px;}
+
+#whobut .w4 {-moz-transform: rotate(-6.29rad);-webkit-transform: rotate(-6.29rad);-o-transform:
+rotate(-6.29rad);-ms-transform: rotate(-6.29rad); transform: rotate(-6.29rad);
+width: 12px; height: 11px; left: 66.31px; top: 74.19px;}
+
+#whobut .w5 {-moz-transform: rotate(-6.19rad);-webkit-transform: rotate(-6.19rad);-o-transform:
+rotate(-6.19rad);-ms-transform: rotate(-6.19rad); transform: rotate(-6.19rad);
+width: 13px; height: 11px; left: 76.12px; top: 74.67px;}
+
+#whobut .w6 {-moz-transform: rotate(-6.12rad);-webkit-transform: rotate(-6.12rad);-o-transform:
+rotate(-6.12rad);-ms-transform: rotate(-6.12rad); transform: rotate(-6.12rad);
+width: 11px; height: 11px; left: 87.03px; top: 76.02px;}
+
+
+#wbtext>span[class^=w]:nth-of-type(n+0){display:block; position:absolute;
+-moz-transform-origin:50% 100%; -webkit-transform-origin:50% 100%; -o-transform-origin:50%
+100%; -ms-transform-origin:50% 100%; transform-origin:50% 100%; }
+
+#wbtext .w0 {-moz-transform: rotate(-6.51rad);-webkit-transform: rotate(-6.51rad);-o-transform:
+rotate(-6.51rad);-ms-transform: rotate(-6.51rad); transform: rotate(-6.51rad);
+width: 36px; height: 24px; left: 17.4px; top: 65.91px;}
+
+#wbtext .w1 {-moz-transform: rotate(-6.39rad);-webkit-transform: rotate(-6.39rad);-o-transform:
+rotate(-6.39rad);-ms-transform: rotate(-6.39rad); transform: rotate(-6.39rad);
+width: 10px; height: 24px; left: 50.86px; top: 62.66px;}
+
+#wbtext .w2 {-moz-transform: rotate(-6.33rad);-webkit-transform: rotate(-6.33rad);-o-transform:
+rotate(-6.33rad);-ms-transform: rotate(-6.33rad); transform: rotate(-6.33rad);
+width: 25px; height: 24px; left: 58.7px; top: 61.54px;}
+
+#wbtext .w3 {-moz-transform: rotate(-6.29rad);-webkit-transform: rotate(-6.29rad);-o-transform:
+rotate(-6.29rad);-ms-transform: rotate(-6.29rad); transform: rotate(-6.29rad);
+width: 10px; height: 24px; left: 81.97px; top: 61.19px;}
+
+#wbtext .w4 {-moz-transform: rotate(-6.27rad);-webkit-transform: rotate(-6.27rad);-o-transform:
+rotate(-6.27rad);-ms-transform: rotate(-6.27rad); transform: rotate(-6.27rad);
+width: 10px; height: 24px; left: 89.73px; top: 61.25px;}
+
+#wbtext .w5 {-moz-transform: rotate(-6.24rad);-webkit-transform: rotate(-6.24rad);-o-transform:
+rotate(-6.24rad);-ms-transform: rotate(-6.24rad); transform: rotate(-6.24rad);
+width: 34px; height: 24px; left: 97.97px; top: 61.9px;}
+
+#wbtext .w6 {-moz-transform: rotate(-6.23rad);-webkit-transform: rotate(-6.23rad);-o-transform:
+rotate(-6.23rad);-ms-transform: rotate(-6.23rad); transform: rotate(-6.23rad);
+width: 27px; height: 24px; left: 129.84px; top: 63.44px;}
+
+#wbtext .w7 {-moz-transform: rotate(-6.25rad);-webkit-transform: rotate(-6.25rad);-o-transform:
+rotate(-6.25rad);-ms-transform: rotate(-6.25rad); transform: rotate(-6.25rad);
+width: 21px; height: 24px; left: 154.59px; top: 64.56px;}
+
+#wbtext .w8 {-moz-transform: rotate(-6.29rad);-webkit-transform: rotate(-6.29rad);-o-transform:
+rotate(-6.29rad);-ms-transform: rotate(-6.29rad); transform: rotate(-6.29rad);
+width: 27px; height: 24px; left: 173.9px; top: 65.04px;}
+
+#wbtext .w9 {-moz-transform: rotate(-6.41rad);-webkit-transform: rotate(-6.41rad);-o-transform:
+rotate(-6.41rad);-ms-transform: rotate(-6.41rad); transform: rotate(-6.41rad);
+width: 27px; height: 24px; left: 198.69px; top: 63.64px;}
+
+.current {
+      border: white 2px inset;
+      color: #ffdd00;
+      padding: 0px;
+      font-size: 14pt;
+      width: 25px;
+      -moz-box-shadow: inset 2px 2px 5px #222;
+      -webkit-box-shadow: inset 2px 2px 5px #222; 
+      box-shadow: inset 2px 2px 5px #222;
+    }
+#atbat{
+      color: #ffdd00;
+      font-size: 28pt;
+      padding-left: 8px;
+}
