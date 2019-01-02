@@ -389,5 +389,6 @@ width: 27px; height: 24px; left: 198.69px; top: 63.64px;}
 #atbat{
       color: #ffdd00;
       font-size: 28pt;
-      padding-left: 8px;
+      padding-right: 12px;
+      text-align: right;
 }
