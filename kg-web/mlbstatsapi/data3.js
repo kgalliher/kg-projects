@@ -25,9 +25,9 @@ $(document).ready(function(){
     }
 
     function fetchDateParts(){
-        var nowStr = "2018-7-10";
-        var now = new Date(nowStr);
-        // var now = new Date();
+        // var nowStr = "2018-7-10";
+        // var now = new Date(nowStr);
+        var now = new Date();
         
         var tomorrow = getTomorrow(now);
         var monthNames = ["", "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC" ];
@@ -59,11 +59,11 @@ $(document).ready(function(){
         base_url += currentTime.todayFormatted;
         if(monthIdx > 10 && monthIdx <= 12){
             base_url += "&endDate=";
-            base_url += nextSeasonStartDate(currentTime.now.getFullYear() + 1).seasons[0].regularSeasonStartDate;
+            base_url += nextSeasonStartDate(currentTime.now.getFullYear() + 1).seasons[0].preSeasonStartDate;
         }
         else if(monthIdx >= 1 && monthIdx <= 2){
             base_url += "&endDate=";
-            base_url += nextSeasonStartDate(currentTime.now.getFullYear()).seasons[0].regularSeasonStartDate;
+            base_url += nextSeasonStartDate(currentTime.now.getFullYear()).seasons[0].preSeasonStartDate;
         }
         else{
             base_url += "&endDate=";
