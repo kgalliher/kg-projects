@@ -408,11 +408,6 @@ $(document).ready(function(){
     }
 
     //Standings:
-    // Red Sox: 111
-    // Yanks: 147
-    // O's: 110
-    // Jays: 141
-    // Rays: 139
     function getStandings(){
         // Standings: http://statsapi-default-elb-prod-876255662.us-east-1.elb.amazonaws.com/api/v1/standings?leagueId=103&season=2018
         var time = fetchDateParts();
