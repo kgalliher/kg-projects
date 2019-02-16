@@ -1,7 +1,7 @@
-$(document).ready(function () {
+$(document).ready(function(){
     //Just get the pertinent data:
     //Date stuff
-    function getTomorrow(currentDate) {
+    function getTomorrow(currentDate){
         var newdate = new Date(currentDate);
         newdate.setDate(newdate.getDate() + 1);
         var dd = newdate.getDate();
@@ -11,45 +11,45 @@ $(document).ready(function () {
         return tomorrow;
     }
 
-    function nextSeasonStartDate(season) {
+    function nextSeasonStartDate(season){
         var nextSeasonStartDate = {};
         var url = "http://statsapi.mlb.com/api/v1/seasons?sportId=1&season=" + season;
         $.ajax({
             url: url,
             async: false,
             dataType: "json",
-        }).done(function (data) {
+        }).done(function(data){
             nextSeasonStartDate = data;
         })
         return nextSeasonStartDate;
     }
 
-    function fetchDateParts() {
-        // var nowStr = "2018-7-10";
+    function fetchDateParts(){
+        // var nowStr = "2018-6-10";
         // var now = new Date(nowStr);
         var now = new Date();
-
+        
         var tomorrow = getTomorrow(now);
-        var monthNames = ["", "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+        var monthNames = ["", "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC" ];
         var dateParts = {
-            "now": now,
-            "tomorrow": tomorrow,
-            "year": now.getFullYear(),
-            "monthString": monthNames[now.getMonth() + 1],
-            "monthNum": now.getMonth() + 1,
-            "hour": now.getHours(),
-            "minutes": now.getMinutes(),
-            "day": now.getDate(),
-            "seconds": now.getSeconds(),
-            "todayFormatted": now.getFullYear() + "-" + (now.getMonth() + 1) + "-" + now.getDate(),
-            "tomorrowFormatted": tomorrow.getFullYear() + "-" + (tomorrow.getMonth() + 1) + "-" + tomorrow.getDate(),
+            "now" : now,
+            "tomorrow" : tomorrow,
+            "year" : now.getFullYear(),
+            "monthString" : monthNames[now.getMonth() + 1],
+            "monthNum" : now.getMonth() + 1,
+            "hour" : now.getHours(),
+            "minutes" : now.getMinutes(),
+            "day" : now.getDate(),
+            "seconds" : now.getSeconds(),
+            "todayFormatted" : now.getFullYear() + "-" + (now.getMonth() + 1)+ "-" + now.getDate(),
+            "tomorrowFormatted" : tomorrow.getFullYear() + "-" + (tomorrow.getMonth() + 1) + "-" + tomorrow.getDate(),
         };
         return dateParts;
     }
 
     ///Get all the stuff from the schedule URL.
     // Get the game schedule url
-    function fetchTodaysGameSchedule() {
+    function fetchTodaysGameSchedule(){
         var currentTime = fetchDateParts();
         var monthIdx = currentTime.monthNum;
         var base_url = "http://statsapi.mlb.com/api/v1/schedule/games/?sportId=1&season=" + currentTime.year;
@@ -57,15 +57,15 @@ $(document).ready(function () {
         //Build up date for url.  Pad days and months if necessary.
         base_url += "&startDate=";
         base_url += currentTime.todayFormatted;
-        if (monthIdx > 10 && monthIdx <= 12) {
-            base_url += "&endDate=";
-            base_url += nextSeasonStartDate(currentTime.now.getFullYear() + 1).seasons[0].preSeasonStartDate;
-        }
-        else if (monthIdx >= 1 && monthIdx <= 2) {
+        if(monthIdx > 10 && monthIdx <= 12){
             base_url += "&endDate=";
             base_url += nextSeasonStartDate(currentTime.now.getFullYear()).seasons[0].preSeasonStartDate;
         }
-        else {
+        else if(monthIdx >= 1 && monthIdx <= 2){
+            base_url += "&endDate=";
+            base_url += nextSeasonStartDate(currentTime.now.getFullYear()).seasons[0].preSeasonStartDate;
+        }
+        else{
             base_url += "&endDate=";
             base_url += currentTime.tomorrowFormatted;
         }
@@ -73,9 +73,9 @@ $(document).ready(function () {
     }
 
     // Function that checks schedule for game data.
-    function getSchedule(checkAsg) {
+    function getSchedule(checkAsg){
         var games = {}
-        if (!checkAsg)
+        if(!checkAsg)
             url = fetchTodaysGameSchedule() + "&teamId=111";
         else
             url = fetchTodaysGameSchedule();
@@ -83,114 +83,115 @@ $(document).ready(function () {
             url: url,
             async: false,
             dataType: "json",
-        }).done(function (data) {
+        }).done(function(data){
             games = data;
         });
+        console.log(url);
         return games;
     }
-
+    
     var schedule = getSchedule(false);
     console.log(schedule);
     // Displays the time if no game, starts game action when it's game time.
-    (function gameData() {
+    (function gameData(){
         var times = fetchDateParts();
 
         // Since we're typically checking for sox games, that result will be empty
         // during the all-star break.  If it's July, check to see if the all-star game is on.
-        if (schedule.dates.length == 0 && times.monthNum == 7) {
+        if(schedule.dates.length == 0 && times.monthNum == 7){
             // true because we're looking for the ASG.
             schedule = getSchedule(true);
             var game_type = schedule["dates"][0]["games"][0]["gameType"];
-            if (game_type == "A") {
+            if(game_type == "A"){
                 var home_team = schedule.dates[0].games[0].teams["away"].team.name;
                 setASGWallAndVenue(home_team);
             }
-            else if (schedule.dates.length == 0 && game_type !== "A") {
+            else if(schedule.dates.length == 0 && game_type !== "A"){
                 setTimeOnScoreboard();
                 setNoGameToday();
             }
         }
-
-        if (schedule.dates.length > 0) {
+        
+        if(schedule.dates.length > 0){
             schDateVal = schedule.dates[0].date.split("-");
-            schDate = new Date(schDateVal[0], schDateVal[1] - 1, schDateVal[2]);
-            schDateString = schDate.getFullYear() + "-" + (schDate.getMonth() + 1) + "-" + schDate.getDate();
-            todayDate = times.todayFormatted;
+        schDate = new Date(schDateVal[0], schDateVal[1] - 1, schDateVal[2]);
+        schDateString = schDate.getFullYear() + "-" + (schDate.getMonth() + 1) + "-" + schDate.getDate();
+        todayDate = times.todayFormatted;
+        
+        // There is a game on today's schedule.
+        // It could be an active game or it could be postponed.
+        if(schDateString == todayDate){
+            var game = schedule["dates"][0]["games"][0]
+            var status = game.status;
+            var game_id = game["gamePk"];
+            var live_url = "http://statsapi.mlb.com/api/v1/game/" + game_id + "/feed/live";
+            var awayTeamId = game.teams["away"].team.id;
+            var homeTeamId = game.teams["home"].team.id;
 
-            // There is a game on today's schedule.
-            // It could be an active game or it could be postponed.
-            if (schDateString == todayDate) {
-                var game = schedule["dates"][0]["games"][0]
-                var status = game.status;
-                var game_id = game["gamePk"];
-                var live_url = "http://statsapi.mlb.com/api/v1/game/" + game_id + "/feed/live";
-                var awayTeamId = game.teams["away"].team.id;
-                var homeTeamId = game.teams["home"].team.id;
+            setTeamCssId(homeTeamId, "home");
+            setTeamCssId(awayTeamId, "away");
 
-                setTeamCssId(homeTeamId, "home");
-                setTeamCssId(awayTeamId, "away");
+            if(status.detailedState == "Scheduled"){ 
+                setTimeOnScoreboard();
+            }
 
-                if (status.detailedState == "Scheduled") {
-                    setTimeOnScoreboard();
+            if(status.detailedState == "Postponed"){
+                var reason = status.reason;
+                var reSched = game.rescheduleDate;
+                setPostponedInfo(reason, reSched);
+            }
+
+            // console out all the winners and names
+            if(status.detailedState == "Final"){
+                $(".inning.current").removeClass("current");
+                finalPlay = getGameAction(live_url);
+                var home_score = game.teams["home"].score;
+                var away_score = game.teams["away"].score;
+
+                if(game.teams["home"].team.name == "Boston Red Sox" && game.teams["home"].isWinner){
+                    setFinalInfo(live_url, away_score, home_score, true, "home");
                 }
-
-                if (status.detailedState == "Postponed") {
-                    var reason = status.reason;
-                    var reSched = game.rescheduleDate;
-                    setPostponedInfo(reason, reSched);
+                else if(game.teams["home"].team.name == "Boston Red Sox" && !game.teams["home"].isWinner){
+                    setFinalInfo(live_url, away_score, home_score, false, "home");
                 }
-
-                // console out all the winners and names
-                if (status.detailedState == "Final") {
-                    $(".inning.current").removeClass("current");
-                    finalPlay = getGameAction(live_url);
-                    var home_score = game.teams["home"].score;
-                    var away_score = game.teams["away"].score;
-
-                    if (game.teams["home"].team.name == "Boston Red Sox" && game.teams["home"].isWinner) {
-                        setFinalInfo(live_url, away_score, home_score, true, "home");
-                    }
-                    else if (game.teams["home"].team.name == "Boston Red Sox" && !game.teams["home"].isWinner) {
-                        setFinalInfo(live_url, away_score, home_score, false, "home");
-                    }
-                    else if (game.teams["away"].team.name == "Boston Red Sox" && game.teams["away"].isWinner) {
-                        setFinalInfo(live_url, away_score, home_score, true, "away");
-                    }
-                    else if (game.teams["away"].team.name == "Boston Red Sox" && !game.teams["away"].isWinner) {
-                        setFinalInfo(live_url, away_score, home_score, false, "away");
-                    }
-                    setTimeOnScoreboard();
+                else if(game.teams["away"].team.name == "Boston Red Sox" && game.teams["away"].isWinner){
+                    setFinalInfo(live_url, away_score, home_score, true, "away");
                 }
+                else if(game.teams["away"].team.name == "Boston Red Sox" && !game.teams["away"].isWinner){
+                    setFinalInfo(live_url, away_score, home_score, false, "away");
+                }
+                setTimeOnScoreboard();
+            }
             }
         }
-
-        else {
+        
+        else{
             setNoGameToday();
             setTimeOnScoreboard();
         }
         $.ajax({
             url: "/"
-        }).done(function () {
-        }).fail(function () {
+        }).done(function(){
+        }).fail(function(){
             setTimeOnScoreboard();
             console.log("Errors occurring...");
-        }).always(function () {
-            setTimeout(gameData, 10000);
+        }).always(function(){
+            setTimeout(gameData,10000);   
         });
     }());
 
-    function getGameAction(live_url) {
+    function getGameAction(live_url){
         $.ajax({
             url: live_url,
             async: false,
             dataType: "json",
-        }).done(function (data) {
+        }).done(function(data){
             var game_data = data.liveData;
             var up = "Bottom";
             var linescore = game_data.linescore;
             var current_inning = linescore.currentInning;
             var current_half = linescore.inningHalf;
-            if (current_half != "Bottom")
+            if(current_half != "Bottom")
                 up = "away";
             else
                 up = "home";
@@ -207,7 +208,7 @@ $(document).ready(function () {
             $("#home-errs").html(home_errs);
             $("#away-errs").html(away_errs);
             var inning_data = linescore.innings;
-            $.each(inning_data, function (key, val) {
+            $.each( inning_data, function( key, val ) {
                 var home_inning = "#home-inn-" + (key + 1);
                 var away_inning = "#away-inn-" + (key + 1);
                 $("#" + up + "-inn-" + current_inning).addClass("current");
@@ -226,22 +227,22 @@ $(document).ready(function () {
             var atbatShirtNum = bat_info.shirtNum;
             $("#atbat").html(atbatShirtNum);
             var count = last_play.count;
-            $.each(count, function (key, val) {
+            $.each(count, function(key, val){
                 var tag = "#" + key;
-                if (key == "balls" && val < 4) {
-                    for (var b = 0; b < val; b++) {
-                        $("#ball-" + b).css("color", "lightgreen");
-                    }
+                if(key == "balls" && val < 4){
+                    for(var b = 0; b < val; b++){
+                        $("#ball-" + b).css("color","lightgreen");
+                    } 
                 }
-                if (key == "strikes" && val < 3) {
-                    for (var s = 0; s < val; s++) {
-                        $("#strike-" + s).css("color", "red");
-                    }
+                if(key == "strikes" && val < 3){
+                    for(var s = 0; s < val; s++){
+                        $("#strike-" + s).css("color","red");
+                    } 
                 }
-                if (key == "outs" && val < 3) {
-                    for (var b = 0; b < val; b++) {
-                        $("#out-" + b).css("color", "red");
-                    }
+                if(key == "outs" && val < 3){
+                    for(var b = 0; b < val; b++){
+                        $("#out-" + b).css("color","red");
+                    } 
                 }
             });
             var play_result = last_play.result.description;
@@ -249,15 +250,15 @@ $(document).ready(function () {
         });
     }
 
-    function setASGWallAndVenue(home_team) {
-        $("#venue").html(schedule.dates[0].games[0].venue.name);
-        if (home_team.includes("American")) {
+    function setASGWallAndVenue(home_team){
+        $("#venue").html(schedule.dates[0].games[0].venue.name);     
+        if(home_team.includes("American")){
             $("#home-img").attr("src", "./logos/AL.svg");
             $("#away-img").attr("src", "./logos/NL.svg");
             $("#home").html("AL");
             $("#away").html("NL");
         }
-        else {
+        else{
             $("#home-img").attr("src", "./logos/NL.svg");
             $("#away-img").attr("src", "./logos/AL.svg");
             $("#home").html("NL");
@@ -265,10 +266,10 @@ $(document).ready(function () {
         }
     }
 
-    function setNoGameToday() {
+    function setNoGameToday(){
         var times = fetchDateParts();
         $("#action").empty();
-        if (times.monthNum > 10 || times.monthNum <= 2) {
+        if(times.monthNum > 10 || times.monthNum <= 2){
             nextStartDate = nextSeasonStartDate(times.year);
             $("#action").html("<p>Spring Training starts: <span>" + nextStartDate.seasons[0].preSeasonStartDate + "</span></p><p>Regular Season starts: <span>" + nextStartDate.seasons[0].regularSeasonStartDate + "</span></p>")
         }
@@ -279,9 +280,9 @@ $(document).ready(function () {
         $("#home-img").attr("src", "./logos/BOS.svg");
     }
 
-    function setPostponedInfo(reason, reSched) {
+    function setPostponedInfo(reason, reSched){
         var rsdStr = "";
-        if (reSched) {
+        if(reSched){
             var rsd = new Date(reSched);
             rsdStr = (rsd.getMonth() + 1) + "/" + rsd.getDate() + "/" + rsd.getFullYear();
         }
@@ -293,28 +294,29 @@ $(document).ready(function () {
         $("#home-img").attr("src", "./logos/BOS.svg");
     }
 
-    function setTeamCssId(id, homeAway) {
+    function setTeamCssId(id, homeAway){
         $.getJSON("http://statsapi.mlb.com/api/v1/teams/" + id, {
-        }).done(function (data) {
+        }).done(function(data){
             var teamCode = data.teams[0].abbreviation;
-            $("#" + homeAway + "-img").attr("src", "./logos/" + teamCode.toUpperCase() + ".svg");
-            if (teamCode == "BOS") {
+            $("#" + homeAway +"-img").attr("src", "./logos/" + teamCode.toUpperCase() + ".svg");
+            if(teamCode == "BOS")
+            {
                 $("#" + homeAway).html("BOSTON");
             }
-            else {
+            else{
                 $("#" + homeAway).html(teamCode.toUpperCase());
             }
-            if (teamCode !== "BOS" && homeAway == "home")
+            if(teamCode !== "BOS" && homeAway == "home")
                 $("#venue").html("@ " + teamCode);
         });
     }
 
 
-    function setFinalInfo(live_url, away_score, home_score, soxWin, homeAway) {
+    function setFinalInfo(live_url, away_score, home_score, soxWin, homeAway){
         var time = fetchDateParts();
-        $.getJSON(live_url, function () {
-
-        }).done(function (data) {
+        $.getJSON(live_url, function( ) {
+            
+        }).done(function(data){
             $("#action").empty();
             $(".current").removeClass("current");
             var game_data = data.liveData;
@@ -327,9 +329,9 @@ $(document).ready(function () {
             var lp_info = game_data.players.allPlayers["ID" + lp];
             var lp_name = lp_info.name.last;
 
-            $("#action").append("<table id='final-stats'><tr></tr><td colspan='2'>Final:  " + time.todayFormatted + "</td><tr><td>W:</td><td>" + wp_name + "</td><tr><td>L:</td><td>" + lp_name + "</td></tr></table>");
+            $("#action").append("<table id='final-stats'><tr></tr><td colspan='2'>Final:  "+ time.todayFormatted  +"</td><tr><td>W:</td><td>" + wp_name + "</td><tr><td>L:</td><td>" + lp_name + "</td></tr></table>");
 
-            if (linescore.pitchers.save > 0) {
+            if(linescore.pitchers.save > 0){
                 var sv = linescore.pitchers.save;
                 var sv_info = game_data.players.allPlayers["ID" + sv];
                 var sv_name = sv_info.name.last;
@@ -339,28 +341,28 @@ $(document).ready(function () {
 
             var score = away_score + "</span>&nbsp;-&nbsp;<span>" + home_score;
             var winText = "";
-            if (soxWin && homeAway == "home") {
+            if(soxWin && homeAway == "home"){
                 score = home_score + "</span>&nbsp;-&nbsp;<span>" + away_score;
                 winText = "Sox win!";
             }
-            if (soxWin && homeAway == "away") {
+            if(soxWin && homeAway == "away"){
                 score = away_score + "</span>&nbsp;-&nbsp;<span>" + home_score;
                 winText = "Sox win!";
             }
-            if (!soxWin && homeAway == "home") {
+            if(!soxWin && homeAway == "home"){
                 score = home_score + "</span>&nbsp;-&nbsp;<span>" + away_score;
                 winText = "Sox lose";
             }
-            if (!soxWin && homeAway == "away") {
+            if(!soxWin && homeAway == "away"){
                 score = home_score + "</span>&nbsp;-&nbsp;<span>" + away_score;
                 winText = "Sox lose";
-            }
+            }   
 
             $("#wall-text").append("<h2>" + winText + "</h2><h3><span>" + score + "</span></h3>");
         });
     }
 
-    function setTimeOnScoreboard() {
+    function setTimeOnScoreboard(){
         $(".inning").empty();
         time = fetchDateParts();
         var month = time.monthString;
@@ -368,41 +370,41 @@ $(document).ready(function () {
         var hours = time.hour;
         var minutes = time.minutes;
 
-        for (var i = 0; i < month.length; i++) {
+        for(var i = 0; i < month.length; i++){
             $("#away-inn-" + (i + 3)).html(month[i]);
         }
-        if (hours == 0)
+        if(hours == 0)
             hours = 12;
-        if (hours > 12)
+        if(hours > 12)
             hours -= 12;
-        if (hours < 10 && hours != 0) {
+        if(hours < 10 && hours != 0){
             $("#home-inn-5").html(hours);
             $("#home-inn-6").html(":");
         }
-        else {
+        else{
             var hour_parts = hours.toString();
             $("#home-inn-4").html(hour_parts[0]);
             $("#home-inn-5").html(hour_parts[1]);
             $("#home-inn-6").html(":");
         }
-        if (day < 10) {
+        if(day < 10){
             $("#away-inn-8").html("0");
             $("#away-inn-9").html(day);
         }
-        else {
+        else{
             var day_parts = day.toString();
             $("#away-inn-8").html(day_parts[0]);
             $("#away-inn-9").html(day_parts[1]);
         }
-        if (minutes < 10) {
+        if(minutes < 10){
             $("#home-inn-7").html("0");
             $("#home-inn-8").html(minutes);
         }
-        else {
+        else{
             var minute_parts = minutes.toString();
             $("#home-inn-7").html(minute_parts[0]);
             $("#home-inn-8").html(minute_parts[1]);
-        }
+        } 
     }
 
     //Standings:
@@ -411,55 +413,57 @@ $(document).ready(function () {
     // O's: 110
     // Jays: 141
     // Rays: 139
-    function getStandings(date) {
+    function getStandings(){
+        // Standings: http://statsapi-default-elb-prod-876255662.us-east-1.elb.amazonaws.com/api/v1/standings?leagueId=103&season=2018
         var time = fetchDateParts();
-        var soxUrl = "http://statsapi.mlb.com/api/v1/schedule/games/?sportId=1&teamId=" + 111 + "&season=" + time.year + "&startDate=" + time.todayFormatted + "&endDate=" + time.todayFormatted;
-        var yanksUrl = "http://statsapi.mlb.com/api/v1/schedule/games/?sportId=1&teamId=" + 147 + "&season=" + time.year + "&startDate=" + time.todayFormatted + "&endDate=" + time.todayFormatted;
-        var oriolesUrl = "http://statsapi.mlb.com/api/v1/schedule/games/?sportId=1&teamId=" + 110 + "&season=" + time.year + "&startDate=" + time.todayFormatted + "&endDate=" + time.todayFormatted;
-        var jaysUrl = "http://statsapi.mlb.com/api/v1/schedule/games/?sportId=1&teamId=" + 141 + "&season=" + time.year + "&startDate=" + time.todayFormatted + "&endDate=" + time.todayFormatted;
-        var raysUrl = "http://statsapi.mlb.com/api/v1/schedule/games/?sportId=1&teamId=" + 139 + "&season=" + time.year + "&startDate=" + time.todayFormatted + "&endDate=" + time.todayFormatted;
-
+        var standingsUrl = "http://statsapi-default-elb-prod-876255662.us-east-1.elb.amazonaws.com/api/v1/standings?leagueId=103&season=" + time.year;
+        var alEast = []
 
         $.ajax({
-            url: fetchTodaysGameSchedule(),
+            url: standingsUrl,
             async: false,
             dataType: "json",
-        }).done(function (data) {
-            wl = [];
-
+        }).done(function(data){
+            if(data["records"].length <= 0){
+                alEast.push({"Name" : "------", "W": "------", "L": "------", "GB": "------"});
+            }
+            else{
+                for( var i = 0; i < 5; i++){
+                    var name = "";
+                    if(data["records"][1]["teamRecords"][i]["team"]["name"] == "Boston Red Sox"){
+                        name = "BOSTON";
+                    }
+                    if(data["records"][1]["teamRecords"][i]["team"]["name"] == "New York Yankees"){
+                        name = "NEW YORK";
+                    }
+                    if(data["records"][1]["teamRecords"][i]["team"]["name"] == "Tampa Bay Rays"){
+                        name = "TAMPA BAY";
+                    }
+                    if(data["records"][1]["teamRecords"][i]["team"]["name"] == "Toronto Blue Jays"){
+                        name = "TORONTO";
+                    }
+                    if(data["records"][1]["teamRecords"][i]["team"]["name"] == "Baltimore Orioles"){
+                        name = "BALTIMORE"
+                    }
+                    obj = {"Name": name,
+                                "GB" : data["records"][1]["teamRecords"][i]["leagueGamesBack"], 
+                                "W" : data["records"][1]["teamRecords"][i]["leagueRecord"]["wins"], 
+                                "L" : data["records"][1]["teamRecords"][i]["leagueRecord"]["losses"]
+                            }
+                    alEast.push(obj);
+                }
+            }
         });
-        /*
-        <tr>
-              <td>BOSTON</td>
-              <td>108</td>
-              <td>54</td>
-              <td>—</td>
-            </tr>
-            <tr>
-              <td>NEW YORK</td>
-              <td>100</td>
-              <td>62</td>
-              <td>8</td>
-            </tr>
-            <tr>
-              <td>TAMPA BAY</td>
-              <td>90</td>
-              <td>72</td>
-              <td>18</td>
-            </tr>
-            <tr>
-              <td>TORONTO</td>
-              <td>73</td>
-              <td>89</td>
-              <td>35</td>
-            </tr>
-            <tr>
-              <td>BALTIMORE</td>
-              <td>47</td>
-              <td>115</td>
-              <td>61</td>
-            </tr>
-        */
-
+        return alEast;
     }
+
+    function setStandings(){
+        var standings = getStandings();
+        for(var i =  0; i < standings.length; i++){
+            var row = "<tr><td>" + standings[i]["Name"] + "</td><td>" + standings[i]["W"] + "</td><td>" + standings[i]["L"] + "</td><td>" + standings[i]["GB"] + "</td></tr>";
+            console.log(row);
+            $(".standings").append(row);
+        }
+    }
+    setStandings();
 });
