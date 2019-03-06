@@ -29,7 +29,6 @@ $(document).ready(function(){
             this.boxscoreName = "";
             this.shirtNumber = 99;
         }
-        
      }
 
      function Count(count){
@@ -124,13 +123,13 @@ $(document).ready(function(){
 				base_url += "&endDate=";
 				base_url += nextSeasonStartDate(currentTime.now.getFullYear()).seasons[0].preSeasonStartDate;
 			}  
-        }
-        else{
-            base_url += "&endDate=";
-            base_url += currentTime.tomorrowFormatted;
-        }
-        return base_url;
-    }
+		}
+		else{
+			base_url += "&endDate=";
+			base_url += currentTime.tomorrowFormatted;
+		}
+		return base_url;
+	}
 
     // Function that checks schedule for game data.
     function getSchedule(checkAsg){
