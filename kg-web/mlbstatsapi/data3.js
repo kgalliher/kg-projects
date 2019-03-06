@@ -223,7 +223,7 @@ $(document).ready(function(){
                     setFinalInfo(live_url, home_score, away_score, false, "away");
                 }
                 setTimeOnScoreboard();
-                refreshTime = 25000;
+                refreshTime = 20000;
             }
         }
     }   
