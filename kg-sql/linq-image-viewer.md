@@ -1,5 +1,5 @@
 
-### Some linq script I once wrote to view images from a database
+### Some linq script I once wrote to pull images from a database
 #### LinqPad5
 
 ```
