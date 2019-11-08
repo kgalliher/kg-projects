@@ -4,14 +4,14 @@
 #include "SPI.h"
 #include <IRremote.h>
 #include <IRremoteInt.h>
+
 TMRpcm tmrpcm;
+
 //IR stuff
 int RECV_PIN = 8;
 IRrecv receiver(RECV_PIN);
 decode_results results;
 
-boolean isPlaying = false;
-int volume = 20;
 const int red = 7;
 const int green = 6;
 int vol = 5;
@@ -29,8 +29,6 @@ void setup()
 }
 
 void loop() {
-  
-  static unsigned long timer = millis();
   if(receiver.decode(&results)){
     Serial.println(results.value, HEX);
 
