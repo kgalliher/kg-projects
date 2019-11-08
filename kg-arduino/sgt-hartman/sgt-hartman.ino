@@ -94,9 +94,9 @@ void loop() {
         tmrpcm.setVolume(vol);
         break;
       default:
-        digitalWrite(green, LOW);
         Serial.println(results.value, HEX);
     }
+    digitalWrite(green, LOW);
     receiver.resume();
   }
 }
