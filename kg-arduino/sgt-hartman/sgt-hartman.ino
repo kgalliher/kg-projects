@@ -59,19 +59,19 @@ void loop() {
         break;
       case 0xFF5AA5: // 6
         digitalWrite(green, HIGH);
-        tmrpcm.play("golfball.wav");
+        tmrpcm.play("fmjcomn.wav");
         break;
       case 0xFF42BD: // 7
         digitalWrite(green, HIGH);
-        tmrpcm.play("royalty.wav");
+        tmrpcm.play("fmjskull.wav");
         break;
       case 0xFF4AB5: // 8 
         digitalWrite(green, HIGH);
-        tmrpcm.play("stacked.wav");
+        tmrpcm.play("qstions.wav");
         break;
       case 0xFF52AD: // 9
         digitalWrite(green, HIGH);
-        tmrpcm.play("fatbody.wav");
+        tmrpcm.play("dirtbag.wav");
         break;
       case 0xFF629D: // vol +
         if(vol == 7){
