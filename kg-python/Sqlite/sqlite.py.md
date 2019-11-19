@@ -1,10 +1,10 @@
-# kg-geodata
+# Sqlite Examples
 - Creates a new Sqlite database
 - Enables the ability to use load_extension()
 - Installs the stgeometry_sqlite lib
 - Creates the OGC tables
 
-###stgeometry_sqlite.dll
+### stgeometry_sqlite.dll
 This file can be found in the database_support folder in your ArcGIS Desktop installation
 
 ```python
