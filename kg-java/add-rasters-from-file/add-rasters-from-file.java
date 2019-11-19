@@ -46,14 +46,13 @@ public class LocalRasterApp {
   * @throws Exception
   */
   private void addRaster() throws Exception {
-
 	GraphicsLayer gLayer = new GraphicsLayer();
 	map.getLayers().add(gLayer);
-	
+
 	//Add graphics layer to the array
 	rasters.add(gLayer);
 	gLayer.setName("Raster Layer");
-	
+
 	// Open the folder containing the images
 	String baseFolder = "D:" + FSP + "Landsat_p114r75";
 	System.out.println(baseFolder);
@@ -61,44 +60,44 @@ public class LocalRasterApp {
 
 	//Define footprints
 	Symbol symbol = new SimpleLineSymbol(Color.magenta, 2);
-	
-        /* Create a graphics layer, add rasters to the graphics layer, 
-         * add graphics layer to the map. */
+
+	/* Create a graphics layer, add rasters to the graphics layer, 
+	 * add graphics layer to the map. */
 	for (File rasterFile : folder.listFiles()) {
 		try {
 			if (!rasterFile.getName().endsWith(".tif")) {
 				continue;
 			}
 
-	        	//New raster from file
+			//New raster from file
 			rasterSource = new FileRasterSource(rasterFile.getAbsolutePath());
 			rasterSource.project(map.getSpatialReference());
-				
-	        	// new raster layer
+
+			// new raster layer
 			RasterLayer rasterLayer = new RasterLayer(rasterSource);
 			rasterLayer.setName(rasterFile.getName());
-				
-	        	// Create a raster layer graphic.  Add the raster and footprint
+
+			// Create a raster layer graphic.  Add the raster and footprint
 			Graphic g = new Graphic(rasterLayer.getFullExtent(), symbol);
 			gLayer.addGraphic(g);
-			
-	        	//Make sure it's not null or not in the map already
+
+			//Make sure it's not null or not in the map already
 			if ((rasterLayer == null) || (!rasterLayer.isVisible())) {
 			    return;
 			}
-				
-	        	//Apply an RGBRenderer
+
+			//Apply an RGBRenderer
 			addRgbRenderer(rasterLayer, true);
-				
+
 			//Populate the layer array for looping (optional)
 			rasters.add(rasterLayer);
-	
-	        	// Add the layer array to the map.
+
+			// Add the layer array to the map.
 			map.getLayers().add(rasterLayer);
-		
+
 			//Zoom to the newly added raster layers.
 			map.zoomTo(rasterLayer.getFullExtent());
-			
+
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
