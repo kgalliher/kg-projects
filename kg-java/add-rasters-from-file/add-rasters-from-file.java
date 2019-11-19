@@ -32,196 +32,205 @@ import com.esri.map.Layer;
 import com.esri.map.RasterLayer;
 
 public class LocalRasterApp {
-  private JMap map;
-  private JButton button;
-  private JLayeredPane contentPane;
-  private static final String FSP = System.getProperty("file.separator");
-  private List<Layer> rasters;
-  private FileRasterSource rasterSource = null;
-  
-  public LocalRasterApp() { rasters = new ArrayList<>(); }
-  /**
-  * Checks a folder for files matching an extension
-  * 
-  * @throws Exception
-  */
-  private void addRaster() throws Exception {
-		GraphicsLayer gLayer = new GraphicsLayer();
-		map.getLayers().add(gLayer);
+    private JMap map;
+    private JButton button;
+    private JLayeredPane contentPane;
+    private static final String FSP = System.getProperty("file.separator");
+    private List < Layer > rasters;
+    private FileRasterSource rasterSource = null;
 
-		//Add graphics layer to the array
-		rasters.add(gLayer);
-		gLayer.setName("Raster Layer");
+    public LocalRasterApp() {
+        rasters = new ArrayList < > ();
+    }
+    /**
+     * Checks a folder for files matching an extension
+     * 
+     * @throws Exception
+     */
+    private void addRaster() throws Exception {
+        GraphicsLayer gLayer = new GraphicsLayer();
+        map.getLayers().add(gLayer);
 
-		// Open the folder containing the images
-		String baseFolder = "D:" + FSP + "Landsat_p114r75";
-		System.out.println(baseFolder);
-		File folder = new File(baseFolder);
+        //Add graphics layer to the array
+        rasters.add(gLayer);
+        gLayer.setName("Raster Layer");
 
-		//Define footprints
-		Symbol symbol = new SimpleLineSymbol(Color.magenta, 2);
+        // Open the folder containing the images
+        String baseFolder = "D:" + FSP + "Landsat_p114r75";
+        System.out.println(baseFolder);
+        File folder = new File(baseFolder);
 
-		/* Create a graphics layer, add rasters to the graphics layer, 
-		 * add graphics layer to the map. */
-		for (File rasterFile : folder.listFiles()) {
-			try {
-				if (!rasterFile.getName().endsWith(".tif")) {
-					continue;
-				}
+        //Define footprints
+        Symbol symbol = new SimpleLineSymbol(Color.magenta, 2);
 
-				//New raster from file
-				rasterSource = new FileRasterSource(rasterFile.getAbsolutePath());
-				rasterSource.project(map.getSpatialReference());
+        /* Create a graphics layer, add rasters to the graphics layer, 
+         * add graphics layer to the map. */
+        for (File rasterFile: folder.listFiles()) {
+            try {
+                if (!rasterFile.getName().endsWith(".tif")) {
+                    continue;
+                }
 
-				// new raster layer
-				RasterLayer rasterLayer = new RasterLayer(rasterSource);
-				rasterLayer.setName(rasterFile.getName());
+                //New raster from file
+                rasterSource = new FileRasterSource(rasterFile.getAbsolutePath());
+                rasterSource.project(map.getSpatialReference());
 
-				// Create a raster layer graphic.  Add the raster and footprint
-				Graphic g = new Graphic(rasterLayer.getFullExtent(), symbol);
-				gLayer.addGraphic(g);
+                // new raster layer
+                RasterLayer rasterLayer = new RasterLayer(rasterSource);
+                rasterLayer.setName(rasterFile.getName());
 
-				//Make sure it's not null or not in the map already
-				if ((rasterLayer == null) || (!rasterLayer.isVisible())) {
-						return;
-				}
+                // Create a raster layer graphic.  Add the raster and footprint
+                Graphic g = new Graphic(rasterLayer.getFullExtent(), symbol);
+                gLayer.addGraphic(g);
 
-				//Apply an RGBRenderer
-				addRgbRenderer(rasterLayer, true);
+                //Make sure it's not null or not in the map already
+                if ((rasterLayer == null) || (!rasterLayer.isVisible())) {
+                    return;
+                }
 
-				//Populate the layer array for looping (optional)
-				rasters.add(rasterLayer);
+                //Apply an RGBRenderer
+                addRgbRenderer(rasterLayer, true);
 
-				// Add the layer array to the map.
-				map.getLayers().add(rasterLayer);
+                //Populate the layer array for looping (optional)
+                rasters.add(rasterLayer);
 
-				//Zoom to the newly added raster layers.
-				map.zoomTo(rasterLayer.getFullExtent());
+                // Add the layer array to the map.
+                map.getLayers().add(rasterLayer);
 
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}
-		}
-		//Do something with the optional array of layers
-		System.out.println("Layers added:");
-		for (Layer layer : rasters) {
-			System.out.println("\t" + layer.getName());
-		}
-  }
-  
-  public void addRgbRenderer(RasterLayer mRasterLayer, boolean isDefault) throws Exception{
-	  //Basic stretch renderer usage
-	  RGBRenderer renderer=new RGBRenderer();
-	  if(isDefault){
-		  renderer.setBandIds(new int[]{0,1,2});
-	  }
-	  else {
-		  renderer.setBandIds(new int[]{0,2,1});
-	  }
+                //Zoom to the newly added raster layers.
+                map.zoomTo(rasterLayer.getFullExtent());
 
-	  StretchParameters.MinMaxStretchParameters stretchParameters = new StretchParameters.MinMaxStretchParameters();
-	  stretchParameters.setGamma(1);
-	  renderer.setStretchParameters(stretchParameters);
-      
-	  mRasterLayer.setRenderer(renderer);
-	  mRasterLayer.setBrightness(75.0f);
-	  mRasterLayer.setContrast(75.0f);
-	  mRasterLayer.setGamma(10.0f);
-	}
-
-  public static void main(String[] args) {
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        try {
-          // instance of this application
-          LocalRasterApp rasterApp = new LocalRasterApp();
-          
-          // create the UI, including the map, for the application.
-          JFrame appWindow = createWindow();
-          appWindow.add(rasterApp.createUI());
-        } catch (Exception e) {
-          // on any error, display the stack trace.
-          e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
         }
-      }
-    });
-  }
+        //Do something with the optional array of layers
+        System.out.println("Layers added:");
+        for (Layer layer: rasters) {
+            System.out.println("\t" + layer.getName());
+        }
+    }
 
-  /** GUI Components **/
-  public JComponent createUI() {
-		// application content
-		contentPane = createContentPane();
+    public void addRgbRenderer(RasterLayer mRasterLayer, boolean isDefault) throws Exception {
+        //Basic stretch renderer usage
+        RGBRenderer renderer = new RGBRenderer();
+        if (isDefault) {
+            renderer.setBandIds(new int[] {
+                0,
+                1,
+                2
+            });
+        } else {
+            renderer.setBandIds(new int[] {
+                0,
+                2,
+                1
+            });
+        }
 
-		// UI elements
-		JPanel buttonPanel = createUserPanel();
-		contentPane.add(buttonPanel);
+        StretchParameters.MinMaxStretchParameters stretchParameters = new StretchParameters.MinMaxStretchParameters();
+        stretchParameters.setGamma(1);
+        renderer.setStretchParameters(stretchParameters);
 
-		// map
-		map = createMap();
-		map.setHidingNoDataTiles(true);
-		contentPane.add(map);
+        mRasterLayer.setRenderer(renderer);
+        mRasterLayer.setBrightness(75.0 f);
+        mRasterLayer.setContrast(75.0 f);
+        mRasterLayer.setGamma(10.0 f);
+    }
 
-		return contentPane;
-  }
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    // instance of this application
+                    LocalRasterApp rasterApp = new LocalRasterApp();
+
+                    // create the UI, including the map, for the application.
+                    JFrame appWindow = createWindow();
+                    appWindow.add(rasterApp.createUI());
+                } catch (Exception e) {
+                    // on any error, display the stack trace.
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /** GUI Components **/
+    public JComponent createUI() {
+        // application content
+        contentPane = createContentPane();
+
+        // UI elements
+        JPanel buttonPanel = createUserPanel();
+        contentPane.add(buttonPanel);
+
+        // map
+        map = createMap();
+        map.setHidingNoDataTiles(true);
+        contentPane.add(map);
+
+        return contentPane;
+    }
 
 
-  private JMap createMap() {
-		final JMap jMap = new JMap();
+    private JMap createMap() {
+        final JMap jMap = new JMap();
 
-		ArcGISTiledMapServiceLayer tiledLayer = new ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer");
-		jMap.getLayers().add(tiledLayer);
-		jMap.setExtent(new Envelope(-19856505, -8827900, 18574809, 16806021));
+        ArcGISTiledMapServiceLayer tiledLayer = new ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer");
+        jMap.getLayers().add(tiledLayer);
+        jMap.setExtent(new Envelope(-19856505, -8827900, 18574809, 16806021));
 
-		return jMap;
-  }
+        return jMap;
+    }
 
-  private JPanel createUserPanel() {
-		JPanel panel = new JPanel();
-		panel.setLayout(new BorderLayout(0, 0));
-		panel.setSize(140, 35);
-		panel.setLocation(10, 10);
+    private JPanel createUserPanel() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout(0, 0));
+        panel.setSize(140, 35);
+        panel.setLocation(10, 10);
 
-		// button
-		button = createButton();
+        // button
+        button = createButton();
 
-		panel.add(button, BorderLayout.SOUTH);
-		panel.setBackground(new Color(0, 0, 0, 0));
-		panel.setBorder(new LineBorder(new Color(0, 0, 0, 80), 5, false));
+        panel.add(button, BorderLayout.SOUTH);
+        panel.setBackground(new Color(0, 0, 0, 0));
+        panel.setBorder(new LineBorder(new Color(0, 0, 0, 80), 5, false));
 
-		return panel;
-  }
+        return panel;
+    }
 
-  private JButton createButton() {
-		JButton button1 = new JButton("Add Raster");
-		button1.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-						try {
-					addRaster();
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		});
-		return button1;
-  }
+    private JButton createButton() {
+        JButton button1 = new JButton("Add Raster");
+        button1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                try {
+                    addRaster();
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        });
+        return button1;
+    }
 
-  private static JFrame createWindow() {
-		JFrame window = new JFrame();
-		window.setBounds(100, 100, 1000, 700);
-		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.getContentPane().setLayout(new BorderLayout(0, 0));
-		window.setVisible(true);
-		return window;
-  }
+    private static JFrame createWindow() {
+        JFrame window = new JFrame();
+        window.setBounds(100, 100, 1000, 700);
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.getContentPane().setLayout(new BorderLayout(0, 0));
+        window.setVisible(true);
+        return window;
+    }
 
-  private static JLayeredPane createContentPane() {
-		JLayeredPane contentPane = new JLayeredPane();
-		contentPane.setBounds(100, 100, 1000, 700);
-		contentPane.setLayout(new BorderLayout(0, 0));
-		contentPane.setVisible(true);
-		return contentPane;
-  }
+    private static JLayeredPane createContentPane() {
+        JLayeredPane contentPane = new JLayeredPane();
+        contentPane.setBounds(100, 100, 1000, 700);
+        contentPane.setLayout(new BorderLayout(0, 0));
+        contentPane.setVisible(true);
+        return contentPane;
+    }
 }
