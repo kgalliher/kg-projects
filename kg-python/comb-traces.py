@@ -1,6 +1,9 @@
 import glob
 import os
 
+'''
+Search for a string in all files in a folder
+'''
 path = r"C:\Path\To\Trace\Folder"
 search_string = "INSERT INTO telco.GPS_POINT_TRANSIT"
 num = 0
