@@ -1,0 +1,158 @@
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <!--
+  ArcGIS API for JavaScript, https://js.arcgis.com
+  For more information about the editing-applyedits sample, read the original sample description at developers.arcgis.com.
+  https://developers.arcgis.com/javascript/latest/sample-code/editing-applyedits/index.html
+  -->
+  <title>Sheboygan - Merge</title>
+
+  <link rel="stylesheet" href="https://js.arcgis.com/4.12/esri/themes/light/main.css" />
+  <style>
+    html,
+    body,
+    #viewDiv {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+      width: 100%;
+    }
+
+    #formDiv {
+      width: 100%;
+    }
+
+    #writeAttr{
+      width: 256px;
+    }
+
+    .esri-item-list__scroller {
+      overflow-y: visible;
+    }
+
+    .editArea-container {
+      background: #fff;
+      line-height: 1.5em;
+      overflow: auto;
+      padding: 12px 15px;
+      width: 325px;
+      max-height: none;
+    }
+
+    .list-heading {
+      font-weight: normal;
+      margin-top: 20px;
+      margin-bottom: 10px;
+      color: #323232;
+    }
+
+    .or-wrap {
+      background-color: #e0e0e0;
+      height: 1px;
+      margin: 2em 0;
+      overflow: visible;
+    }
+
+    .or-text {
+      background: #fff;
+      line-height: 0;
+      padding: 0 1em;
+      position: relative;
+      bottom: 0.75em;
+    }
+
+    .esri-view-height-medium .esri-expand .esri-widget--panel{
+      max-height: 700px;
+    }
+    /* override default styles */
+    .esri-feature-form {
+      background: #fff;
+    }
+
+    .esri-feature-templates {
+      width: 256px;
+    }
+
+    .esri-feature-templates__section-header {
+      display: none;
+    }
+
+    .esri-feature-templates__section {
+      box-shadow: none;
+    }
+
+    .esri-feature-templates__scroller {
+      max-height: 200px;
+    }
+  </style>
+
+<script>
+  var locationPath = location.pathname.replace(/\/[^\/]+$/, "");
+  window.dojoConfig = {
+    packages: [
+      {
+        name: "app",
+        location: locationPath + "/app"
+      }
+    ]
+  };
+</script>
+<script src="https://js.arcgis.com/4.12/"></script>
+</head>
+
+<body>
+  <div id="editArea" class="editArea-container esri-widget--panel">
+    <div id="addFeatureDiv" style="display:block;">
+      <h3 class="list-heading">Sheboygan County<br />Assessor’s Office</h3>
+      <ol>
+        <li>The Assessor's office receives a new deed</li>
+        <li>Examines the deed and generates a new legal record</li>
+        <li>Generates a new parcel PIN</li>
+        <li>Updates the CAMA system</li>
+        <li>Updates the parcel fabric</li>
+      </ol>
+      <p>Instructions:</p>
+      <ul style="font-size: 13px; padding-left: 1.5em;">
+        <li>Enter a parcel record name and a comma separated list of parcel PINs</li>
+        <li>Enter new parcel PIN and stated area value</li>
+        <li>Merge the selected parcels</li>
+      </ul>
+      <br />
+      <input type="button" class="esri-button" value="Begin" id="btnBegin" />
+    </div>
+    <div id="featureUpdateDiv" style="display:none; margin-top: 1em;">
+      <h3 class="list-heading">Sheboygan County<br />Assessor’s Office</h3>
+      <div id="recordArea">
+        <div id="recForm"></div>
+          <label for="recordName">Enter Record Name:</label>
+          <input value="" type="text" id="recordName" aria-invalid="false" class="esri-input esri-feature-form__input" required maxlength="">
+          <br />
+          <label for="recordName">Enter PINS to Merge:</label>
+          <input value="" type="text" id="parcelPins" aria-invalid="false" class="esri-input esri-feature-form__input" required placeholder="59016219960,59016219962" maxlength="100">
+          <br />
+          <p></p>
+          <input type="submit" class="esri-button" value="Create Record & Select Parcels" id="btnCreateRec" />
+      </div>
+      <div id="attributeArea">
+        <div id="formDiv"></div>
+      </div>
+      <input type="button" class="esri-button" value="Merge Parcels" id="btnMerge" />
+      <br />
+      <div id="clearSelectionArea">
+        <input type="button" class="esri-button" value="Clear Selection" id="btnClear" />
+      </div>
+      
+      <p>Info:</p>
+      <textarea id="writeAttr"></textarea>
+    </div>
+    <div id="updateInstructionDiv" style="text-align:center; display:block">
+    </div>
+  </div>
+  <br />
+  <div id="viewDiv"></div>
+  <script>require(["app/main"]);</script>
+</body>
+</html>

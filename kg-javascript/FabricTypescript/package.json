@@ -1,0 +1,30 @@
+{
+  "name": "arcgistypescript1",
+  "version": "1.0.0",
+  "description": "Demo application using TypeScript with ArcGIS API 4 for JavaScript",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Esri/jsapi-resources.git"
+  },
+  "scripts": {
+    "dev": "tsc -w",
+    "lint": "tslint './app/*.ts'"
+  },
+  "keywords": [
+    "esri",
+    "typescript"
+  ],
+  "author": "Rene Rubalcava <rrubalcava@esri.com>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/Esri/jsapi-resources/issues"
+  },
+  "homepage": "https://developers.arcgis.com/javascript/latest/guide/typescript-setup/index.html",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/arcgis-js-api": "^4.11.0",
+    "dojo-typings": "^1.11.9",
+    "tslint": "^5.16.0",
+    "typescript": "^3.4.3"
+  }
+}
