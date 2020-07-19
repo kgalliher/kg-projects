@@ -1,0 +1,146 @@
+swagger: "2.0"
+info:
+  description: This is the swagger file that goes with our server code
+  version: "1.0.0"
+  title: Swagger REST Article
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+
+basePath: "/api"
+
+# Paths supported by the server application
+paths:
+  /deliveries:
+    get:
+      operationId: deliveries.read_all
+      tags:
+        - Deliveries
+      summary: Read the entire list of deliveries
+      description: Read the list of deliveries
+      parameters:
+        - name: length
+          in: query
+          type: integer
+          description: Number of deliveries to get from deliveries
+          required: false
+        - name: offset
+          in: query
+          type: integer
+          description: Offset from beginning of list where to start gathering deliveries
+          required: false
+      responses:
+        200:
+          description: Successfully read deliveries list operation
+          schema:
+            type: array
+            items:
+              properties:
+                id:
+                  type: integer
+                Date:
+                  type: string
+                Company:
+                  type: string
+                MyHouse:
+                  type: string
+
+    post:
+      operationId: deliveries.create
+      tags:
+        - Deliveries
+      summary: Create a delivery and add it to the deliveries list
+      description: Create a new delivery in the deliveries list
+      parameters:
+        - name: delivery
+          in: body
+          description: Delivery to create
+          required: True
+          schema:
+            type: object
+            properties:
+              Date:
+                type: string
+                description: Date the delivery occurred
+              Company:
+                type: string
+                description: Name of the delivery company
+              MyHouse:
+                type: string
+                description: Did the delivery come to my house?
+      responses:
+        201:
+          description: Successfully created delivery in list
+    
+  /deliveries/{id}:
+    get:
+      operationId: deliveries.read_one
+      tags:
+        - Deliveries
+      summary: Read deliveries by a specific company from the deliveries list
+      description: Read deliveries by a specific company from the deliveries list
+      parameters:
+        - name: id
+          in: path
+          description: ID of the delivery company to get from the list
+          type: integer
+          required: True
+      responses:
+        200:
+          description: Successfully read delivery companies from deliveries list operation
+          schema:
+            properties:
+              id:
+                type: integer
+              Date:
+                type: string
+              Company:
+                type: string
+              MyHouse:
+                type: string
+    put:
+      operationId: deliveries.update
+      tags:
+        - Deliveries
+      summary: Update a delivery in the deliveries list
+      description: Update a delivery in the deliveries list
+      parameters:
+        - name: id
+          in: path
+          description: ID of the delivery to update in the list
+          type: integer
+          required: True
+        - name: delivery
+          in: body
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              Date:
+                type: string
+              Company:
+                type: string
+              MyHouse:
+                type: string
+      responses:
+        200:
+          description: Successfully updated delivery in deliveries list
+
+    delete:
+      operationId: deliveries.delete
+      tags:
+        - Deliveries
+      summary: Delete a delivery from the deliveries list
+      description: Delete a delivery
+      parameters:
+        - name: id
+          in: path
+          type: integer
+          required: True
+      responses:
+        200:
+          description: Successfully deleted a delivery from deliveries list
+
+          
