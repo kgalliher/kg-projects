@@ -162,7 +162,7 @@ ns.controller = (function(m, v) {
         let valid = false;
         switch(endpoint){
             case "create":
-                valid = (deliver_obj.company != "" && deliver_obj.myhouse != "" && deliver_obj.deliverydate != "");
+                valid = (deliver_obj.company != "" && deliver_obj.myhouse != "");
                 break;
             case "update":
                 valid = (deliver_obj.id != "" && parseInt(deliver_obj.id) >= 0)
