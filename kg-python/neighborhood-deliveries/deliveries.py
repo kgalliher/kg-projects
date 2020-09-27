@@ -50,6 +50,8 @@ def create(delivery):
     """
 
     date = delivery.get("Date", None)
+    if not date:
+        date = get_timestamp()
     company = delivery.get("Company", None)
     is_myhouse = delivery.get("MyHouse", None)
 

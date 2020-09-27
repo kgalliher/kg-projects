@@ -28,15 +28,26 @@
                     <input id="id" type="text" class="form-control" />
                 </label>
                 <label for="company">Delivery Company
-                    <input id="company" type="text" class="form-control" />
+                    <input id="company" type="text" list="companies" class="form-control" />
+                        <datalist id="companies">
+                          <option value="Amazon">
+                          <option value="FedEx">
+                          <option value="UPS">
+                          <option value="OnTrac">
+                          <option value="DHL">
+                        </datalist>
                 </label>
                 <label for="myhouse">Is My House?
-                    <input id="myhouse" type="text" class="form-control" />
+                    <input id="myhouse" type="text" list="ismyhouse" class="form-control" />
+                    <datalist id="ismyhouse">
+                        <option value="No">
+                        <option value="Yes">
+                    </datalist>
                 </label>
                 <label for="deliverydate">Delivery Date
                     <input id="deliverydate" type="datetime-local" class="form-control" />
                 </label>
-
+            
             </div>
             <button id="create">Create</button>
             <button id="update">Update</button>
