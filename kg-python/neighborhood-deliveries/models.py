@@ -5,7 +5,7 @@ class Delivery(db.Model):
     __tablename__ = "deliveries"
     id = db.Column(db.Integer, primary_key=True)
     # Date = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-    Date = db.Column(db.String(32))
+    created_at = db.Column(db.String(32))
     Company = db.Column(db.String(32))
     MyHouse = db.Column(db.String(32))
 
