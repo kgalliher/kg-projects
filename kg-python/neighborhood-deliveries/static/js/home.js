@@ -34,13 +34,14 @@ ns.model = (function() {
                 data: JSON.stringify({
                     'Company': company,
                     'MyHouse': myhouse,
-                    'Date': deliverydate
+                    'created_at': deliverydate
                 })
             };
             $.ajax(ajax_options)
             .done(function(data) {
-                console.log(data)
+                console.log(data);
                 $event_pump.trigger('model_create_success', [data]);
+                location.reload();               
             })
             .fail(function(xhr, textStatus, errorThrown) {
                 $event_pump.trigger('model_error', [xhr, textStatus, errorThrown]);
@@ -57,12 +58,13 @@ ns.model = (function() {
                     'id': id,
                     'Company': company,
                     'MyHouse': myhouse,
-                    'Date': deliverydate
+                    'created_at': deliverydate
                 })
             };
             $.ajax(ajax_options)
             .done(function(data) {
                 $event_pump.trigger('model_update_success', [data]);
+                location.reload(); 
             })
             .fail(function(xhr, textStatus, errorThrown) {
                 $event_pump.trigger('model_error', [xhr, textStatus, errorThrown]);
@@ -78,6 +80,7 @@ ns.model = (function() {
             $.ajax(ajax_options)
             .done(function(data) {
                 $event_pump.trigger('model_delete_success', [data]);
+                location.reload();
             })
             .fail(function(xhr, textStatus, errorThrown) {
                 $event_pump.trigger('model_error', [xhr, textStatus, errorThrown]);
@@ -123,7 +126,7 @@ ns.view = (function() {
                                 <td class="id">${deliveries[i].id}</td>
                                 <td class="company">${deliveries[i].Company}</td>
                                 <td class="myhouse">${deliveries[i].MyHouse}</td>
-                                <td class="deliverydate">${deliveries[i].Date}</td>
+                                <td class="deliverydate">${deliveries[i].created_at}</td>
                             </tr>`;
                 }
                 $('table > tbody').append(rows);
@@ -179,19 +182,31 @@ ns.controller = (function(m, v) {
 
     // Create our event handlers
     $('#create').click(function(e) {
+        var company = $company.val();
+        var myhouse = $myhouse.val();
+        var deliverydate = $deliverydate.val();
+        
+        if(!company){company = "Amazon";}
+        if(!myhouse){myhouse = "No"}
+        if(!deliverydate){
+            var d = new Date();
+            deliverydate = d.toISOString().split('.')[0];
+        }
         let new_del = {
-            "company": $company.val(),
-            "myhouse": $myhouse.val(),
-            "deliverydate": $deliverydate.val()
+            "company": company,
+            "myhouse": myhouse,
+            "deliverydate": deliverydate
         };
 
         e.preventDefault();
 
         if (validate("create", new_del)) {
-            model.create(new_del.company, new_del.myhouse, new_del.deliverydate)
+            model.create(new_del.company, new_del.myhouse, new_del.deliverydate);
+            
         } else {
             alert(`Problem with input values - Enter company, My House and Delivery date`);
         }
+        
     });
 
     $('#update').click(function(e) {
