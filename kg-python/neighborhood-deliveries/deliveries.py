@@ -17,7 +17,7 @@ def read_all():
     
     :return:        sorted list of DELIVERIES     
     """
-    deliveries = Delivery.query.order_by(Delivery.Date.desc()).all()
+    deliveries = Delivery.query.order_by(Delivery.created_at.desc()).all()
     delivery_schema = DeliverySchema(many=True)
     return delivery_schema.dump(deliveries)
 
@@ -49,13 +49,13 @@ def create(delivery):
     :return: 201 on success
     """
 
-    date = delivery.get("Date", None)
+    date = delivery.get("created_at", None)
     if not date:
         date = get_timestamp()
     company = delivery.get("Company", None)
     is_myhouse = delivery.get("MyHouse", None)
 
-    print(date)
+    print("Here is the date print:", date)
 
     try:
         schema = DeliverySchema()
