@@ -6,10 +6,8 @@ Using da.walk to list feature classes.  Additionally using os.path.join to get t
 '''
 import os
 import arcpy
+from time import time
 
-def do_something(strings):
-    print strings
-    
 def inventory_data(workspace, datatypes):
     """
     Generates full path names under a catalog tree for all requested
@@ -29,6 +27,5 @@ def inventory_data(workspace, datatypes):
         for data_name in data_names:
             yield os.path.join(path, data_name)
 
-
-for feature_class in inventory_data(r"C:\Users\ken6574\AppData\Roaming\ESRI\Desktop10.3\ArcCatalog\KENG_BBOXTEST_sde.sde", "FeatureClass"):
-    do_something(feature_class)
+feature_classes = inventory_data(r"C:\temp\KGALLIHER_GDB109_gis.sde", "FeatureClass")
+[print(fc) for fc in feature_classes]
