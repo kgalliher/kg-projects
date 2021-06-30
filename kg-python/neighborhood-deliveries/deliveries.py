@@ -119,7 +119,7 @@ def delete(id):
     # Get the delivery requested
     delivery = Delivery.query.filter(Delivery.id == id).one_or_none()
 
-    # Did we find a person?
+    # Did we find a delivery?
     if delivery is not None:
         db.session.delete(delivery)
         db.session.commit()
@@ -127,7 +127,7 @@ def delete(id):
             f"Delivery {id} deleted", 200
         )
 
-    # Otherwise, nope, didn't find that person
+    # Otherwise, nope, didn't find that delivery
     else:
         abort(
             404,
