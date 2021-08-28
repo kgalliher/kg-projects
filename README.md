@@ -2,13 +2,12 @@
 Scripts and  classes written during my time as a Geodata Analyst.  Contains SDE Geodatabase and database specific queries and functionality.
 
 ### Python: 
-Using Arcpy, Pyodbc and Cx_Oracle packages.
+Pure Python, geoprocessing, ArcGIS Python API, DBMS admin.
 ### SQL:    
-Native DBMS spatial queries and Geodatabase Admin functionality.
+Native DBMS spatial queries and geodatabase Admin functionality.
 ### Java:   
 Using SDE SDK and Java.SQL utilities to affect geodatabases and databases.
 ### .NET
-Using ArcObjects in .NET and various othe C# projects.
-
+Using ArcObjects in .NET and various other C# projects.
 ### Arduino
 Arduino code for various projects
