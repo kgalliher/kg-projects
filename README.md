@@ -3,8 +3,10 @@ Scripts and  classes written during my time as a Geodata Analyst.  Contains SDE 
 
 ### Python: 
 Pure Python, geoprocessing, ArcGIS Python API, DBMS admin.
-### SQL:    
+### SQL:
 Native DBMS spatial queries and geodatabase Admin functionality.
+### C#
+ArcGIS Pro SDK, ArcObjects, random C# projects.
 ### Java:   
 Using SDE SDK and Java.SQL utilities to affect geodatabases and databases.
 ### .NET
