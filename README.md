@@ -9,7 +9,5 @@ Native DBMS spatial queries and geodatabase Admin functionality.
 ArcGIS Pro SDK, ArcObjects, random C# projects.
 ### Java:   
 Using SDE SDK and Java.SQL utilities to affect geodatabases and databases.
-### .NET
-Using ArcObjects in .NET and various other C# projects.
 ### Arduino
 Arduino code for various projects
