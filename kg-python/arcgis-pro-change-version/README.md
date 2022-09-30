@@ -11,14 +11,14 @@ Using the following:
 3. Use `<Layer>.updateConnectionProperties()` to replace the original connection properties with the updated copy
 
 ```
-for l in layers:
-    if not l.isBasemapLayer and not l.isGroupLayer:
-        conn_props = l.connectionProperties
-        updated_props = l.connectionProperties
+for lyr in layers:
+    if not lyr.isBasemapLayer and not lyr.isGroupLayer:
+        conn_props = lyr.connectionProperties
+        updated_props = lyr.connectionProperties
         updated_props["connection_info"]["version"] = new_branch_version["versionInfo"]["versionName"]
         updated_props["connection_info"]["versionguid"] = new_branch_version["versionInfo"]["versionGuid"]
 
-        l.updateConnectionProperties(l.connectionProperties, updated_props, validate=False)
+        lyr.updateConnectionProperties(lyr.connectionProperties, updated_props, validate=False)
 ```
 
 `arcpy.mp.Layer`
