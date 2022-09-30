@@ -27,7 +27,7 @@ layers = pro_map[0].listLayers()
 # update all feature layers to use new version
 for lyr in layers:
     try:
-        if not lyr.isBasemapLayer and not l.isGroupLayer:
+        if not lyr.isBasemapLayer and not lyr.isGroupLayer:
             conn_props = lyr.connectionProperties
             updated_props = lyr.connectionProperties
             updated_props["connection_info"]["version"] = new_branch_version["versionInfo"]["versionName"]
