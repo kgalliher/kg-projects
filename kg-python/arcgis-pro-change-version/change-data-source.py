@@ -25,14 +25,14 @@ pro_map = pro_project.listMaps(_map)
 layers = pro_map[0].listLayers()
 
 # update all feature layers to use new version
-for l in layers:
+for lyr in layers:
     try:
-        if not l.isBasemapLayer and not l.isGroupLayer:
-            conn_props = l.connectionProperties
-            updated_props = l.connectionProperties
+        if not lyr.isBasemapLayer and not l.isGroupLayer:
+            conn_props = lyr.connectionProperties
+            updated_props = lyr.connectionProperties
             updated_props["connection_info"]["version"] = new_branch_version["versionInfo"]["versionName"]
             updated_props["connection_info"]["versionguid"] = new_branch_version["versionInfo"]["versionGuid"]
-            l.updateConnectionProperties(l.connectionProperties, updated_props, validate=False)
+            lyr.updateConnectionProperties(lyr.connectionProperties, updated_props, validate=False)
 
     except AttributeError as ar:
         print(ar)
