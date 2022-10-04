@@ -8,8 +8,8 @@ _map = "ChangeVersionTemplate"
 _version = "api_parcelrecord002"
 
 # Access feature service and version manager with Python API
-base_server_url = "https://dev0016752.esri.com/server/rest/services/Redlands/"
-gis = GIS("https://dev0016752.esri.com/portal/", "admin", "esri.agp", verify_cert=False)
+base_server_url = "https://server.domain.com/server/rest/services/Redlands/"
+gis = GIS("https://server.domain.com/portal/", "creator", "pass.agp", verify_cert=False)
 
 # ArcGIS Python API - VersionManagementServer - Create version and get its properties
 version_management_server_url = f"{base_server_url}/VersionManagementServer"
@@ -17,7 +17,7 @@ vms = VersionManager(version_management_server_url, gis)
 new_branch_version = vms.create(_version, "public", "New version for editing")
 
 # Pro project and map objects
-default_project_location = r"C:\Users\ken6574\Documents\ArcGIS\Projects"
+default_project_location = r"C:\Users\Me\Documents\ArcGIS\Projects"
 project_path = os.path.join(default_project_location, "ChangeVersionTest")
 pro_project = arcpy.mp.ArcGISProject(os.path.join(project_path, "ChangeVersionTest.aprx"))
 
