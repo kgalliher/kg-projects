@@ -14,12 +14,12 @@
     "esri",
     "typescript"
   ],
-  "author": "Rene Rubalcava <rrubalcava@esri.com>",
+  "author": "Ken Galliher <natas333x2@gmail.com>",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/Esri/jsapi-resources/issues"
+    "url": "https://github.com/kgalliher/kg-projects/issues"
   },
-  "homepage": "https://developers.arcgis.com/javascript/latest/guide/typescript-setup/index.html",
+  "homepage": "",
   "dependencies": {},
   "devDependencies": {
     "@types/arcgis-js-api": "^4.11.0",

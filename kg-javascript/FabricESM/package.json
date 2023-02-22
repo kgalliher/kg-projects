@@ -1,12 +1,21 @@
 {
-  "name": "vite-project",
+  "name": "fabric-esm",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview --port 3000"
+  },
+  "keywords": [
+    "esri",
+    "typescript"
+  ],
+  "author": "Ken Galliher <natas333x2@gmail.com>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/kgalliher/kg-projects/issues"
   },
   "devDependencies": {
     "typescript": "^4.9.3",
@@ -14,5 +23,12 @@
   },
   "dependencies": {
     "@arcgis/core": "^4.26.0-next.20230217"
-  }
+  },
+  "description": "Parcel fabric merge parcels demo",
+  "main": "index.html",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kgalliher/kg-projects.git#master"
+  },
+  "homepage": "https://github.com/kgalliher/kg-projects/tree/master#readme"
 }
