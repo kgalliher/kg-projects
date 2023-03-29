@@ -13,6 +13,7 @@
   <style>
     html,
     body,
+    
     #viewDiv {
       padding: 0;
       margin: 0;
@@ -24,10 +25,9 @@
       width: 100%;
     }
 
-    #writeAttr{
-      width: 256px;
+    #btnCreateRec {
+      background-color: lightgray;
     }
-
     .esri-item-list__scroller {
       overflow-y: visible;
     }
@@ -65,9 +65,16 @@
 
     .editArea-container esri-widget--panel{
       max-height: 600px;
+      overflow: hidden;
     }
     .esri-view-height-medium .esri-expand .esri-widget--panel{
-      max-height: 600px;
+      max-height: 680px;
+      overflow: hidden;
+    }
+
+    .esri-view-height-small .esri-expand .esri-widget--panel{
+      max-height: 680px;
+      overflow: hidden;
     }
     /* override default styles */
     .esri-feature-form {
@@ -89,60 +96,71 @@
     .esri-feature-templates__scroller {
       max-height: 200px;
     }
+
+    #outputMessages {
+        position: absolute;
+        z-index: 70;
+        left: 0;
+        bottom: 0px;
+        margin: 10px;
+        box-sizing: border-box;
+        padding: 20px;
+        height: 50%;
+        width: 350px;
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        font-size: 14px;
+        line-height: 30px;
+        overflow: auto;
+      }
+
+      #outputMessages span {
+        color: #f7be81;
+        font-weight: bold;
+      }
   </style>
 </head>
-
 <body>
   <script type="module" src="/src/main.ts"></script>
   <div id="editArea" class="editArea-container esri-widget--panel">
     <div id="addFeatureDiv" style="display:block;">
-      <h3 class="list-heading">Sheboygan County<br />Assessor’s Office</h3>
-      <ol>
-        <li>The Assessor's office receives a new deed</li>
-        <li>Examines the deed and generates a new legal record</li>
-        <li>Generates a new parcel PIN</li>
-        <li>Updates the CAMA system</li>
-        <li>Updates the parcel fabric</li>
-      </ol>
+      <h3 class="list-heading">Merge Parcels</h3>
       <p>Instructions:</p>
       <ul style="font-size: 13px; padding-left: 1.5em;">
-        <li>Enter a parcel record name and a comma separated list of parcel PINs</li>
+        <li>Select parcels to create a list of parcel PINs</li>
         <li>Enter new parcel PIN and stated area value</li>
         <li>Merge the selected parcels</li>
       </ul>
-      <br />
       <input type="button" class="esri-button" value="Begin" id="btnBegin" />
     </div>
     <div id="featureUpdateDiv" style="display:none; margin-top: 1em;">
-      <h3 class="list-heading">Sheboygan County<br />Assessor’s Office</h3>
+      <h3 class="list-heading">Merge Parcels</h3>
       <div id="recordArea">
         <div id="recForm"></div>
           <label for="recordName">Enter Record Name:</label>
           <input value="" type="text" id="recordName" aria-invalid="false" class="esri-input esri-feature-form__input" required maxlength="">
           <br />
-          <label for="recordName">Enter PINS to Merge:</label>
-          <input value="" type="text" id="parcelPins" aria-invalid="false" class="esri-input esri-feature-form__input" required placeholder="59016219960,59016219962" maxlength="100">
+          <label for="recordName">Select PINS to Merge:</label>
+          <input value="" type="text" id="parcelPins" aria-invalid="false" class="esri-input esri-feature-form__input" required maxlength="100">
           <br />
           <p></p>
-          <input type="submit" class="esri-button" value="Create Record & Select Parcels" id="btnCreateRec" />
+          <input type="submit" class="esri-button" value="Create Record" id="btnCreateRec" disabled />
+          
       </div>
       <div id="attributeArea">
         <div id="formDiv"></div>
       </div>
-      <input type="button" class="esri-button" value="Merge Parcels" id="btnMerge" />
+      <input type="button" class="esri-button" value="Merge Parcels" id="btnMerge" disabled />
       <br />
       <div id="clearSelectionArea">
         <input type="button" class="esri-button" value="Clear Selection" id="btnClear" />
       </div>
-      
-      <p>Info:</p>
-      <textarea id="writeAttr"></textarea>
+      <br>
     </div>
     <div id="updateInstructionDiv" style="text-align:center; display:block">
     </div>
   </div>
-  <br />
-  <div id="viewDiv"></div>
+  <div id="viewDiv"><div id="outputMessages" class="esri-widget"></div></div>
   
 </body>
 </html>

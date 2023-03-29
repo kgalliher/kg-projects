@@ -7,13 +7,14 @@ import FieldElement from "@arcgis/core/form/elements/FieldElement";
 import { VersionManagementService } from "./VersionManagement";
 import { ParcelFabricService } from "./ParcelFabric";
 import { MapElements } from "./MapElements";
-import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 
 let baseUrl = "https://krennic.esri.com/server/rest/services/Sheboygan109/";
+const outputMessages = document.getElementById("outputMessages");
 
 // Variables for controlling the selection/deselection of features
 let editFeature: Graphic, highlight;
 let selectedFeatures: any[] | __esri.Feature[] = [];
+let selectedParcelPins = [];
 let highlights = [];
 
 // Get a single ParcelFabricService object
@@ -63,8 +64,7 @@ vms.setVersion(versionName)
     });
 
     const formTemplate = new FormTemplate({
-      title: "Inspector report",
-      description: "Enter all relevant information below",
+      description: "Parcel Attributes",
       elements: [nameElement, statedAreaElement] // Add all elements to the template
     });
 
@@ -77,6 +77,45 @@ vms.setVersion(versionName)
 
     // Active function to listen to selected feature events
     selectExistingFeature()
+
+    // function for messaging
+    function displayMessage(info) {
+      outputMessages.innerHTML += info;
+      outputMessages.scrollTop = outputMessages.scrollHeight;
+    }
+
+    function clearMessages(){
+      outputMessages.innerHTML = "";
+    }
+
+    function toggleButtonAvailability(idName: string, isDisabled: boolean){
+      const element = (document.getElementById(idName) as HTMLButtonElement)
+      element.disabled = isDisabled;
+      const currentEnabledValue = element.getAttribute("disabled")
+      if(currentEnabledValue != null)
+        element.style.backgroundColor = "lightgray";
+      else
+        element.style.backgroundColor = "#0079c1";
+    }
+
+    function processMergeResult(serviceEdits: Array<any>){
+      let values = "";
+      if(serviceEdits){
+        serviceEdits.forEach(layer => {
+          if(layer.id === 15){
+            const adds = layer.editedFeatures.adds[0].attributes;
+            console.log('adds :>> ', adds);
+            values = `
+              <span>Objectid:</span>&nbsp;&nbsp;${adds.OBJECTID},<br>
+              <span>Name:</span>&nbsp;&nbsp;${adds.Name},<br>
+              <span>Record GUID:</span>&nbsp;&nbsp;${adds.CreatedByRecord},<br>
+              <span>Stated Area:</span>&nbsp;&nbsp;${adds.StatedArea}<br>
+              `
+          }
+        });
+      }
+      return ((values.length > 0) ? values : "Result not found.");
+    }
 
     // Let the games begin (dismisses the instructions and opens the form)
     let btnBegin = document.getElementById("btnBegin");
@@ -139,6 +178,16 @@ vms.setVersion(versionName)
     // Function to populate feature array. Async issue when pushing directly in function above.
     function captureFeatures(feature: __esri.Feature) {
       selectedFeatures.push(feature);
+      let pinValue = selectedFeatures[selectedFeatures.length -1].attributes.Name;
+      displayMessage(`<span>Selected Parcel:</span> ${pinValue}<br>`);
+      selectedParcelPins.push(pinValue);
+      if(selectedFeatures.length >= 2){
+        toggleButtonAvailability("btnCreateRec", false);
+        toggleButtonAvailability("btnMerge", false);
+        let parcelPins = selectedParcelPins.join(); 
+        let parcelPinInput = (document.getElementById("parcelPins") as HTMLInputElement);
+        parcelPinInput.value = parcelPins;
+      }
     }
 
     function zoomToSelected(extent) {
@@ -168,9 +217,6 @@ vms.setVersion(versionName)
             return editFeature;
           }
           else { throw "Cannot find features " + pins }
-        })
-        .then((res: Graphic) => {
-          zoomToSelected(res.geometry.extent);
         })
     }
 
@@ -203,26 +249,33 @@ vms.setVersion(versionName)
         h.remove();
       });
       selectedFeatures.length = 0;
-      document.getElementById("writeAttr").innerHTML = "";
+      selectedParcelPins = [];
+      toggleButtonAvailability("btnCreateRec", true);
+      toggleButtonAvailability("btnMerge", true);
+      (document.getElementById("parcelPins") as HTMLInputElement).value = "";
+      displayMessage("<br><span>Selection cleared</span>");
     })
     
   // PARCEL FABRIC ----------------------
     // Event listeners that execute the FS and ParcelFabric functions
     let btnCreateRec = document.getElementById("btnCreateRec");
-    btnCreateRec.addEventListener("click", () => {
-      document.getElementById("writeAttr").innerHTML = "creating record...";
-      let newRecName = document.getElementById("recordName").value;
-      let parcelPins = document.getElementById("parcelPins").value;
 
+    btnCreateRec.addEventListener("click", () => {
+      let newRecName = (document.getElementById("recordName")as HTMLInputElement).value;
+      let parcelPins = (document.getElementById("parcelPins")as HTMLInputElement).value;
+      displayMessage(`<br><span>Creating record:</span> ${newRecName}`);
       selectPinsForMerge(parcelPins.split(","));
 
       // Create a new record with the ParcelFabricService
       pfs.createRecord(newRecName)
         .then(() => {
-          document.getElementById("writeAttr").innerHTML = "Created record: " + pfs.activeRecord.recordName;
+          displayMessage(`<br><span>Created record</span> ${pfs.activeRecord.recordName}`)
+          let parcelPinInput = (document.getElementById("parcelPins") as HTMLInputElement);
+          parcelPinInput.value = "";
+          selectedParcelPins = [];
         })
         .catch((err) => {
-          document.getElementById("writeAttr").innerHTML = "Error creating record: " + err;
+          displayMessage(`<br><span>Error creating record:</span> ${err}`)
         });
     });
 
@@ -232,15 +285,17 @@ vms.setVersion(versionName)
       const updated = featureForm.getValues();
       let mergedFeatureName = updated.Name;
       let mergedFeatureStatedArea = updated.StatedArea;
-
+      displayMessage("<br><span>Merging parcels</span>")
       // Merge the selected with the ParcelFabricService
       pfs.mergeParcels(mergedFeatureName, mergedFeatureStatedArea, selectedFeatures)
-        .then(() => {
+        .then((res) => {
+          const mergeResult = processMergeResult(res);
+          displayMessage(`<br><span>Merge result:</span><p>Success</p><br>${mergeResult}`);
           mapUi.refreshLayers();
         })
         .catch((err) => {
           console.log(err);
-          document.getElementById("writeAttr").innerHTML = "Error merging parcels: " + err;
+          displayMessage(`<br><span>Error merging parcels:<span> ${err}`)
         })
     })
   })

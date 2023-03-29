@@ -14,6 +14,7 @@ export class ParcelFabricService {
   private _baseUrl: string;
   public activeRecord: Record;
   public vms: VersionManagementService;
+  public outputMessages = null;
 
   constructor(baseUrl: string, vms: VersionManagementService) {
     this._baseUrl = baseUrl;
@@ -21,13 +22,24 @@ export class ParcelFabricService {
     this._recordsUrl = `${baseUrl}FeatureServer/1`;
     this.vms = vms;
     this._versionName = vms.getVersion().versionName;
+    this.outputMessages = document.getElementById("outputMessages");
+  }
+
+  // function for messaging
+  displayMessage(info) {
+    this.outputMessages.innerHTML += info;
+    this.outputMessages.scrollTop = this.outputMessages.scrollHeight;
+  }
+
+  clearMessages(){
+    this.outputMessages.innerHTML = "";
   }
 
   createRecord(recordName: string): Promise<__esri.RequestResponse> {
     return new Promise((resolve, reject) => { 
       this.vms.toggleEditSession("startReading")
         .then((resp) => {
-          let recordOid = this.vms.reserveObjectIds(this._recordsUrl, 1)
+          this.vms.reserveObjectIds(this._recordsUrl, 1)
             .then((resp) => { return resp; })
             .catch((err) => { console.log(err); })
             .then((recordOid) => {
@@ -111,8 +123,8 @@ export class ParcelFabricService {
           })
             .then(function (response) {
               if (response.data.success === true) {
-                document.getElementById("writeAttr").innerHTML = "Successfully merged the parcels";
-                resolve(true);
+                // const resultVal = processMergeResult(response.data.serviceEdits)
+                resolve(response.data.serviceEdits);
               }
             })
             .then(() => {
