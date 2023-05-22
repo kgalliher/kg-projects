@@ -253,7 +253,7 @@ vms.setVersion(versionName)
       toggleButtonAvailability("btnCreateRec", true);
       toggleButtonAvailability("btnMerge", true);
       (document.getElementById("parcelPins") as HTMLInputElement).value = "";
-      displayMessage("<br><span>Selection cleared</span>");
+      displayMessage("<br><span>Selection cleared</span><br/>");
     })
     
   // PARCEL FABRIC ----------------------
