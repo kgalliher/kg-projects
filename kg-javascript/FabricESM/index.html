@@ -1,4 +1,5 @@
 <html>
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
@@ -13,7 +14,7 @@
   <style>
     html,
     body,
-    
+
     #viewDiv {
       padding: 0;
       margin: 0;
@@ -26,8 +27,9 @@
     }
 
     #btnCreateRec {
-      background-color: lightgray;
+      background-color: #0079c1;
     }
+
     .esri-item-list__scroller {
       overflow-y: visible;
     }
@@ -63,19 +65,21 @@
       bottom: 0.75em;
     }
 
-    .editArea-container esri-widget--panel{
+    .editArea-container esri-widget--panel {
       max-height: 600px;
       overflow: hidden;
     }
-    .esri-view-height-medium .esri-expand .esri-widget--panel{
+    
+    .esri-view-height-medium .esri-expand .esri-widget--panel {
       max-height: 680px;
       overflow: hidden;
     }
 
-    .esri-view-height-small .esri-expand .esri-widget--panel{
+    .esri-view-height-small .esri-expand .esri-widget--panel {
       max-height: 680px;
       overflow: hidden;
     }
+
     /* override default styles */
     .esri-feature-form {
       background: #fff;
@@ -97,29 +101,42 @@
       max-height: 200px;
     }
 
-    #outputMessages {
-        position: absolute;
-        z-index: 70;
-        left: 0;
-        bottom: 0px;
-        margin: 10px;
-        box-sizing: border-box;
-        padding: 20px;
-        height: 50%;
-        width: 350px;
-        background: rgba(77, 68, 68, 0.7);
-        color: white;
-        font-size: 16px;
-        line-height: 30px;
-        overflow: auto;
-      }
+    #editWidgetArea {
+      height: 100%;
+    }
 
-      #outputMessages span {
-        color: #6bf06b;
-        font-weight: bold;
-      }
+    .esri-view-height-small .esri-expand .esri-widget--panel,
+    .esri-view-height-small .esri-expand .esri-widget--panel-height-only,
+    .esri-view-height-small .esri-ui-corner .esri-component.esri-widget--panel,
+    .esri-view-height-small .esri-ui-corner .esri-component.esri-widget--panel-height-only {
+      max-height: 600px;
+    }
+
+    #outputMessages {
+      position: absolute;
+      z-index: 70;
+      width: 50px;
+      right: 50%;
+      bottom: 0px;
+      margin: 10px;
+      box-sizing: border-box;
+      padding: 20px;
+      height: 15%;
+      width: 350px;
+      background: rgba(77, 68, 68, 0.7);
+      color: white;
+      font-size: 16px;
+      line-height: 30px;
+      overflow: auto;
+    }
+
+    #outputMessages span {
+      color: #6bf06b;
+      font-weight: bold;
+    }
   </style>
 </head>
+
 <body>
   <script type="module" src="/src/main.ts"></script>
   <div id="editArea" class="editArea-container esri-widget--panel">
@@ -137,30 +154,45 @@
       <h3 class="list-heading">Merge Parcels</h3>
       <div id="recordArea">
         <div id="recForm"></div>
-          <label for="recordName">Enter Record Name:</label>
-          <input value="" type="text" id="recordName" aria-invalid="false" class="esri-input esri-feature-form__input" required maxlength="">
+        <label for="recordName">Enter Record Name:</label>
+        <input value="" type="text" id="recordName" aria-invalid="false" class="esri-input esri-feature-form__input"
+          required maxlength="">
           <br />
-          <label for="recordName">Select PINS to Merge:</label>
-          <input value="" type="text" id="parcelPins" aria-invalid="false" class="esri-input esri-feature-form__input" required maxlength="100">
-          <br />
-          <p></p>
-          <input type="submit" class="esri-button" value="Create Record" id="btnCreateRec" disabled />
-          
+        <input value="" type="text" id="parcelPins" aria-invalid="false" class="esri-input esri-feature-form__input"
+          required maxlength="100" hidden>
+        <br />
+        <input type="submit" class="esri-button" value="Create Record" id="btnCreateRec" />
+        <p>Branch Version: <span id="currentVersionName"></span></p>
+        <p>Active Record: <span id="activeRecordName"></span></p>
+        
       </div>
-      <div id="attributeArea">
-        <div id="formDiv"></div>
-      </div>
+      <br />
       <input type="button" class="esri-button" value="Merge Parcels" id="btnMerge" disabled />
+      <br />
+      <input type="button" class="esri-button" value="Copy Lines To Parcel Type" id="btnCopyLines" disabled />
+      <br />
+      <input type="button" class="esri-button" value="Create Seeds" id="btnCreateSeeds" />
+      <br />
+      <input type="button" class="esri-button" value="Build Active Record" id="btnBuildParcels" />
       <br />
       <div id="clearSelectionArea">
         <input type="button" class="esri-button" value="Clear Selection" id="btnClear" />
       </div>
       <br>
     </div>
-    <div id="updateInstructionDiv" style="text-align:center; display:block">
+    <div id="updateInstructionDiv" style="text-align:center; display:block"></div>
+    <div id="editWidgetArea" class="editArea-container esri-widget--panel"></div>
+    
+    <div id="splitArea">
+      <div id="featureSplitDiv" style="display:none; margin-top: 1em;">
+        <h3 class="list-heading">Split Parcels</h3>
+      </div>
     </div>
   </div>
-  <div id="viewDiv"><div id="outputMessages" class="esri-widget"></div></div>
-  
+
+  <div id="viewDiv">
+    <div id="outputMessages" class="esri-widget"></div>
+  </div>
+
 </body>
 </html>

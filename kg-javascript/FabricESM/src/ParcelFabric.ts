@@ -1,5 +1,6 @@
 import esriRequest from "@arcgis/core/request";
 import { VersionManagementService, Version } from "./VersionManagement";
+import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 
 export interface Record {
   recordName: string;
@@ -35,7 +36,74 @@ export class ParcelFabricService {
     this.outputMessages.innerHTML = "";
   }
 
-  createRecord(recordName: string): Promise<__esri.RequestResponse> {
+  getRecord(recordName: string) {
+    return new Promise((resolve, reject) => {
+      const fl = new FeatureLayer({
+        url: this._recordsUrl
+      })
+  
+      let query = fl.createQuery();
+      query.where = `Name = '${recordName}'`;
+      query.outFields = ["OBJECTID", "Name", "GlobalID"]
+      query.gdbVersion = this._versionName;
+      fl.queryFeatures(query)
+        .then((res) => {
+          resolve(res)
+
+        })
+        .catch((err) => {
+          console.log(err);
+          
+        })
+    })
+  }
+  setExistingRecord(recordName: string){
+    return new Promise((resolve, reject) => {
+      this.getRecord(recordName)
+      .then((res) => {
+        let recordId = res.features[0].attributes["GlobalID"];
+        let record: Record = { recordName: recordName, recordGuid: recordId }
+        this.activeRecord = record;
+        this.displayMessage(`<br><span>Record already exists. Setting:</span> ${this.activeRecord.recordName}`)
+        resolve(recordId);
+      })
+      .then(() => {
+        Promise.resolve(this.createRecord(recordName));
+      })
+      .catch((err) => {
+        console.log(err);
+        
+      })
+  });
+  }
+
+  async checkRecordExists(recordName): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const fl = new FeatureLayer({
+        url: this._recordsUrl
+      })
+  
+      let query = fl.createQuery();
+      query.where = `Name = '${recordName}'`;
+      query.outFields = ["OBJECTID", "Name", "GlobalID"]
+      query.gdbVersion = this._versionName;
+      fl.queryFeatures(query)
+        .then((res) => {
+          if(res.features.length > 0){
+            resolve(true);
+          }
+          
+          resolve(false);
+
+          })
+        .catch((err) => {
+          console.log(err);
+          
+        })
+    })
+  }
+
+  async createRecord(recordName: string): Promise<__esri.RequestResponse> {
     return new Promise((resolve, reject) => { 
       this.vms.toggleEditSession("startReading")
         .then((resp) => {
@@ -70,6 +138,7 @@ export class ParcelFabricService {
                     let recordId = resp.data[0].addResults[0].globalId;
                     let record: Record = { recordName: recordName, recordGuid: recordId }
                     this.activeRecord = record;
+                    return this.activeRecord;
                   }
                 })
                 .then((resp) => {
@@ -85,6 +154,193 @@ export class ParcelFabricService {
         .catch((err) => {
             reject(false);
             console.log(err)
+        })
+    });
+  }
+  
+  assignFeatureToRecord(layerId: number, addedFeatureGuid: string): Promise<__esri.RequestResponse> {
+    return new Promise((resolve, reject) => {
+      this.vms.toggleEditSession("startReading")
+      .then((res) => {
+        const sessionId = this.vms.getSessionId();
+        const activeRecordGuid = this.activeRecord.recordGuid;
+        const versionName = this.vms.getVersion().versionName;
+
+        let assignToRecordOptions = {
+          "f": "json",
+          "gdbVersion": versionName,
+          "sessionId": sessionId,
+          "record": activeRecordGuid,
+          "parcelFeatures": `[{"id":"${addedFeatureGuid}","layerId":"${layerId}"}]`,
+          "writeAttribute": "CreatedByRecord",
+          "async": false,
+        }
+
+        esriRequest(this._pfUrl + "/assignFeaturesToRecord", {
+          "method": "post",
+          "responseType": "json",
+          "query": assignToRecordOptions
+        })
+          .then(function (response) {
+            if (response.data.success === true) {
+              resolve(response.data.serviceEdits);
+
+            }
+          })
+          .then(() => {
+            // stop the reading session
+            this.vms.toggleEditSession("stopReading");
+          })
+          .catch((err) => {
+            this.vms.toggleEditSession("stopReading");
+            reject(err);
+          })
+      })
+      .catch((err) => {
+        console.log(err);
+        this.displayMessage(err);
+      })
+    })
+  }
+ 
+  createSeeds(): Promise<__esri.RequestResponse> {
+    return new Promise((resolve, reject) => {
+      this.vms.toggleEditSession("startReading")
+      .then((res) => {
+        const sessionId = this.vms.getSessionId();
+        const activeRecordGuid = this.activeRecord.recordGuid;
+        const versionName = this.vms.getVersion().versionName;
+
+        let createSeedsOptions = {
+          "f": "json",
+          "gdbVersion": versionName,
+          "sessionId": sessionId,
+          "record": activeRecordGuid,
+          "async": false,
+        }
+
+        esriRequest(this._pfUrl + "/createSeeds", {
+          "method": "post",
+          "responseType": "json",
+          "query": createSeedsOptions
+        })
+          .then(function (response) {
+            if (response.data.success === true) {
+              resolve(response.data.serviceEdits);
+            }
+          })
+          .then(() => {
+            // stop the reading session
+            this.vms.toggleEditSession("stopReading");
+          })
+          .catch((err) => {
+            reject(err);
+          })
+      })
+      .catch((err) => {
+        console.log(err);
+        this.displayMessage(err);
+      })
+    })
+  }
+
+  buildRecord(): Promise<__esri.RequestResponse> {
+    return new Promise((resolve, reject) => {
+      this.vms.toggleEditSession("startReading")
+      .then((res) => {
+        const sessionId = this.vms.getSessionId();
+        const activeRecordGuid = this.activeRecord.recordGuid;
+        const versionName = this.vms.getVersion().versionName;
+
+        const buildOptions = {
+          "f": "json",
+          "gdbVersion": versionName,
+          "sessionId": sessionId,
+          "record": activeRecordGuid,
+          "async": false,
+        }
+
+        esriRequest(this._pfUrl + "/build", {
+          "method": "post",
+          "responseType": "json",
+          "query": buildOptions
+        })
+          .then(function (response) {
+            if (response.data.success === true) {
+              // const resultVal = processMergeResult(response.data.serviceEdits)
+              resolve(response.data.serviceEdits);
+
+            }
+          })
+          .then(() => {
+            // stop the reading session
+            this.vms.toggleEditSession("stopReading");
+          })
+          .catch((err) => {
+            reject(err);
+          })
+      })
+      .catch((err) => {
+        console.log(err);
+        this.displayMessage(err);
+      })
+    })
+  }
+
+  copyLinesTo(selectedFeatures: __esri.Feature[]): Promise<__esri.RequestResponse> {
+    return new Promise((resolve, reject) => {
+      this.vms.toggleEditSession("startReading")
+      .then((res) => {
+          let sessionId = this.vms.getSessionId();
+          let activeRecordGuid = this.activeRecord.recordGuid;
+          let versionName = this.vms.getVersion().versionName;
+          let parentParcels: { id: string, layerId: string }[] = [];
+          selectedFeatures.forEach((item) => {
+            let parentParcel = { "id": item.attributes.GlobalID, "layerId": String(item.layer.layerId) };
+            parentParcels.push(parentParcel);
+          });
+          let parentParcelsStr = JSON.stringify(parentParcels);
+          const moment = Math.round((new Date()).getTime() / 1000);
+
+          let copyLinesToOptions = {
+            "f": "json",
+            "gdbVersion": versionName,
+            "sessionId": sessionId,
+            "parentParcels": parentParcelsStr,
+            "record": activeRecordGuid,
+            "markParentAsHistoric": true,
+            "useSourceLineAttributes": true,
+            "useSourcePolygonAttributes": true,
+            "targetParcelType": 15,
+            "targetParcelSubtype": -1000,
+            "attributeOverrides": '{"type":"PropertySet","propertySetItems":[]}',
+            "async": false,
+            
+          }
+          console.log(copyLinesToOptions);
+          
+          esriRequest(this._pfUrl + "/copyLinesToParcelType", {
+            "method": "post",
+            "responseType": "json",
+            "query": copyLinesToOptions
+          })
+            .then(function (response) {
+              if (response.data.success === true) {
+                // const resultVal = processMergeResult(response.data.serviceEdits)
+                resolve(response.data.serviceEdits);
+              }
+            })
+            .then(() => {
+              // stop the reading session
+              this.vms.toggleEditSession("stopReading");
+            })
+            .catch((err) => {
+              reject(err);
+            })
+        })
+        .catch((err) => {
+          console.log(err);
+          this.displayMessage(err);
         })
     });
   }

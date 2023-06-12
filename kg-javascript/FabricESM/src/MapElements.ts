@@ -1,7 +1,6 @@
 import EsriMap from "@arcgis/core/Map";
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import LabelClass from "@arcgis/core/layers/support/LabelClass";
-import SimpleRenderer from "@arcgis/core/renderers/SimpleRenderer";
 
 export interface FLayer{
   name: string;
@@ -59,10 +58,12 @@ export class MapElements {
     });
 
     const linesLabelClass = new LabelClass({
-      labelExpressionInfo: { expression: "$feature.Distance + ' ft'" },
+      labelExpressionInfo: {
+        expression: "Round($feature.Distance, 2)"
+      },
       symbol: {
         type: "text",  // autocasts as new TextSymbol()
-        color: "green",
+        color: "black",
         haloSize: 1,
         haloColor: "white"
       }
@@ -81,6 +82,7 @@ export class MapElements {
     });
   
     let parcelLayer = new FeatureLayer({
+      title: "Tax Parcels",
       url: `${this._baseUrl}FeatureServer/15`,
       outFields: ["name", "statedarea", "Shape__Area", "globalid"],
       popupEnabled: false,
@@ -102,10 +104,11 @@ export class MapElements {
       }
     }
     let historicParcelLayer = new FeatureLayer({
+      title: "Historic Tax Parcels",
       url: `${this._baseUrl}FeatureServer/15`,
       outFields: ["name", "statedarea", "Shape__Area", "globalid"],
       popupEnabled: false,
-      id: "taxParcels",
+      id: "historicTaxParcels",
       labelingInfo: taxLabelClass,
       labelsVisible: false,
       gdbVersion: this.versionName,
@@ -115,8 +118,9 @@ export class MapElements {
     this.mapLayers["historicParcels"] = historicParcelLayer;
 
     let parcelLinesLayer = new FeatureLayer({
-      title: "ParcelLines",
+      title: "Parcel Lines",
       url: `${this._baseUrl}FeatureServer/14`,
+      outFields: ["CreatedByRecord", "RetiredByRecord", "Direction", "Distance"],
       popupEnabled: false,
       id: "taxParcelLines",
       labelingInfo: linesLabelClass,
@@ -155,5 +159,9 @@ export class MapElements {
     return map;
   }
 
-  
+  lineLabelExpression(){
+    const arcade = document.getElementById("cogo-label").text;
+    return arcade;
+  }
+
 }
