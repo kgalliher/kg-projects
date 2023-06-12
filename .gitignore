@@ -23,3 +23,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+kg-javascript/FabricDigitizer/index.html
+kg-dotnet/arcgispro-database-tester/GeodatabaseConnection/obj/Debug/.NETFramework,Version=v4.6.1.AssemblyAttributes.cs
+kg-javascript/FabricTypescript/app/main.js
+kg-javascript/FabricTypescript/app/VersionMangement.js
+kg-dotnet/arcgispro-database-tester/GeodatabaseConnection/obj/Debug/GeodatabaseConnection.csproj.AssemblyReference.cache

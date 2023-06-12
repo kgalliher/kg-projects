@@ -58,12 +58,13 @@ define(["require", "exports", "esri/request"], function (require, exports, reque
             return __awaiter(this, void 0, void 0, function* () {
                 return new Promise((resolve, reject) => {
                     this.vms.then((resp) => {
+                        let v;
                         resp.data.versions.forEach(version => {
                             if (version.versionName == versionName) {
-                                let v = Object.assign({}, version);
-                                resolve(v);
+                                v = Object.assign({}, version);
                             }
                         });
+                        resolve(v);
                     })
                         .catch((err) => {
                         console.log(err);
@@ -74,12 +75,10 @@ define(["require", "exports", "esri/request"], function (require, exports, reque
         }
         toggleEditSession(flag) {
             return __awaiter(this, void 0, void 0, function* () {
-                console.log(flag);
                 let versionGuid = this.version.versionGuid.substr(1, this.version.versionGuid.indexOf("}") - 1);
                 let editingUrl = `${this._vmsUrl}/versions/${versionGuid}/${flag}`;
                 if (flag == "startReading") {
                     this.setSessionId(); // only generate a sessionId here on startEditing.
-                    console.log("VMS sessionId: " + this.sessionId);
                 }
                 return new Promise((resolve, reject) => {
                     request_1.default(editingUrl, {
