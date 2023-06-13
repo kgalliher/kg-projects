@@ -129,6 +129,17 @@ export class MapElements {
     });
     this.mapLayers["parcelLines"] = parcelLinesLayer;
 
+    let parcelPointsLayer = new FeatureLayer({
+      title: "Points",
+      url: `${this._baseUrl}FeatureServer/7`,
+      outFields: ["CreatedByRecord", "RetiredByRecord", "isFixed", "X", "Y", "Z"],
+      popupEnabled: false,
+      id: "parcelPoints",
+      gdbVersion: this.versionName,
+      definitionExpression: "RetiredByRecord IS NULL",
+    });
+    this.mapLayers["parcelPoints"] = parcelPointsLayer;
+
     const recordsLayerRenderer = {
       type: "simple",
       symbol: {
@@ -153,7 +164,8 @@ export class MapElements {
 
     const map = new EsriMap({
       basemap: "satellite",
-      layers: [recordsLayer, parcelLayer, parcelLinesLayer]
+      layers: [recordsLayer, parcelPointsLayer, parcelLayer, parcelLinesLayer],
+
     });
 
     return map;

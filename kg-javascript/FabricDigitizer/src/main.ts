@@ -51,7 +51,7 @@ vms.setVersion(versionName)
 
     // Shows the access of a single layer
     let parcelLayer = mapUi.mapLayers["parcels"];
-    let historicParcelLayer = mapUi.mapLayers["historicTaxParcels"];
+    let parcelPointsLayer = mapUi.mapLayers["parcelPoints"];
     let parcelLinesLayer = mapUi.mapLayers["parcelLines"];
     let recordsLayer = mapUi.mapLayers["records"];
 
@@ -341,14 +341,19 @@ vms.setVersion(versionName)
       snappingOptions: { enabled: true, featureSources: [{ layer: parcelLinesLayer }] },
       layerInfos: [{
         layer: parcelLinesLayer,
+        enabled: true,
         formTemplate: linesFormTemplate,
       },
       {
         layer: parcelLayer,
         enabled: true,
         formTemplate: parcelsFormTemplate,
-      }
-      ],
+      },
+      {
+        layer: recordsLayer,
+        enabled: false,
+      },
+      ]
     });
 
     // When drawing a line, send the globalid to AssignFeaturesToRecord to add CreatedByRecord value
@@ -374,6 +379,16 @@ vms.setVersion(versionName)
       }
     });
 
+    parcelPointsLayer.on("edits", function (event) {
+      if (event.addedFeatures.length > 0) {
+        let layerId = parcelPointsLayer.layerId;
+        let addedFeatureGuid = event.addedFeatures[0].globalId;
+        pfs.assignFeatureToRecord(layerId, addedFeatureGuid)
+          .then((res) => {
+            processResult(res);
+          })
+      }
+    });
 
     view.ui.add(editExpand, "top-right");
     view.ui.add(editor, "top-left");
@@ -441,24 +456,6 @@ vms.setVersion(versionName)
       }
       // })
     });
-
-    // // Copy selected parcels to parcel type.
-    // let btnCopyLines = document.getElementById("btnCopyLines");
-    // setButtonDisabled("btnCopyLines", true);
-    // btnCopyLines.addEventListener("click", () => {
-    //   displayMessage("<br><span>Copying parcel lines to Tax</span>")
-    //   // Merge the selected with the ParcelFabricService
-    //   pfs.copyLinesTo(selectedFeatures)
-    //     .then((res) => {
-    //       const copyLinesResult = processResult(res);
-    //       displayMessage(`<br><span>Copy Lines result:</span><p>Success</p><br>${copyLinesResult}`);
-    //       mapUi.refreshLayers();
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //       displayMessage(`<br><span>Error copying parcel lines:<span> ${err}`)
-    //     })
-    // })
 
     // Create seeds with active record.
     let btnCreateSeeds = document.getElementById("btnCreateSeeds");
