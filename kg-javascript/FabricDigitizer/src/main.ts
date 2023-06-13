@@ -336,9 +336,34 @@ vms.setVersion(versionName)
       }]
     });
 
+    const pointsFormTemplate = new FormTemplate({
+      elements: [
+        new FieldElement({
+          fieldName: "X",
+          label: "X"
+        }),
+        new FieldElement({
+          fieldName: "Y",
+          label: "Y",
+        }),
+        new FieldElement({
+          fieldName: "Z",
+          label: "Z",
+        }),
+        new FieldElement({
+          fieldName: "CreatedByRecord",
+          label: "Created By Record",
+        }),
+        new FieldElement({
+          fieldName: "RetiredByRecord",
+          label: "Retired By Record",
+        }),
+      ]
+    });
+
     const editor = new Editor({
       view: view,
-      snappingOptions: { enabled: true, featureSources: [{ layer: parcelLinesLayer }] },
+      snappingOptions: { enabled: true, featureSources: [{ layer: parcelLinesLayer }, { layer: parcelPointsLayer }] },
       layerInfos: [{
         layer: parcelLinesLayer,
         enabled: true,
@@ -348,6 +373,11 @@ vms.setVersion(versionName)
         layer: parcelLayer,
         enabled: true,
         formTemplate: parcelsFormTemplate,
+      },
+      {
+        layer: parcelPointsLayer,
+        enabled: true,
+        formTemplate: pointsFormTemplate,
       },
       {
         layer: recordsLayer,
