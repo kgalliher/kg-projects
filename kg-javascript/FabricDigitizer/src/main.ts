@@ -282,9 +282,21 @@ vms.setVersion(versionName)
     const linesFormTemplate = new FormTemplate({
       elements: [
         new FieldElement({
+          fieldName: "Distance",
+          label: "Distance",
+        }),
+        new FieldElement({
+          fieldName: "Direction",
+          label: "Direction",
+          valueExpression: "createdByRecord"
+        }),
+        new FieldElement({
           fieldName: "CreatedByRecord",
           label: "Created By Record",
-          valueExpression: "createdByRecord"
+        }),
+        new FieldElement({
+          fieldName: "RetiredByRecord",
+          label: "Retired By Record",
         }),
       ],
       expressionInfos: [{
