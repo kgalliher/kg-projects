@@ -55,11 +55,20 @@ export class MapElements {
         color: "black",
         haloSize: 1,
         haloColor: "white"
-      }
+      },
+      minScale: 2000,
+      maxScale: 0,
     });
 
     const linesLabelClass = new LabelClass({
-      labelExpressionInfo: { expression: "$feature.Distance + ' ft'" },
+      labelExpressionInfo: {
+        expression: `
+        if ($feature.Distance == NULL) {
+          return "r-" + Round($feature.Radius, 2);
+        } else {
+          return Round($feature.Distance, 2);
+        }`
+      },
       symbol: {
         type: "text",  // autocasts as new TextSymbol()
         color: "green",
@@ -86,7 +95,7 @@ export class MapElements {
       popupEnabled: false,
       id: "taxParcels",
       labelingInfo: taxLabelClass,
-      labelsVisible: false,
+      labelsVisible: true,
       gdbVersion: this.versionName,
       definitionExpression: "RetiredByRecord IS NULL",
     });
@@ -125,6 +134,17 @@ export class MapElements {
     });
     this.mapLayers["parcelLines"] = parcelLinesLayer;    
     
+    let parcelPointsLayer = new FeatureLayer({
+      title: "Points",
+      url: `${this._baseUrl}FeatureServer/7`,
+      outFields: ["CreatedByRecord", "RetiredByRecord", "isFixed", "X", "Y", "Z"],
+      popupEnabled: false,
+      id: "parcelPoints",
+      gdbVersion: this.versionName,
+      definitionExpression: "RetiredByRecord IS NULL",
+    });
+    this.mapLayers["parcelPoints"] = parcelPointsLayer;
+
     const recordsLayerRenderer = {
       type: "simple",  
       symbol: {
@@ -149,7 +169,7 @@ export class MapElements {
   
     const map = new EsriMap({
       basemap: "streets-vector",
-      layers: [recordsLayer, historicParcelLayer, parcelLayer, parcelLinesLayer]
+      layers: [recordsLayer, historicParcelLayer, parcelLayer, parcelLinesLayer, parcelPointsLayer]
     });
 
     return map;

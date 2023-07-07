@@ -88,7 +88,7 @@ vms.setVersion(versionName)
       outputMessages.innerHTML = "";
     }
 
-    function toggleButtonAvailability(idName: string, isDisabled: boolean){
+    function setButtonDisabled(idName: string, isDisabled: boolean){
       const element = (document.getElementById(idName) as HTMLButtonElement)
       element.disabled = isDisabled;
       const currentEnabledValue = element.getAttribute("disabled")
@@ -98,6 +98,9 @@ vms.setVersion(versionName)
         element.style.backgroundColor = "#0079c1";
     }
 
+    setButtonDisabled("btnMerge", true);
+
+    // Displays the service edits for the newly merged feature
     function processMergeResult(serviceEdits: Array<any>){
       let values = "";
       if(serviceEdits){
@@ -182,8 +185,8 @@ vms.setVersion(versionName)
       displayMessage(`<span>Selected Parcel:</span> ${pinValue}<br>`);
       selectedParcelPins.push(pinValue);
       if(selectedFeatures.length >= 2){
-        toggleButtonAvailability("btnCreateRec", false);
-        toggleButtonAvailability("btnMerge", false);
+        // setButtonDisabled("btnCreateRec", false);
+        setButtonDisabled("btnMerge", false);
         let parcelPins = selectedParcelPins.join(); 
         let parcelPinInput = (document.getElementById("parcelPins") as HTMLInputElement);
         parcelPinInput.value = parcelPins;
@@ -195,7 +198,7 @@ vms.setVersion(versionName)
     }
 
     // Query the feature service for the selected features
-    function selectPinsForMerge(pins: number[]) {
+    function selectPinsForMerge(pins: string[]) {
       let whereClause = "name in (";
       pins.forEach(pin => {
         whereClause += `'${pin}',`
@@ -250,8 +253,8 @@ vms.setVersion(versionName)
       });
       selectedFeatures.length = 0;
       selectedParcelPins = [];
-      toggleButtonAvailability("btnCreateRec", true);
-      toggleButtonAvailability("btnMerge", true);
+      // setButtonDisabled("btnCreateRec", false);
+      setButtonDisabled("btnMerge", true);
       (document.getElementById("parcelPins") as HTMLInputElement).value = "";
       displayMessage("<br><span>Selection cleared</span><br/>");
     })
@@ -262,14 +265,16 @@ vms.setVersion(versionName)
 
     btnCreateRec.addEventListener("click", () => {
       let newRecName = (document.getElementById("recordName")as HTMLInputElement).value;
-      let parcelPins = (document.getElementById("parcelPins")as HTMLInputElement).value;
+      if(newRecName.length === 0){
+        alert("Please enter a record name");
+        return;
+      }
       displayMessage(`<br><span>Creating record:</span> ${newRecName}`);
-      selectPinsForMerge(parcelPins.split(","));
-
+      
       // Create a new record with the ParcelFabricService
       pfs.createRecord(newRecName)
         .then(() => {
-          displayMessage(`<br><span>Created record</span> ${pfs.activeRecord.recordName}`)
+          displayMessage(`<br><span>Created record</span> ${pfs.activeRecord.recordName}<br />`)
           let parcelPinInput = (document.getElementById("parcelPins") as HTMLInputElement);
           parcelPinInput.value = "";
           selectedParcelPins = [];
@@ -282,6 +287,8 @@ vms.setVersion(versionName)
     // Merge the selected parcels.
     let btnMerge = document.getElementById("btnMerge");
     btnMerge.addEventListener("click", () => {
+      let parcelPins = (document.getElementById("parcelPins")as HTMLInputElement).value;
+      selectPinsForMerge(parcelPins.split(","));
       const updated = featureForm.getValues();
       let mergedFeatureName = updated.Name;
       let mergedFeatureStatedArea = updated.StatedArea;

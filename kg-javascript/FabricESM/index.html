@@ -9,7 +9,7 @@
   -->
   <title>Parcel Fabric - Merge</title>
 
-  <link rel="stylesheet" href="https://js.arcgis.com/4.25/esri/themes/light/main.css" />
+  <link rel="stylesheet" href="https://js.arcgis.com/4.26/esri/themes/light/main.css" />
   <style>
     html,
     body,
@@ -25,9 +25,9 @@
       width: 100%;
     }
 
-    #btnCreateRec {
+    /* #btnCreateRec {
       background-color: lightgray;
-    }
+    } */
     .esri-item-list__scroller {
       overflow-y: visible;
     }
@@ -118,6 +118,7 @@
         color: #6bf06b;
         font-weight: bold;
       }
+      
   </style>
 </head>
 <body>
@@ -139,12 +140,14 @@
         <div id="recForm"></div>
           <label for="recordName">Enter Record Name:</label>
           <input value="" type="text" id="recordName" aria-invalid="false" class="esri-input esri-feature-form__input" required maxlength="">
-          <br />
-          <label for="recordName">Select PINS to Merge:</label>
-          <input value="" type="text" id="parcelPins" aria-invalid="false" class="esri-input esri-feature-form__input" required maxlength="100">
+          <br /><br />
+          <input type="submit" class="esri-button" value="Create Record" id="btnCreateRec" />
           <br />
           <p></p>
-          <input type="submit" class="esri-button" value="Create Record" id="btnCreateRec" disabled />
+          <label for="pinsToMerge">Select PINS to Merge:</label>
+          <input value="" type="text" id="parcelPins" aria-invalid="false" class="esri-input esri-feature-form__input" required maxlength="100">
+          
+          
           
       </div>
       <div id="attributeArea">
