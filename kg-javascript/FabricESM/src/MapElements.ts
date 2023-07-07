@@ -63,7 +63,7 @@ export class MapElements {
       labelExpressionInfo: {
         expression: `
         if ($feature.Distance == NULL) {
-          return "r-" + Round($feature.Radius, 2);
+          return Round($feature.ArcLength, 2);
         } else {
           return Round($feature.Distance, 2);
         }`
