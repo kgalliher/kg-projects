@@ -1,4 +1,5 @@
 <html>
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
@@ -7,13 +8,13 @@
   For more information about the editing-applyedits sample, read the original sample description at developers.arcgis.com.
   https://developers.arcgis.com/javascript/latest/sample-code/editing-applyedits/index.html
   -->
-  <title>Parcel Fabric - Merge</title>
+  <title>Parcel Split/Build Workflow</title>
 
   <link rel="stylesheet" href="https://js.arcgis.com/4.26/esri/themes/light/main.css" />
   <style>
     html,
     body,
-    
+
     #viewDiv {
       padding: 0;
       margin: 0;
@@ -63,19 +64,21 @@
       bottom: 0.75em;
     }
 
-    .editArea-container esri-widget--panel{
+    .editArea-container esri-widget--panel {
       max-height: 600px;
       overflow: hidden;
     }
-    .esri-view-height-medium .esri-expand .esri-widget--panel{
+    
+    .esri-view-height-medium .esri-expand .esri-widget--panel {
       max-height: 680px;
       overflow: hidden;
     }
 
-    .esri-view-height-small .esri-expand .esri-widget--panel{
+    .esri-view-height-small .esri-expand .esri-widget--panel {
       max-height: 680px;
       overflow: hidden;
     }
+
     /* override default styles */
     .esri-feature-form {
       background: #fff;
@@ -95,6 +98,17 @@
 
     .esri-feature-templates__scroller {
       max-height: 200px;
+    }
+
+    #editWidgetArea {
+      height: 100%;
+    }
+
+    .esri-view-height-small .esri-expand .esri-widget--panel,
+    .esri-view-height-small .esri-expand .esri-widget--panel-height-only,
+    .esri-view-height-small .esri-ui-corner .esri-component.esri-widget--panel,
+    .esri-view-height-small .esri-ui-corner .esri-component.esri-widget--panel-height-only {
+      max-height: 600px;
     }
 
     #outputMessages {
@@ -121,16 +135,36 @@
       
   </style>
 </head>
+
 <body>
   <script type="module" src="/src/main.ts"></script>
   <div id="editArea" class="editArea-container esri-widget--panel">
     <div id="addFeatureDiv" style="display:block;">
-      <h3 class="list-heading">Merge Parcels</h3>
+      <h3 class="list-heading">Edit Parcels</h3>
       <p>Instructions:</p>
       <ul style="font-size: 13px; padding-left: 1.5em;">
-        <li>Select parcels to create a list of parcel PINs</li>
-        <li>Enter new parcel PIN and stated area value</li>
-        <li>Merge the selected parcels</li>
+        <li>Create a new parcel record</li>
+        <li>Select one or more parcels</li>
+        <li>Option 1:
+          <ul>
+            <li>Copy the selected features to the parcel type (Copy Lines To)</li>
+            <li>Draw lines within the open boundary to form closed loops</li>
+            <li>Click Build Active Record</li>
+          </ul>
+          <li>Option 2:
+            <ul>
+              <li>Digitize a closed loop of lines</li>
+              <li>Click Create Seeds to insert a seed</li>
+              <li>Click Build Active Record</li>
+            </ul>
+          </li>
+          <li>Option 3:
+            <ul>
+              <li>Select 2 or more parcels</li>
+              <li>Click Merge Parcels</li>
+            </ul>
+          </li>
+        </li>
       </ul>
       <input type="button" class="esri-button" value="Begin" id="btnBegin" />
     </div>
@@ -153,17 +187,33 @@
       <div id="attributeArea">
         <div id="formDiv"></div>
       </div>
+      <br />
       <input type="button" class="esri-button" value="Merge Parcels" id="btnMerge" disabled />
+      <br />
+      <input type="button" class="esri-button" value="Copy Lines To Parcel Type" id="btnCopyLines" disabled />
+      <br />
+      <input type="button" class="esri-button" value="Create Seeds" id="btnCreateSeeds" />
+      <br />
+      <input type="button" class="esri-button" value="Build Active Record" id="btnBuildParcels" />
       <br />
       <div id="clearSelectionArea">
         <input type="button" class="esri-button" value="Clear Selection" id="btnClear" />
       </div>
       <br>
     </div>
-    <div id="updateInstructionDiv" style="text-align:center; display:block">
+    <div id="updateInstructionDiv" style="text-align:center; display:block"></div>
+    <div id="editWidgetArea" class="editArea-container esri-widget--panel"></div>
+    
+    <div id="splitArea">
+      <div id="featureSplitDiv" style="display:none; margin-top: 1em;">
+        <h3 class="list-heading">Split Parcels</h3>
+      </div>
     </div>
   </div>
-  <div id="viewDiv"><div id="outputMessages" class="esri-widget"></div></div>
-  
+
+  <div id="viewDiv">
+    <div id="outputMessages" class="esri-widget"></div>
+  </div>
+
 </body>
 </html>

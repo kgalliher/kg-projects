@@ -349,10 +349,6 @@ export class ParcelFabricService {
     return new Promise((resolve, reject) => {
       this.vms.toggleEditSession("startReading")
         .then((res) => {
-          if(this.activeRecord === undefined){
-            this.displayMessage("Must create a parcel record to merge.")
-            reject("Must create a parcel record to merge.")
-          }
           let sessionId = this.vms.getSessionId();
           let activeRecordGuid = this.activeRecord.recordGuid;
           let versionName = this.vms.getVersion().versionName;
