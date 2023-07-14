@@ -102,7 +102,7 @@ vms.setVersion(versionName)
       outputMessages.innerHTML = "";
     }
 
-    function setButtonDisabled(idName: string, isDisabled: boolean){
+    function setButtonDisabled(idName: string, isDisabled: boolean) {
       const element = (document.getElementById(idName) as HTMLButtonElement)
       element.disabled = isDisabled;
       const currentEnabledValue = element.getAttribute("disabled")
@@ -114,8 +114,8 @@ vms.setVersion(versionName)
 
     setButtonDisabled("btnMerge", true);
 
-    // Displays the service edits for the newly merged feature
-    function processMergeResult(serviceEdits: Array<any>){
+    // Displays the returned service edits for edit operations 
+    function processResult(serviceEdits: Array<any>) {
       let values = "";
       if (serviceEdits) {
         serviceEdits.forEach(layer => {
@@ -227,10 +227,12 @@ vms.setVersion(versionName)
       let pinValue = selectedFeatures[selectedFeatures.length - 1].attributes.Name;
       displayMessage(`<span>Selected Parcel:</span> ${pinValue}<br>`);
       selectedParcelPins.push(pinValue);
-      if(selectedFeatures.length >= 2){
-        // setButtonDisabled("btnCreateRec", false);
+      if (selectedFeatures.length == 1) {
+        setButtonDisabled("btnCopyLines", false);
+      }
+      if (selectedFeatures.length >= 2) {
         setButtonDisabled("btnMerge", false);
-        let parcelPins = selectedParcelPins.join(); 
+        let parcelPins = selectedParcelPins.join();
         let parcelPinInput = (document.getElementById("parcelPins") as HTMLInputElement);
         parcelPinInput.value = parcelPins;
       }
@@ -398,27 +400,40 @@ vms.setVersion(versionName)
     // Event listeners that execute the FS and ParcelFabric functions
     let btnCreateRec = document.getElementById("btnCreateRec");
 
-    btnCreateRec.addEventListener("click", () => {
-      let newRecName = (document.getElementById("recordName")as HTMLInputElement).value;
-      if(newRecName.length === 0){
-        alert("Please enter a record name");
-        return;
-      }
+    btnCreateRec.addEventListener("click", async () => {
+      let newRecName = (document.getElementById("recordName") as HTMLInputElement).value;
+      let parcelPins = (document.getElementById("parcelPins") as HTMLInputElement).value;
       displayMessage(`<br><span>Creating record:</span> ${newRecName}`);
-      
+      selectPinsForMerge(parcelPins.split(","));
+
       // Create a new record with the ParcelFabricService
-      pfs.createRecord(newRecName)
-        .then(() => {
-          displayMessage(`<br><span>Created record</span> ${pfs.activeRecord.recordName}<br />`)
-          let parcelPinInput = (document.getElementById("parcelPins") as HTMLInputElement);
-          parcelPinInput.value = "";
-          selectedParcelPins = [];
-        })
-        .catch((err) => {
-          console.log(err);
-          displayMessage(`<br><span>Error copying parcel lines:<span> ${err}`)
-        })
-    })
+      const recordExists = await pfs.checkRecordExists(newRecName)
+      console.log(recordExists);
+
+      if (recordExists) {
+        await pfs.setExistingRecord(newRecName);
+        displayMessage(`<br><span>Successfully set active record</span> ${pfs.activeRecord.recordName}`)
+        document.getElementById("currentRecordName").innerHTML = pfs.activeRecord.recordName;
+        setActiveRecord(pfs.activeRecord.recordGuid)
+      }
+      else {
+        pfs.createRecord(newRecName)
+          .then((res) => {
+            displayMessage(`<br><span>Successfully set active record</span> ${pfs.activeRecord.recordName}`)
+            let parcelPinInput = (document.getElementById("parcelPins") as HTMLInputElement);
+            parcelPinInput.value = "";
+            selectedParcelPins = [];
+            document.getElementById("currentRecordName").innerHTML = pfs.activeRecord.recordName;
+            // document.getElementById("activeRecordGuid").innerHTML = pfs.activeRecord.recordGuid;
+            setActiveRecord(pfs.activeRecord.recordGuid)
+
+          })
+          .catch((err) => {
+            displayMessage(`<br><span>Error creating/setting record:</span> ${err}`)
+          });
+      }
+      // })
+    });
 
     // Create seeds with active record.
     let btnCreateSeeds = document.getElementById("btnCreateSeeds");
@@ -437,12 +452,12 @@ vms.setVersion(versionName)
         })
     })
 
-    // Create seeds with active record.
+    // Build parcels with active record.
     let btnBuildParcels = document.getElementById("btnBuildParcels");
     btnBuildParcels.addEventListener("click", () => {
       const recordName = (document.getElementById("recordName") as HTMLInputElement).value;
       displayMessage(`<br><span>Building parcels in:</span><p>${recordName}</p><br>`)
-      // Merge the selected with the ParcelFabricService
+      // Build parcels in active record with the ParcelFabricService
       pfs.buildRecord()
         .then((res) => {
           const buildParcelsResult = processResult(res);
@@ -455,11 +470,29 @@ vms.setVersion(versionName)
         })
     })
 
+    // Copy selected parcels to parcel type.
+    let btnCopyLines = document.getElementById("btnCopyLines");
+    setButtonDisabled("btnCopyLines", true);
+    btnCopyLines.addEventListener("click", () => {
+      displayMessage("<br><span>Copying parcel lines to Tax</span>")
+      // Copy lines of selected parcel(s) with the ParcelFabricService
+      pfs.copyLinesTo(selectedFeatures)
+        .then((res) => {
+          const copyLinesResult = processResult(res);
+          displayMessage(`<br><span>Copy Lines result:</span><p>Success</p><br>${copyLinesResult}`);
+          mapUi.refreshLayers();
+        })
+        .catch((err) => {
+          console.log(err);
+          displayMessage(`<br><span>Error copying parcel lines:<span> ${err}`)
+        })
+    })
+
     // Merge the selected parcels.
     let btnMerge = document.getElementById("btnMerge");
     setButtonDisabled("btnMerge", true);
     btnMerge.addEventListener("click", () => {
-      let parcelPins = (document.getElementById("parcelPins")as HTMLInputElement).value;
+      let parcelPins = (document.getElementById("parcelPins") as HTMLInputElement).value;
       selectPinsForMerge(parcelPins.split(","));
       const updated = featureForm.getValues();
       let mergedFeatureName = updated.Name;
