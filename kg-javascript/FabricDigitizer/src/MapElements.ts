@@ -1,9 +1,8 @@
 import EsriMap from "@arcgis/core/Map";
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import LabelClass from "@arcgis/core/layers/support/LabelClass";
-import SimpleRenderer from "@arcgis/core/renderers/SimpleRenderer";
 
-export interface FLayer{
+export interface FLayer {
   name: string;
   flayer: FeatureLayer;
 }
@@ -14,14 +13,14 @@ export class MapElements {
   public mapLayers: FeatureLayer[] = [];
   public map: __esri.Map;
 
-  constructor(baseUrl:string, currentVersion: string){
+  constructor(baseUrl: string, currentVersion: string) {
     this._baseUrl = baseUrl;
     this.versionName = currentVersion;
     this.map = this.generateMapAndLayers();
   }
 
   addMapLayer(layerId: number, idLabel: string, outfields: string[], defQuery: string, labelClass: LabelClass): FeatureLayer {
-    if(this.versionName == "")
+    if (this.versionName == "")
       this.versionName = "sde.DEFAULT";
 
     let layer = new FeatureLayer({
@@ -41,7 +40,7 @@ export class MapElements {
 
   refreshLayers(): void {
     let layers = this.mapLayers;
-    for(let key of Object.keys(layers)){
+    for (let key of Object.keys(layers)) {
       layers[key].refresh();
     }
   }
@@ -59,15 +58,17 @@ export class MapElements {
     });
 
     const linesLabelClass = new LabelClass({
-      labelExpressionInfo: { expression: "$feature.Distance + ' ft'" },
+      labelExpressionInfo: {
+        expression: "Round($feature.Distance, 2)"
+      },
       symbol: {
         type: "text",  // autocasts as new TextSymbol()
-        color: "green",
+        color: "black",
         haloSize: 1,
         haloColor: "white"
       }
     });
-  
+
     const recordLabelClass = new LabelClass({
       labelExpressionInfo: { expression: "$feature.NAME" },
       labelPlacement: "always-horizontal",
@@ -79,8 +80,9 @@ export class MapElements {
         haloColor: "white"
       }
     });
-  
+
     let parcelLayer = new FeatureLayer({
+      title: "Tax Parcels",
       url: `${this._baseUrl}FeatureServer/15`,
       outFields: ["name", "statedarea", "Shape__Area", "globalid"],
       popupEnabled: false,
@@ -91,7 +93,7 @@ export class MapElements {
       definitionExpression: "RetiredByRecord IS NULL",
     });
     this.mapLayers["parcels"] = parcelLayer;
-  
+
     const historicParcelLayerRenderer = {
       type: "simple",
       symbol: {
@@ -102,10 +104,11 @@ export class MapElements {
       }
     }
     let historicParcelLayer = new FeatureLayer({
+      title: "Historic Tax Parcels",
       url: `${this._baseUrl}FeatureServer/15`,
       outFields: ["name", "statedarea", "Shape__Area", "globalid"],
       popupEnabled: false,
-      id: "taxParcels",
+      id: "historicTaxParcels",
       labelingInfo: taxLabelClass,
       labelsVisible: false,
       gdbVersion: this.versionName,
@@ -115,18 +118,30 @@ export class MapElements {
     this.mapLayers["historicParcels"] = historicParcelLayer;
 
     let parcelLinesLayer = new FeatureLayer({
-      title: "ParcelLines",
+      title: "Parcel Lines",
       url: `${this._baseUrl}FeatureServer/14`,
+      outFields: ["CreatedByRecord", "RetiredByRecord", "Direction", "Distance"],
       popupEnabled: false,
       id: "taxParcelLines",
       labelingInfo: linesLabelClass,
       gdbVersion: this.versionName,
       definitionExpression: "RetiredByRecord IS NULL",
     });
-    this.mapLayers["parcelLines"] = parcelLinesLayer;    
-    
+    this.mapLayers["parcelLines"] = parcelLinesLayer;
+
+    let parcelPointsLayer = new FeatureLayer({
+      title: "Points",
+      url: `${this._baseUrl}FeatureServer/7`,
+      outFields: ["CreatedByRecord", "RetiredByRecord", "isFixed", "X", "Y", "Z"],
+      popupEnabled: false,
+      id: "parcelPoints",
+      gdbVersion: this.versionName,
+      definitionExpression: "RetiredByRecord IS NULL",
+    });
+    this.mapLayers["parcelPoints"] = parcelPointsLayer;
+
     const recordsLayerRenderer = {
-      type: "simple",  
+      type: "simple",
       symbol: {
         type: "simple-fill",  // autocasts as new SimpleMarkerSymbol()
         size: 6,
@@ -145,15 +160,20 @@ export class MapElements {
       renderer: recordsLayerRenderer
     });
 
-    this.mapLayers["records"] = recordsLayer;    
-  
+    this.mapLayers["records"] = recordsLayer;
+
     const map = new EsriMap({
-      basemap: "streets-vector",
-      layers: [recordsLayer, historicParcelLayer, parcelLayer, parcelLinesLayer]
+      basemap: "satellite",
+      layers: [recordsLayer, parcelPointsLayer, parcelLayer, parcelLinesLayer],
+
     });
 
     return map;
   }
 
-  
+  lineLabelExpression() {
+    const arcade = document.getElementById("cogo-label").text;
+    return arcade;
+  }
+
 }

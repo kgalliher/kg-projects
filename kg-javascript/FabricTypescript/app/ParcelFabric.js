@@ -22,7 +22,6 @@ define(["require", "exports", "esri/request"], function (require, exports, reque
                         .catch((err) => { console.log(err); })
                         .then((recordOid) => {
                         let sessionId = this.vms.getSessionId();
-                        console.log("Create Record sessionId: " + sessionId);
                         const objectId = recordOid.data.firstObjectId;
                         const globalid = this.vms.createUUID().toUpperCase();
                         let params = {

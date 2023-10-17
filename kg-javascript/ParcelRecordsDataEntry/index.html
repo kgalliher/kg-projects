@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://js.arcgis.com/4.26/esri/themes/light/main.css">
+    <script src="https://js.arcgis.com/4.26/"></script>
+    
+    <title>Create Record</title>
+    <style>
+        html,
+        body {
+          height: 100%;
+          width: 100%;
+          margin: 0;
+          padding: 0;
+          background-color: #f8f8f8;
+        }
+        .container {
+          height: 100%;
+          width: 100%;
+        }
+        #formDiv {
+          height: 40%;
+          width: 40%;
+          float: left;
+        }
+        #description {
+          height: 50%;
+          width: 50%;
+          float: right;
+        }
+        #tableDiv {
+          height: 50%;
+          width: 100%;
+        }
+        .esri-button{
+          margin-left: 14px;
+          width: 30%;
+        }
+      </style>
+
+
+</head>
+<body>
+  <script type="module" src="/src/main.ts" defer></script>
+    <div class="container">
+      <div id="tableDiv"></div>
+      <div id="formDiv" class="scroller esri-component"></div>
+      <div id="description">
+        <h3>Insert and Update Records</h3>
+        <p>Use the form to add a new, empty record. Use the table to update existing values.</p>
+      </div>
+    <input type="submit" class="esri-button" value="Create Record" id="btnAddRecord">
+      
+    </div>
+</body>
+</html>

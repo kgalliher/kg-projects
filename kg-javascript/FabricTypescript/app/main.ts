@@ -5,6 +5,7 @@ import FeatureForm from "esri/widgets/FeatureForm";
 import { VersionManagementService } from "./VersionMangement";
 import { ParcelFabricService } from "./ParcelFabric";
 import { MapElements } from "./MapElements";
+import FeatureLayer from "esri/layers/FeatureLayer";
 
 let baseUrl = "https://krennic.esri.com/server/rest/services/SheboyganREST/";
 
@@ -111,7 +112,7 @@ vms.setVersion(versionName)
           if (results.features.length > 0) {
             editFeature = results.features[0];
             // display the attributes of last selected feature in the form
-            featureForm.feature = editFeature;
+            // featureForm.feature = editFeature;
             // capture attributes of selected features
             captureFeatures(editFeature);
             // highlight the feature on the view
@@ -129,7 +130,7 @@ vms.setVersion(versionName)
       selectedFeatures.push(feature);
     }
 
-    function zoomToSelected(editFeatureLayer:) {
+    function zoomToSelected(editFeatureLayer: FeatureLayer) {
       editFeatureLayer
         .when(function () {
           return layer.queryExtent();
@@ -199,8 +200,8 @@ vms.setVersion(versionName)
       selectedFeatures.length = 0;
       document.getElementById("writeAttr").innerHTML = "";
     })
-    
-  // PARCEL FABRIC ----------------------
+
+    // PARCEL FABRIC ----------------------
     // Event listeners that execute the FS and ParcelFabric functions
     let btnCreateRec = document.getElementById("btnCreateRec");
     btnCreateRec.addEventListener("click", () => {

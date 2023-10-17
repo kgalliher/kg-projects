@@ -101,7 +101,7 @@ define(["require", "exports", "esri/views/MapView", "esri/widgets/Expand", "esri
                 if (results.features.length > 0) {
                     editFeature = results.features[0];
                     // display the attributes of last selected feature in the form
-                    featureForm.feature = editFeature;
+                    // featureForm.feature = editFeature;
                     // capture attributes of selected features
                     captureFeatures(editFeature);
                     // highlight the feature on the view
@@ -215,6 +215,10 @@ define(["require", "exports", "esri/views/MapView", "esri/widgets/Expand", "esri
                 document.getElementById("writeAttr").innerHTML = "Error merging parcels: " + err;
             });
         });
+    })
+        //-------------End opening 'then' ------------------//
+        .catch((err) => {
+        alert("An error occured in the main application: " + err);
     });
 });
 //# sourceMappingURL=main.js.map
