@@ -5,11 +5,11 @@ import FeatureForm from "@arcgis/core/widgets/FeatureForm";
 import FormTemplate from "@arcgis/core/form/FormTemplate";
 import FieldElement from "@arcgis/core/form/elements/FieldElement";
 import Editor from "@arcgis/core/widgets/Editor";
-import ExpressionInfo from "@arcgis/core/form/ExpressionInfo";
 
-import { VersionManagementService } from "./VersionManagement";
+// import { VersionManagementUtils } from "./VersionManagement";
 import { ParcelFabricService } from "./ParcelFabric";
 import { MapElements } from "./MapElements";
+import VersionManagementService from "@arcgis/core/versionManagement/VersionManagementService.js";
 
 let baseUrl = "https://krennic.esri.com/server/rest/services/Sheboygan109/";
 const outputMessages = document.getElementById("outputMessages");
@@ -23,25 +23,25 @@ let highlights = [];
 // Get a single ParcelFabricService object
 let pfs: ParcelFabricService;
 
-//Get a single VersionManagementService object.
+//Get a single VersionManagementUtils object.
 const versionName = "ADMIN.EditorJS";
-let currentVersion: string;
-let vms = new VersionManagementService(baseUrl);
+let currentVersion: __esri.VersionIdentifier;
+let vms = new VersionManagementService({url:baseUrl + "/VersionManagementServer"});
 
 // Force the UI elements to rely on a version being set.
-vms.setVersion(versionName)
-  .then((resp) => {
+vms.load()
+  .then(async (resp) => {
     if (resp) {
-      currentVersion = vms.getVersion().versionName
+      currentVersion = await vms.getVersionIdentifierFromName(versionName)
       pfs = new ParcelFabricService(baseUrl, vms);
-      document.getElementById("currentVersionName").innerHTML = currentVersion;
+      document.getElementById("currentVersionName").innerHTML = currentVersion.name;
     }
     else
       throw "Could not set current version"
   })
   .then(() => {
     // Hiding the map and layer details in another class UserInterface
-    let mapUi = new MapElements(baseUrl, currentVersion);
+    let mapUi = new MapElements(baseUrl, currentVersion.name);
     const map = mapUi.generateMapAndLayers();
     
     // Capture the active record GUID
@@ -65,28 +65,11 @@ vms.setVersion(versionName)
       zoom: 18
     });
 
-    const nameElement = new FieldElement({
-      fieldName: "Name",
-      label: "Parcel Name",
-      editableExpression: "$feature",
-    });
-
-    const statedAreaElement = new FieldElement({
-      fieldName: "StatedArea",
-      label: "Stated Area",
-      editableExpression: "$feature",
-    });
-
-    const formTemplate = new FormTemplate({
-      description: "Parcel Attributes",
-      elements: [nameElement, statedAreaElement] // Add all elements to the template
-    });
-
     // New FeatureForm for updating attributes
     const featureForm = new FeatureForm({
       container: "formDiv",
       layer: parcelLayer,
-      formTemplate: formTemplate,
+      formTemplate: mapUi.generateFormTemplate(),
     });
 
     // Active function to listen to selected feature events
@@ -318,6 +301,10 @@ vms.setVersion(versionName)
           fieldName: "RetiredByRecord",
           label: "Retired By Record",
         }),
+        new FieldElement({
+          fieldName: "IsSeed",
+          label: "Is Seed",
+        }),
       ],
       expressionInfos: [{
         name: "updateName",
@@ -383,7 +370,7 @@ vms.setVersion(versionName)
       displayMessage("<br><span>Selection cleared</span><br/>");
     })
     
-  // PARCEL FABRIC ----------------------
+    // PARCEL FABRIC ----------------------
     // Event listeners that execute the FS and ParcelFabric functions
     let btnCreateRec = document.getElementById("btnCreateRec");
 

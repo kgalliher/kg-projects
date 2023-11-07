@@ -10,7 +10,7 @@
   -->
   <title>Parcel Fabric - Merge</title>
 
-  <link rel="stylesheet" href="https://js.arcgis.com/4.25/esri/themes/light/main.css" />
+  <link rel="stylesheet" href="https://js.arcgis.com/4.26/esri/themes/light/main.css" />
   <style>
     html,
     body,
@@ -103,6 +103,7 @@
 
     #editWidgetArea {
       height: 100%;
+      overflow: hidden;
     }
 
     .esri-view-height-small .esri-expand .esri-widget--panel,
@@ -133,6 +134,10 @@
     #outputMessages span {
       color: #6bf06b;
       font-weight: bold;
+    }
+
+    footer {
+      display: inline-table;
     }
   </style>
 </head>
@@ -175,13 +180,11 @@
       <br />
       <input type="button" class="esri-button" value="Build Active Record" id="btnBuildParcels" />
       <br />
-      <div id="clearSelectionArea">
-        <input type="button" class="esri-button" value="Clear Selection" id="btnClear" />
-      </div>
+      <input type="button" class="esri-button" value="Clear Selection" id="btnClear" />
       <br>
     </div>
-    <div id="updateInstructionDiv" style="text-align:center; display:block"></div>
-    <div id="editWidgetArea" class="editArea-container esri-widget--panel"></div>
+    <!-- <div id="updateInstructionDiv" style="text-align:center; display:block"></div> -->
+    
     
     <div id="splitArea">
       <div id="featureSplitDiv" style="display:none; margin-top: 1em;">
@@ -191,6 +194,7 @@
   </div>
 
   <div id="viewDiv">
+    <div id="editWidgetArea"></div>
     <div id="outputMessages" class="esri-widget"></div>
   </div>
 

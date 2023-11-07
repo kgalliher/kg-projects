@@ -22,7 +22,7 @@
     "vite": "^4.1.0"
   },
   "dependencies": {
-    "@arcgis/core": "^4.26.0-next.20230217"
+    "@arcgis/core": "^4.28.6"
   },
   "description": "Parcel fabric merge parcels demo",
   "main": "index.html",

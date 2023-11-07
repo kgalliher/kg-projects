@@ -1,4 +1,6 @@
 import EsriMap from "@arcgis/core/Map";
+import FormTemplate from "@arcgis/core/form/FormTemplate";
+import FieldElement from "@arcgis/core/form/elements/FieldElement";
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import LabelClass from "@arcgis/core/layers/support/LabelClass";
 
@@ -157,6 +159,27 @@ export class MapElements {
     });
 
     return map;
+  }
+
+  generateFormTemplate(): FormTemplate{
+    const nameElement = new FieldElement({
+      fieldName: "Name",
+      label: "Parcel Name",
+      editableExpression: "$feature",
+    });
+
+    const statedAreaElement = new FieldElement({
+      fieldName: "StatedArea",
+      label: "Stated Area",
+      editableExpression: "$feature",
+    });
+
+    const formTemplate = new FormTemplate({
+      description: "Parcel Attributes",
+      elements: [nameElement, statedAreaElement]
+    });
+
+    return formTemplate;
   }
 
   lineLabelExpression(){
