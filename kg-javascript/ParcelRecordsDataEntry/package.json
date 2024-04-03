@@ -10,7 +10,7 @@
   },
   "devDependencies": {
     "typescript": "^4.9.3",
-    "vite": "^4.2.3"
+    "vite": "^4.5.3"
   },
   "dependencies": {
     "@arcgis/core": "^4.26.5"
